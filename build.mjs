@@ -175,7 +175,7 @@ function card(l) {
   <div class="card-head">
     <span class="monogram" aria-hidden="true">${e(monogram(l.name))}</span>
     <span class="card-cat">${icon(l.cat.icon)}${e(l.cat.name)}</span>
-    ${l.sample ? '<span class="sample-tag" title="Demonstration listing — not a real business">Sample</span>' : ''}
+    ${l.sample ? '<span class="sample-tag" title="Demonstration listing — not a real business">Sample</span>' : l.claimed ? '' : '<span class="sample-tag" title="Compiled from public information. Not yet claimed by the owner.">Unclaimed</span>'}
   </div>
   <h3 class="card-title">${e(l.name)}</h3>
   <p class="card-sum">${e(l.summary)}</p>
@@ -517,7 +517,7 @@ function businessPages() {
           <a class="tag" href="/category/${l.cat.slug}/">${icon(l.cat.icon)}${e(l.cat.name)}</a>
           <a class="tag" href="/town/${t.slug}/">${icon('pin')}${e(t.name)}, ${e(t.state)}</a>
           <span class="status status-lg" data-hours="${e(JSON.stringify(l.hours))}"></span>
-          ${l.sample ? '<span class="tag tag-sample">Sample listing</span>' : '<span class="tag tag-verified">' + icon('shield') + 'Verified</span>'}
+          ${l.sample ? '<span class="tag tag-sample">Sample listing</span>' : l.claimed ? '<span class="tag tag-verified">' + icon('shield') + 'Claimed by owner</span>' : '<span class="tag tag-sample" title="Compiled from public information. Not yet claimed by the owner.">Unclaimed</span>'}
         </div>
         <h1 class="display biz-title">${e(l.name)}</h1>
         <p class="lead">${e(l.summary)}</p>
@@ -553,7 +553,9 @@ function businessPages() {
           <table>${hoursRows}</table>
           <p class="hours-note">Times shown in Eastern Time.</p>
         </div>
-        <a class="claim" href="/add-your-business/?claim=${l.slug}">${icon('edit')}Own this business? Update this listing</a>
+        ${l.claimed || l.sample ? '' : `<p class="unclaimed-note">${icon('info')}<span>This listing was compiled from public information and hasn't been claimed by the owner yet.</span></p>`}
+        <a class="claim" href="/add-your-business/?claim=${l.slug}">${icon('edit')}${l.claimed || l.sample ? 'Own this business? Update this listing' : 'Own this business? Claim this listing'}</a>
+        ${l.sample ? '' : `<a class="claim claim-remove" href="mailto:${e(site.email)}?subject=${encodeURIComponent('Remove listing: ' + l.name)}&amp;body=${encodeURIComponent('Please remove this listing: ' + site.url + '/business/' + l.slug + '/\n\nMy name and connection to the business:\n')}">${icon('close')}Remove this listing</a>`}
       </div>
     </aside>
   </div>
@@ -697,8 +699,10 @@ function staticPages() {
 <li>Paid placement, of any kind, in any category.</li>
 <li>Reviews written by the business, its staff or anyone paid to write them.</li>
 </ul>
+<h2>Unclaimed listings</h2>
+<p>Some listings are added by us from public information — the business's own website, signage and public records — so neighbors can find them before the owner has heard of us. Those listings say <strong>Unclaimed</strong> until the owner claims them. We never copy listings from other directories, and we never publish a home address.</p>
 <h2>Removals</h2>
-<p>We remove listings that close, stop answering, or break these guidelines. If your business has closed or you want your listing taken down, email <a href="mailto:${e(site.email)}">${e(site.email)}</a> and we'll do it within two business days.</p>`,
+<p>Every listing page has a <strong>Remove this listing</strong> link. We remove listings that close, stop answering, or break these guidelines. If your business has closed or you want your listing taken down, email <a href="mailto:${e(site.email)}">${e(site.email)}</a> and we'll do it within two business days.</p>`,
   });
   prose('/privacy/', {
     docTitle: 'Privacy',

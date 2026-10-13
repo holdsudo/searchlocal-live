@@ -441,6 +441,11 @@ a.tag:hover { border-color: var(--line); color: var(--text); }
 .claim { display: flex; align-items: center; gap: 8px; margin-top: 14px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: .85rem; color: var(--muted); transition: color .2s; }
 .claim:hover { color: var(--gold-hi); }
 .claim .i { width: 15px; height: 15px; color: var(--gold); }
+.claim + .claim { margin-top: 0; padding-top: 4px; border-top: 0; }
+.claim-remove .i { color: var(--dim); }
+.unclaimed-note { display: flex; gap: 8px; align-items: flex-start; margin: 14px 0 0; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: .8rem; line-height: 1.5; color: var(--dim); }
+.unclaimed-note .i { flex: none; width: 15px; height: 15px; margin-top: 2px; color: var(--dim); }
+.unclaimed-note + .claim { margin-top: 0; border-top: 0; padding-top: 4px; }
 
 /* ---------- add business form ---------- */
 .add-layout { display: grid; grid-template-columns: 360px 1fr; gap: 22px; align-items: start; }
