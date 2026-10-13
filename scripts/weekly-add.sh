@@ -24,7 +24,7 @@ rm -f automation/result.json
 
 claude -p "$(cat automation/verify-prompt.md)" \
   --model sonnet \
-  --allowedTools "WebFetch" "Read" "Write(automation/result.json)" "Edit(automation/result.json)" \
+  --allowedTools "WebFetch" "Read" "Edit(automation/result.json)" \
   --max-turns 40 >/dev/null
 [ -f automation/result.json ] || { echo "agent wrote no result"; notify "Weekly add failed: no result from verifier"; exit 1; }
 cat automation/result.json
