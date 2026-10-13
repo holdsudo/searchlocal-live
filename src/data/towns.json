@@ -1,10 +1,11 @@
 [
-  {"slug":"lakewood","name":"Lakewood","county":"Ocean County","state":"NJ"},
-  {"slug":"toms-river","name":"Toms River","county":"Ocean County","state":"NJ"},
-  {"slug":"brick","name":"Brick","county":"Ocean County","state":"NJ"},
-  {"slug":"jackson","name":"Jackson","county":"Ocean County","state":"NJ"},
-  {"slug":"point-pleasant-beach","name":"Point Pleasant Beach","county":"Ocean County","state":"NJ"},
-  {"slug":"manchester","name":"Manchester","county":"Ocean County","state":"NJ"},
-  {"slug":"howell","name":"Howell","county":"Monmouth County","state":"NJ"},
-  {"slug":"freehold","name":"Freehold","county":"Monmouth County","state":"NJ"}
+  {"slug": "lakewood", "name": "Lakewood", "county": "Ocean County", "state": "NJ"},
+  {"slug": "toms-river", "name": "Toms River", "county": "Ocean County", "state": "NJ"},
+  {"slug": "brick", "name": "Brick", "county": "Ocean County", "state": "NJ"},
+  {"slug": "jackson", "name": "Jackson", "county": "Ocean County", "state": "NJ"},
+  {"slug": "point-pleasant-beach", "name": "Point Pleasant Beach", "county": "Ocean County", "state": "NJ"},
+  {"slug": "point-pleasant", "name": "Point Pleasant", "county": "Ocean County", "state": "NJ"},
+  {"slug": "manchester", "name": "Manchester", "county": "Ocean County", "state": "NJ"},
+  {"slug": "howell", "name": "Howell", "county": "Monmouth County", "state": "NJ"},
+  {"slug": "freehold", "name": "Freehold", "county": "Monmouth County", "state": "NJ"}
 ]

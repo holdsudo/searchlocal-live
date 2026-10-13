@@ -1,5 +1,585 @@
 [
   {
+    "slug": "spa-virtue",
+    "name": "Spa Virtue",
+    "category": "salons-barbers",
+    "town": "toms-river",
+    "address": "1922 Hooper Ave, Suite 2D",
+    "zip": "08753",
+    "phone": "(732) 323-3000",
+    "website": "https://spavirtue.net/",
+    "hours": {
+      "mon": "10:00-15:00",
+      "tue": null,
+      "wed": "10:00-15:00",
+      "thu": "10:00-19:00",
+      "fri": "10:00-19:00",
+      "sat": "10:00-16:00",
+      "sun": null
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Day spa in Toms River offering body contouring, facials, massage and lash services.",
+    "description": "Spa Virtue is a beauty and wellness spa on Hooper Avenue in Toms River. Its menu includes Cryoskin, Hydrafacial, body wraps, massage and lash lifts, plus infrared sauna sessions and spa packages.",
+    "services": [
+      "Cryoskin",
+      "Hydrafacial",
+      "Slim Wrap body wraps",
+      "Massage",
+      "Lash lift"
+    ]
+  },
+  {
+    "slug": "lius-kitchen",
+    "name": "Liu's Kitchen",
+    "category": "restaurants",
+    "town": "brick",
+    "address": "1953 Route 88",
+    "zip": "08724",
+    "phone": "(732) 458-6166",
+    "website": "https://liuskitchen88.com/",
+    "hours": {
+      "mon": "11:00-22:30",
+      "tue": null,
+      "wed": "11:00-22:30",
+      "thu": "11:00-22:30",
+      "fri": "11:00-23:00",
+      "sat": "11:00-23:00",
+      "sun": "12:00-22:30"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Chinese and sushi restaurant on Route 88 in Brick with online ordering for pickup and delivery.",
+    "description": "Liu's Kitchen serves Chinese dishes and a separate sushi menu from its Route 88 location in Brick. Customers can order online for pickup or delivery, and gift cards are available.",
+    "services": [
+      "Chinese cuisine",
+      "Sushi",
+      "Lunch menu",
+      "Takeout and delivery",
+      "Gift cards"
+    ]
+  },
+  {
+    "slug": "solo-bella-brick-oven-bistro",
+    "name": "Solo Bella Brick Oven Bistro",
+    "category": "restaurants",
+    "town": "jackson",
+    "address": "426 Chandler Rd",
+    "zip": "08527",
+    "phone": "(732) 961-0951",
+    "website": "https://solobella.com/",
+    "hours": {
+      "mon": null,
+      "tue": null,
+      "wed": "11:00-20:00",
+      "thu": "11:00-20:00",
+      "fri": "11:00-20:00",
+      "sat": "11:00-20:00",
+      "sun": "11:00-20:00"
+    },
+    "since": null,
+    "featured": true,
+    "sample": false,
+    "source": "osm",
+    "summary": "Brick oven Italian restaurant in Jackson with dine-in, takeout, catering and in-house parties.",
+    "description": "Solo Bella Brick Oven Bistro cooks pizza and Italian dishes in a brick oven at its Chandler Road location in Jackson. It offers dine-in, takeout and delivery, catering, and in-house party packages.",
+    "services": [
+      "Brick oven pizza",
+      "Italian entrees",
+      "Catering",
+      "In-house parties",
+      "Takeout and delivery"
+    ]
+  },
+  {
+    "slug": "agripas-street",
+    "name": "Agripas Street",
+    "category": "restaurants",
+    "town": "lakewood",
+    "address": "84 Hillside Blvd",
+    "zip": "08701",
+    "phone": "(732) 370-4745",
+    "website": "https://www.agripasstreet.com/",
+    "hours": {
+      "mon": "17:00-22:15",
+      "tue": "17:00-22:15",
+      "wed": "17:00-22:15",
+      "thu": "17:00-22:30",
+      "fri": null,
+      "sat": null,
+      "sun": "17:00-22:15"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Glatt kosher Israeli restaurant in Lakewood's Westgate Plaza with a chef-driven menu.",
+    "description": "Agripas Street is a glatt kosher Israeli restaurant in Westgate Plaza on Hillside Boulevard in Lakewood. It features house-made food and bold spices inspired by Jerusalem, with reservations and Uber Eats ordering.",
+    "services": [
+      "Glatt kosher Israeli cuisine",
+      "Dine-in",
+      "Reservations",
+      "Gift cards",
+      "Uber Eats ordering"
+    ]
+  },
+  {
+    "slug": "ellies-indian-curry-corner",
+    "name": "Ellie's Indian Curry Corner",
+    "category": "restaurants",
+    "town": "toms-river",
+    "address": "73 Main St, Suite 4",
+    "zip": "08753",
+    "phone": "(848) 367-3922",
+    "website": "https://elliesindiancurrycorner.com/",
+    "hours": {
+      "mon": "11:00-21:30",
+      "tue": null,
+      "wed": "11:00-21:30",
+      "thu": "11:00-21:30",
+      "fri": "11:00-22:00",
+      "sat": "11:00-22:00",
+      "sun": "11:00-21:30"
+    },
+    "since": null,
+    "featured": true,
+    "sample": false,
+    "source": "osm",
+    "summary": "Family-owned Punjabi restaurant on Main Street in Toms River, BYOB, with a second location in Belmar.",
+    "description": "Ellie's Indian Curry Corner serves Punjabi dishes made from scratch at its upper-level Main Street location in Toms River. It is BYOB and offers reservations, pickup, delivery, private events and catering.",
+    "services": [
+      "Punjabi cuisine",
+      "Lunch buffet",
+      "Catering",
+      "Private events",
+      "Pickup and delivery"
+    ]
+  },
+  {
+    "slug": "ob-cos-donuts",
+    "name": "Ob-Co's Donuts",
+    "category": "cafes-bakeries",
+    "town": "toms-river",
+    "address": "547 Fischer Blvd",
+    "zip": "08753",
+    "phone": "(732) 270-3882",
+    "website": "https://obcosdonuts.com/",
+    "hours": null,
+    "since": 1953,
+    "featured": true,
+    "sample": false,
+    "source": "osm",
+    "summary": "Walk-up donut stand in Toms River making donuts and crumb cakes fresh daily.",
+    "description": "Ob-Co's Donuts is a donut stand on Fischer Boulevard in Toms River where customers order at an outside window. The menu covers cake and raised donuts, crumb cakes, platters and coffee, with seasonal flavors.",
+    "services": [
+      "Fresh donuts",
+      "Crumb cakes",
+      "Platters",
+      "Coffee",
+      "Seasonal flavors"
+    ]
+  },
+  {
+    "slug": "coastal-dental-group",
+    "name": "Coastal Dental Group",
+    "category": "health-dental",
+    "town": "point-pleasant",
+    "address": "2407 Bridge Avenue",
+    "zip": "08742",
+    "phone": "(732) 714-1030",
+    "website": "https://coastaldentalnj.com/",
+    "hours": null,
+    "since": 2004,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "General and cosmetic dental practice on Bridge Avenue in Point Pleasant, led by Dr. Joseph Zicchino.",
+    "description": "Coastal Dental Group is a family dental office in Point Pleasant borough, founded in 2004 by Dr. Joseph Zicchino. It offers general, cosmetic and periodontal care along with implants and Invisalign, and takes calls for dental emergencies.",
+    "services": [
+      "General dentistry",
+      "Cosmetic dentistry",
+      "Periodontal therapy",
+      "Dental implants",
+      "Invisalign"
+    ]
+  },
+  {
+    "slug": "brady-and-kunz",
+    "name": "Brady & Kunz",
+    "category": "legal",
+    "town": "toms-river",
+    "address": "1433 Hooper Avenue, Suite 310",
+    "zip": "08753",
+    "phone": "(732) 240-4600",
+    "website": "https://www.bradyandkunz.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Toms River law firm focused on workers' compensation and Social Security disability claims.",
+    "description": "Brady & Kunz is a Toms River law firm whose attorneys, Thomas Kunz and Terry Brady, handle workers' compensation and Social Security disability cases. The firm also lists personal injury, real estate, criminal defense, family law and wills and estates.",
+    "services": [
+      "Workers' compensation",
+      "Social Security disability",
+      "Personal injury",
+      "Real estate law",
+      "Family law"
+    ]
+  },
+  {
+    "slug": "elite-dental-center-of-toms-river",
+    "name": "Elite Dental Center of Toms River",
+    "category": "health-dental",
+    "town": "toms-river",
+    "address": "1314 Hooper Avenue",
+    "zip": "08753",
+    "phone": "(732) 286-7600",
+    "website": "https://elitedentaltomsriver.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Family dental office on Hooper Avenue in Toms River offering general, cosmetic and implant dentistry.",
+    "description": "Elite Dental of Toms River is a family dental practice with Dr. George Lambrinos and Dr. Abe Saff. It treats children and adults, from checkups and crowns to implants, Invisalign and emergency visits.",
+    "services": [
+      "Dental checkups",
+      "Dental implants",
+      "Invisalign",
+      "Teeth whitening",
+      "Emergency dentistry"
+    ]
+  },
+  {
+    "slug": "bridge-veterinary-hospital",
+    "name": "Bridge Veterinary Hospital",
+    "category": "pets",
+    "town": "point-pleasant",
+    "address": "2700 Bridge Avenue",
+    "zip": "08742",
+    "phone": "(567) 361-3407",
+    "website": "https://www.bvhvet.com/",
+    "hours": {
+      "mon": "08:00-19:00",
+      "tue": "08:00-19:00",
+      "wed": "08:00-19:00",
+      "thu": "08:00-19:00",
+      "fri": "08:00-19:00",
+      "sat": "08:00-15:00",
+      "sun": null
+    },
+    "since": 2015,
+    "featured": true,
+    "sample": false,
+    "source": "osm",
+    "summary": "Privately owned, AAHA-accredited multi-doctor veterinary practice for dogs, cats and exotic pets in Point Pleasant, NJ.",
+    "description": "Bridge Veterinary Hospital is a general-practice animal hospital on Bridge Avenue that says it has served the Point Pleasant community since 2015. It cares for cats, dogs and exotic pets such as birds, rabbits and reptiles, with wellness, preventive and diagnostic services.",
+    "services": [
+      "Dog and cat wellness exams",
+      "Vaccinations",
+      "Diagnostic imaging and lab work",
+      "Exotic pet care",
+      "Online pharmacy"
+    ]
+  },
+  {
+    "slug": "urban-coalhouse-pizza-and-bar",
+    "name": "Urban Coalhouse Pizza & Bar",
+    "category": "restaurants",
+    "town": "brick",
+    "address": "515 Route 70",
+    "zip": "08723",
+    "phone": "(732) 262-5180",
+    "website": "https://www.urbancoalhouse.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Coal-oven pizza, wings and craft beer on tap at the Route 70 location in Brick, NJ.",
+    "description": "Urban Coalhouse is a pizza and bar restaurant that cooks its menu in a coal-fired oven. The Brick location serves pizzas, appetizers, dinner plates, craft beer, cocktails and sangria, and also offers catering and private events.",
+    "services": [
+      "Coal-fired pizza",
+      "Wings and appetizers",
+      "Craft beer on tap",
+      "Catering",
+      "Private events"
+    ]
+  },
+  {
+    "slug": "tiny-teeth-of-lakewood",
+    "name": "Tiny Teeth of Lakewood",
+    "category": "health-dental",
+    "town": "lakewood",
+    "address": "1000 Route 70 #8",
+    "zip": "08701",
+    "phone": "(848) 245-0779",
+    "website": "https://tinyteethnj.com/",
+    "hours": {
+      "mon": "09:00-17:00",
+      "tue": "09:00-17:00",
+      "wed": "09:00-17:00",
+      "thu": "09:00-17:00",
+      "fri": "09:00-14:30",
+      "sat": null,
+      "sun": null
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Pediatric dental practice on Route 70 in Lakewood, NJ, led by Dr. Zaki Mustacchi.",
+    "description": "Tiny Teeth of Lakewood is a children's dental office led by pediatric dentist Dr. Zaki Mustacchi. It offers care for kids of all ages, including special-needs patients, and serves families from Lakewood and nearby towns.",
+    "services": [
+      "Children's dental care",
+      "Preventive care",
+      "Restorative dentistry",
+      "Sedation dentistry",
+      "Dental emergencies"
+    ]
+  },
+  {
+    "slug": "epsteins-meats",
+    "name": "Epstein's Meats",
+    "category": "shopping",
+    "town": "lakewood",
+    "address": "391 Monmouth Avenue",
+    "zip": "08701",
+    "phone": "(732) 370-3443",
+    "website": "https://www.epsteinsmeat.com/",
+    "hours": {
+      "mon": "09:00-18:00",
+      "tue": "09:00-18:00",
+      "wed": "09:00-18:00",
+      "thu": "09:00-23:59",
+      "fri": "08:30-14:00",
+      "sat": null,
+      "sun": "09:00-18:00"
+    },
+    "since": 1964,
+    "featured": true,
+    "sample": false,
+    "source": "osm",
+    "summary": "Family-owned butcher shop on Monmouth Avenue in Lakewood with custom cuts, takeout and catering.",
+    "description": "Epstein's Meats is a family-owned, full-service butcher shop in Lakewood that says it has been serving customers since 1964. It sells cuts of beef made to order and prepared takeout food, and takes catering orders. Delivery is available on weekdays.",
+    "services": [
+      "Custom-cut beef and meats",
+      "Takeout and prepared foods",
+      "Catering orders",
+      "Delivery"
+    ]
+  },
+  {
+    "slug": "brick-nails-and-spa",
+    "name": "Brick Nails and Spa",
+    "category": "salons-barbers",
+    "town": "brick",
+    "address": "56 Chambers Bridge Road, Suite 12",
+    "zip": "08723",
+    "phone": "(732) 920-9788",
+    "website": "https://bricknailsspanj.com/",
+    "hours": {
+      "mon": "09:30-19:30",
+      "tue": "09:30-19:30",
+      "wed": "09:30-19:30",
+      "thu": "09:30-19:30",
+      "fri": "09:30-19:30",
+      "sat": "09:30-19:00",
+      "sun": "10:00-16:00"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Nail salon in Brick, NJ offering manicures, pedicures, nail enhancements and waxing.",
+    "description": "Brick Nails and Spa is a nail salon on Chambers Bridge Road in Brick. It offers manicures, pedicures, gel, acrylic and dip powder services, and signature pedicures, along with waxing.",
+    "services": [
+      "Manicures",
+      "Pedicures",
+      "Gel, acrylic and dip powder nails",
+      "Waxing"
+    ]
+  },
+  {
+    "slug": "last-wave-brewing-company",
+    "name": "Last Wave Brewing Company",
+    "category": "restaurants",
+    "town": "point-pleasant-beach",
+    "address": "601 Bay Avenue",
+    "zip": "08742",
+    "phone": "(732) 450-8600",
+    "website": "https://www.lastwavebrewing.com/",
+    "hours": {
+      "mon": null,
+      "tue": null,
+      "wed": "15:00-21:00",
+      "thu": "15:00-21:00",
+      "fri": "15:00-22:00",
+      "sat": "12:00-22:00",
+      "sun": "12:00-20:00"
+    },
+    "since": null,
+    "featured": true,
+    "sample": false,
+    "source": "osm",
+    "summary": "Craft brewery and taproom on Bay Avenue in Point Pleasant Beach, NJ, also selling cans, crowlers and merchandise.",
+    "description": "Last Wave Brewing Company is a craft brewery with a taproom at 601 Bay Avenue in Point Pleasant Beach. Visitors can buy cans, crowlers and merchandise, and the brewery offers local delivery.",
+    "services": [
+      "Craft beer taproom",
+      "Cans and crowlers",
+      "Merchandise",
+      "Local delivery"
+    ]
+  },
+  {
+    "slug": "hiering-dupignac-dunn-and-schreiber",
+    "name": "Hiering, Dupignac, Dunn & Schreiber, P.C.",
+    "category": "legal",
+    "town": "toms-river",
+    "address": "236 Washington Street",
+    "zip": "08753",
+    "phone": "(732) 349-1212",
+    "website": "https://hdsdlaw.com/",
+    "hours": {
+      "mon": "09:00-17:00",
+      "tue": "09:00-17:00",
+      "wed": "09:00-17:00",
+      "thu": "09:00-17:00",
+      "fri": "09:00-17:00",
+      "sat": null,
+      "sun": null
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Toms River law firm handling estate planning, elder law, land use, and workers' compensation matters.",
+    "description": "Hiering, Dupignac, Dunn & Schreiber, P.C. is a law firm with an office on Washington Street in Toms River. It represents individuals, families, and businesses across New Jersey in areas such as estate administration, guardianships, and zoning.",
+    "services": [
+      "Estate planning",
+      "Elder law",
+      "Guardianships",
+      "Land use and zoning",
+      "Workers' compensation"
+    ]
+  },
+  {
+    "slug": "the-back-stop",
+    "name": "The Back Stop",
+    "category": "shopping",
+    "town": "toms-river",
+    "address": "3400 NJ-37",
+    "zip": "08753",
+    "phone": "(732) 506-9311",
+    "website": "https://thebackstop.net/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Toms River hobby shop buying and selling sports cards, memorabilia, and collectibles.",
+    "description": "The Back Stop is a collectibles store on Route 37 in Toms River. It buys and sells sports cards, non-sports cards, memorabilia, toys, coins and comic books, and offers paid appraisals.",
+    "services": [
+      "Sports cards",
+      "Memorabilia and collectibles",
+      "Comic books and toys",
+      "Appraisals",
+      "Buying collections"
+    ]
+  },
+  {
+    "slug": "rosatos-pub-and-pizzeria",
+    "name": "Rosato's Pub & Pizzeria",
+    "category": "restaurants",
+    "town": "toms-river",
+    "address": "600 Mule Road #1819",
+    "zip": "08757",
+    "phone": "(732) 914-8484",
+    "website": "https://www.rosatospubandpizzeria.com/",
+    "hours": {
+      "mon": "11:00-21:00",
+      "tue": "11:00-21:00",
+      "wed": "11:00-21:00",
+      "thu": "11:00-21:00",
+      "fri": "11:00-21:00",
+      "sat": "11:00-21:00",
+      "sun": "11:00-21:00"
+    },
+    "since": 2013,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Pizzeria and pub in Toms River serving pizza and traditional Italian dishes.",
+    "description": "Rosato's Pub & Pizzeria is a pizza restaurant and pub on Mule Road in Toms River. The menu centers on pizza and traditional Italian-style dishes, and the site lists delivery and catering among its offerings.",
+    "services": [
+      "Pizza",
+      "Italian dishes",
+      "Pub dining",
+      "Delivery",
+      "Catering"
+    ]
+  },
+  {
+    "slug": "pho-34",
+    "name": "Pho 34",
+    "category": "restaurants",
+    "town": "toms-river",
+    "address": "73 Main Street",
+    "zip": "08753",
+    "phone": "(732) 824-0020",
+    "website": "https://www.pho34vietnamesecuisine.com",
+    "hours": {
+      "mon": "10:30-21:30",
+      "tue": "10:30-21:30",
+      "wed": "10:30-21:30",
+      "thu": "10:30-21:30",
+      "fri": "10:30-22:00",
+      "sat": "10:30-22:00",
+      "sun": "11:30-20:30"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "summary": "Vietnamese restaurant on Main Street in Toms River with pho, rolls and vegetarian dishes.",
+    "description": "Pho 34 serves Vietnamese dishes such as pho, summer rolls and noodle bowls from its Main Street location in Toms River. The menu includes vegetarian and vegan options, and the site offers online ordering for carryout or delivery.",
+    "services": [
+      "Pho and noodle bowls",
+      "Fresh rolls",
+      "Vegetarian options",
+      "Carryout",
+      "Delivery"
+    ]
+  },
+  {
+    "slug": "champion-auto-finance",
+    "name": "Champion Auto Finance",
+    "category": "finance-insurance",
+    "town": "lakewood",
+    "address": null,
+    "zip": null,
+    "phone": "(732) 618-2036",
+    "website": "https://championautofinance.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "claimed": true,
+    "serviceArea": "Serves customers nationwide",
+    "summary": "Lease buyout financing for drivers who want to keep the car they are leasing, based in Lakewood.",
+    "description": "Champion Auto Finance helps drivers finance the purchase of their leased vehicle so they can keep it at lease end. It is based in Lakewood and works with customers nationwide through one application handled privately. Champion Auto Finance is not a lender; approvals and terms are subject to lender underwriting.",
+    "services": [
+      "Lease buyout financing",
+      "Lease payoff and residual guidance",
+      "Online application"
+    ]
+  },
+  {
     "slug": "harbor-and-hearth-kitchen",
     "name": "Harbor & Hearth Kitchen",
     "category": "restaurants",
@@ -10,11 +590,16 @@
     "website": null,
     "hours": "restaurant",
     "since": 2014,
-    "featured": true,
+    "featured": false,
     "sample": true,
     "summary": "Wood-fired seafood a block from the water, with a raw bar and a short, seasonal menu.",
     "description": "A sixty-seat dining room built around a wood-fired hearth. The menu follows what comes off the boats that week: whole roasted fish, clams over the coals, and a raw bar that changes daily. Reservations recommended on summer weekends.",
-    "services": ["Dine-in", "Raw bar", "Private dining", "Takeout"]
+    "services": [
+      "Dine-in",
+      "Raw bar",
+      "Private dining",
+      "Takeout"
+    ]
   },
   {
     "slug": "ember-street-pizza",
@@ -31,7 +616,12 @@
     "sample": true,
     "summary": "Thin, blistered pies from a deck oven, by the slice or the whole tray.",
     "description": "Family-run pizzeria with a decades-old deck oven and a dough that rests for forty-eight hours. Grandma squares on weekends, catering trays for team parties, and a counter that is busy from noon until close.",
-    "services": ["Slices", "Whole pies", "Catering", "Delivery"]
+    "services": [
+      "Slices",
+      "Whole pies",
+      "Catering",
+      "Delivery"
+    ]
   },
   {
     "slug": "morning-tide-coffee",
@@ -44,11 +634,16 @@
     "website": null,
     "hours": "early",
     "since": 2019,
-    "featured": true,
+    "featured": false,
     "sample": true,
     "summary": "Small-batch roaster with a bright, quiet room for working mornings.",
     "description": "Coffee roasted in-house twice a week, poured as espresso, pour-over or batch brew. Laptop-friendly tables, fast Wi-Fi and pastries from local bakers. Whole beans available by the pound.",
-    "services": ["Espresso bar", "Whole beans", "Pastries", "Wi-Fi"]
+    "services": [
+      "Espresso bar",
+      "Whole beans",
+      "Pastries",
+      "Wi-Fi"
+    ]
   },
   {
     "slug": "pinewood-bakehouse",
@@ -65,7 +660,12 @@
     "sample": true,
     "summary": "Naturally leavened bread, laminated pastry and custom celebration cakes.",
     "description": "A scratch bakery that sells out most mornings. Sourdough loaves, croissants and seasonal fruit tarts daily, with custom cakes by order at least five days ahead.",
-    "services": ["Bread", "Pastry", "Custom cakes", "Pre-orders"]
+    "services": [
+      "Bread",
+      "Pastry",
+      "Custom cakes",
+      "Pre-orders"
+    ]
   },
   {
     "slug": "pine-barrens-plumbing",
@@ -78,11 +678,16 @@
     "website": null,
     "hours": "trades",
     "since": 2006,
-    "featured": true,
+    "featured": false,
     "sample": true,
     "summary": "Licensed master plumbers for repairs, water heaters and full repipes.",
     "description": "Residential and light-commercial plumbing with upfront pricing before any work begins. Tank and tankless water heaters, sewer camera inspections, sump pumps and bathroom rough-ins.",
-    "services": ["Emergency repair", "Water heaters", "Drain cleaning", "Sewer camera"]
+    "services": [
+      "Emergency repair",
+      "Water heaters",
+      "Drain cleaning",
+      "Sewer camera"
+    ]
   },
   {
     "slug": "shore-line-drain-and-sewer",
@@ -99,7 +704,11 @@
     "sample": true,
     "summary": "Drain clearing, hydro-jetting and trenchless sewer repair.",
     "description": "A specialist crew for the jobs other plumbers hand off: root intrusion, collapsed laterals and recurring backups. Camera footage of every line is shared with the homeowner.",
-    "services": ["Hydro-jetting", "Trenchless repair", "Line inspection"]
+    "services": [
+      "Hydro-jetting",
+      "Trenchless repair",
+      "Line inspection"
+    ]
   },
   {
     "slug": "true-north-heating-and-air",
@@ -112,11 +721,16 @@
     "website": null,
     "hours": "trades",
     "since": 2003,
-    "featured": true,
+    "featured": false,
     "sample": true,
     "summary": "Heat pumps, boilers and central air, installed and serviced.",
     "description": "Full-service HVAC contractor covering installs, seasonal tune-ups and maintenance plans. Heat-pump conversions and ductless mini-splits are a specialty.",
-    "services": ["Heat pumps", "Boilers", "Central AC", "Maintenance plans"]
+    "services": [
+      "Heat pumps",
+      "Boilers",
+      "Central AC",
+      "Maintenance plans"
+    ]
   },
   {
     "slug": "brightline-electric",
@@ -133,7 +747,12 @@
     "sample": true,
     "summary": "Panel upgrades, whole-home generators and EV charger installs.",
     "description": "Licensed electrical contractor for service upgrades, standby generators, EV chargers, lighting design and code corrections for home sales.",
-    "services": ["Panel upgrades", "Generators", "EV chargers", "Lighting"]
+    "services": [
+      "Panel upgrades",
+      "Generators",
+      "EV chargers",
+      "Lighting"
+    ]
   },
   {
     "slug": "route-9-auto-care",
@@ -146,11 +765,16 @@
     "website": null,
     "hours": "office",
     "since": 1998,
-    "featured": true,
+    "featured": false,
     "sample": true,
     "summary": "Honest independent shop for maintenance, diagnostics and brakes.",
     "description": "Six bays, ASE-certified techs and a written estimate before every repair. Domestic, Asian and European makes, with loaner cars available on longer jobs.",
-    "services": ["Diagnostics", "Brakes", "Oil service", "Inspections prep"]
+    "services": [
+      "Diagnostics",
+      "Brakes",
+      "Oil service",
+      "Inspections prep"
+    ]
   },
   {
     "slug": "harbor-collision-works",
@@ -167,7 +791,12 @@
     "sample": true,
     "summary": "Collision repair and refinishing, working directly with insurers.",
     "description": "Frame and unibody repair, paint matching in a downdraft booth and paintless dent removal. The front office handles the insurance paperwork end to end.",
-    "services": ["Collision repair", "Paint", "Dent removal", "Insurance claims"]
+    "services": [
+      "Collision repair",
+      "Paint",
+      "Dent removal",
+      "Insurance claims"
+    ]
   },
   {
     "slug": "atelier-barber-club",
@@ -180,11 +809,16 @@
     "website": null,
     "hours": "salon",
     "since": 2018,
-    "featured": true,
+    "featured": false,
     "sample": true,
     "summary": "Classic cuts and hot-towel shaves in a quiet, appointment-first shop.",
     "description": "Four chairs, no rush. Precision cuts, beard work and straight-razor shaves, booked by appointment with a few walk-in slots held each afternoon.",
-    "services": ["Haircuts", "Hot-towel shave", "Beard trim", "Kids' cuts"]
+    "services": [
+      "Haircuts",
+      "Hot-towel shave",
+      "Beard trim",
+      "Kids' cuts"
+    ]
   },
   {
     "slug": "salt-and-silk-salon",
@@ -201,7 +835,12 @@
     "sample": true,
     "summary": "Color specialists for lived-in blondes, balayage and corrective color.",
     "description": "A color-focused salon with a free consultation before any major change. Cuts, blowouts and bridal parties by appointment.",
-    "services": ["Balayage", "Color correction", "Cuts", "Bridal"]
+    "services": [
+      "Balayage",
+      "Color correction",
+      "Cuts",
+      "Bridal"
+    ]
   },
   {
     "slug": "barnegat-strength-studio",
@@ -218,7 +857,11 @@
     "sample": true,
     "summary": "Small-group strength coaching capped at eight people per session.",
     "description": "Coached barbell and conditioning classes with programming that tracks your numbers week to week. Beginners start with three one-on-one onboarding sessions.",
-    "services": ["Small-group training", "Personal training", "Nutrition coaching"]
+    "services": [
+      "Small-group training",
+      "Personal training",
+      "Nutrition coaching"
+    ]
   },
   {
     "slug": "ocean-smile-dental",
@@ -231,11 +874,16 @@
     "website": null,
     "hours": "office",
     "since": 2010,
-    "featured": true,
+    "featured": false,
     "sample": true,
     "summary": "Family and cosmetic dentistry with early-morning appointments.",
     "description": "General, pediatric and cosmetic dentistry under one roof. Same-day crowns, clear aligners and a 7 AM chair for patients who need to be at work by nine.",
-    "services": ["Cleanings", "Same-day crowns", "Clear aligners", "Pediatric"]
+    "services": [
+      "Cleanings",
+      "Same-day crowns",
+      "Clear aligners",
+      "Pediatric"
+    ]
   },
   {
     "slug": "pinelands-family-practice",
@@ -252,7 +900,12 @@
     "sample": true,
     "summary": "Primary care for every age, with same-week sick visits.",
     "description": "Board-certified family physicians offering annual physicals, chronic-care management, school and sports forms, and sick visits within the week.",
-    "services": ["Physicals", "Sick visits", "Chronic care", "Sports forms"]
+    "services": [
+      "Physicals",
+      "Sick visits",
+      "Chronic care",
+      "Sports forms"
+    ]
   },
   {
     "slug": "monroe-and-hale-law",
@@ -269,7 +922,11 @@
     "sample": true,
     "summary": "Real estate closings, wills and estate planning, small-business counsel.",
     "description": "A two-partner practice handling residential closings, wills and trusts, estate administration and entity formation for small businesses. Flat fees quoted up front where possible.",
-    "services": ["Real estate closings", "Wills & trusts", "Business formation"]
+    "services": [
+      "Real estate closings",
+      "Wills & trusts",
+      "Business formation"
+    ]
   },
   {
     "slug": "coastline-realty-group",
@@ -282,11 +939,16 @@
     "website": null,
     "hours": "office",
     "since": 2008,
-    "featured": true,
+    "featured": false,
     "sample": true,
     "summary": "Shore-town buyers, sellers and seasonal rentals.",
     "description": "A boutique brokerage covering year-round homes, second homes and summer rentals along the northern Ocean County shore.",
-    "services": ["Buying", "Selling", "Seasonal rentals", "Market analysis"]
+    "services": [
+      "Buying",
+      "Selling",
+      "Seasonal rentals",
+      "Market analysis"
+    ]
   },
   {
     "slug": "greenway-lawn-and-landscape",
@@ -303,7 +965,12 @@
     "sample": true,
     "summary": "Weekly lawn care, paver patios and spring and fall cleanups.",
     "description": "Residential landscaping from weekly mowing to full hardscape builds. Design consultations include a rendered plan before any ground is broken.",
-    "services": ["Lawn care", "Hardscapes", "Cleanups", "Design"]
+    "services": [
+      "Lawn care",
+      "Hardscapes",
+      "Cleanups",
+      "Design"
+    ]
   },
   {
     "slug": "good-dog-grooming",
@@ -320,7 +987,12 @@
     "sample": true,
     "summary": "Calm, one-dog-at-a-time grooming. No cages, no long waits.",
     "description": "Appointment-only grooming where each dog has the groomer's full attention. Baths, breed cuts, nail trims and de-shedding treatments.",
-    "services": ["Full groom", "Bath & tidy", "Nail trims", "De-shedding"]
+    "services": [
+      "Full groom",
+      "Bath & tidy",
+      "Nail trims",
+      "De-shedding"
+    ]
   },
   {
     "slug": "main-street-mercantile",
@@ -337,7 +1009,12 @@
     "sample": true,
     "summary": "Home goods, gifts and work from local makers.",
     "description": "An independent shop stocking ceramics, candles, prints and pantry goods, much of it made within fifty miles. Gift wrapping is always free.",
-    "services": ["Gifts", "Home goods", "Local makers", "Gift wrap"]
+    "services": [
+      "Gifts",
+      "Home goods",
+      "Local makers",
+      "Gift wrap"
+    ]
   },
   {
     "slug": "spotless-shore-cleaning",
@@ -350,11 +1027,16 @@
     "website": null,
     "hours": "trades",
     "since": 2016,
-    "featured": true,
+    "featured": false,
     "sample": true,
     "summary": "Bonded, insured home and office cleaning on a schedule you set.",
     "description": "Recurring and one-time cleans, move-in and move-out service, and post-construction cleanup. The same crew every visit for recurring clients.",
-    "services": ["Recurring cleans", "Move-out", "Offices", "Post-construction"]
+    "services": [
+      "Recurring cleans",
+      "Move-out",
+      "Offices",
+      "Post-construction"
+    ]
   },
   {
     "slug": "lakeside-kitchen-and-bar",
@@ -371,7 +1053,12 @@
     "sample": true,
     "summary": "A neighborhood bistro with a long bar and a short, honest menu.",
     "description": "Seasonal American plates, a burger people drive for and a weekday happy hour. The back room seats up to thirty for private events.",
-    "services": ["Dine-in", "Bar", "Private events", "Takeout"]
+    "services": [
+      "Dine-in",
+      "Bar",
+      "Private events",
+      "Takeout"
+    ]
   },
   {
     "slug": "coastal-current-electric",
@@ -388,7 +1075,12 @@
     "sample": true,
     "summary": "Storm-ready electrical work, from flood-zone rewiring to generators.",
     "description": "Specialists in elevating and rewiring shore homes, transfer switches, and surge protection, plus everyday repairs and fixture installs.",
-    "services": ["Rewiring", "Generators", "Surge protection", "Repairs"]
+    "services": [
+      "Rewiring",
+      "Generators",
+      "Surge protection",
+      "Repairs"
+    ]
   },
   {
     "slug": "jackson-pet-wellness",
@@ -405,6 +1097,10 @@
     "sample": true,
     "summary": "Training, boarding and daycare on three fenced acres.",
     "description": "Positive-reinforcement training classes, supervised daycare play groups and overnight boarding with daily photo updates for owners.",
-    "services": ["Training", "Daycare", "Boarding"]
+    "services": [
+      "Training",
+      "Daycare",
+      "Boarding"
+    ]
   }
 ]

@@ -432,6 +432,8 @@ a.tag:hover { border-color: var(--line); color: var(--text); }
 .map-pin .i { width: 24px; height: 24px; }
 .biz-address { display: flex; gap: 10px; align-items: center; margin: 16px 0 0; color: var(--muted); }
 .biz-address .i { color: var(--gold); }
+.biz-source { margin: 12px 0 0; font-size: .76rem; color: var(--dim); }
+.biz-source a { text-decoration: underline; text-underline-offset: 2px; }
 .hours { margin-top: 18px; padding-top: 22px; border-top: 1px solid var(--line-soft); }
 .hours table { width: 100%; border-collapse: collapse; font-size: .92rem; }
 .hours th, .hours td { padding: 8px 0; text-align: left; font-weight: 400; color: var(--muted); }

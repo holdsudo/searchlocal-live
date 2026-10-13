@@ -37,8 +37,8 @@ const HOURS_PRESETS = {
 const listings = rawListings.map((l) => {
   if (!byCat[l.category]) throw new Error(`${l.slug}: unknown category "${l.category}"`);
   if (!byTown[l.town]) throw new Error(`${l.slug}: unknown town "${l.town}"`);
-  const hours = typeof l.hours === 'string' ? HOURS_PRESETS[l.hours] : l.hours;
-  if (!hours) throw new Error(`${l.slug}: unknown hours preset "${l.hours}"`);
+  const hours = l.hours == null ? null : typeof l.hours === 'string' ? HOURS_PRESETS[l.hours] : l.hours;
+  if (l.hours != null && !hours) throw new Error(`${l.slug}: unknown hours preset "${l.hours}"`);
   return { ...l, hours, cat: byCat[l.category], townObj: byTown[l.town] };
 });
 
@@ -58,7 +58,7 @@ function monogram(name) {
   const words = name.split(/\s+/).filter((w) => !skip.has(w.toLowerCase()));
   return (words[0][0] + (words[1] ? words[1][0] : '')).toUpperCase();
 }
-const fullAddress = (l) => `${l.address}, ${l.townObj.name}, ${l.townObj.state} ${l.zip}`;
+const fullAddress = (l) => l.address ? `${l.address}, ${l.townObj.name}, ${l.townObj.state} ${l.zip}` : `${l.townObj.name}, ${l.townObj.state}`;
 const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
 
 // ---------- layout ----------
@@ -163,7 +163,7 @@ function footer() {
     </div>
     <div class="footer-bottom">
       <span>© ${new Date().getFullYear()} ${e(site.domain)}</span>
-      <span>Made for the businesses that make a town worth living in.</span>
+      <span>Some listing data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, available under the ODbL.</span>
     </div>
   </div>
 </footer>`;
@@ -181,7 +181,7 @@ function card(l) {
   <p class="card-sum">${e(l.summary)}</p>
   <div class="card-foot">
     <span class="card-loc">${icon('pin')}${e(l.townObj.name)}, ${e(l.townObj.state)}</span>
-    <span class="status" data-hours="${e(JSON.stringify(l.hours))}"></span>
+    ${l.hours ? `<span class="status" data-hours="${e(JSON.stringify(l.hours))}"></span>` : ''}
   </div>
   <span class="card-arrow" aria-hidden="true">${icon('arrowUpRight')}</span>
 </a>`;
@@ -214,13 +214,14 @@ function pageHero({ eyebrow, title, lead, extra = '', crumbHtml = '', iconName }
 
 const sampleNotice = () =>
   listings.some((l) => l.sample)
-    ? `<div class="wrap"><p class="sample-notice">${icon('info')}<span>Preview mode: the businesses shown are <strong>sample listings</strong> to demonstrate the directory. They are hidden from search engines and will be replaced by verified local businesses.</span></p></div>`
+    ? `<div class="wrap"><p class="sample-notice">${icon('info')}<span>Listings marked <strong>Sample</strong> are demonstrations, not real businesses. They are hidden from search engines and are being replaced by verified local businesses.</span></p></div>`
     : '';
 
 // ---------- pages ----------
 const pages = [];
 const indexable = [];
 function addPage(pathname, html, { noindex = false } = {}) {
+  if (noindex) html = html.replace('<meta name="robots" content="index,follow">', '<meta name="robots" content="noindex,follow">');
   pages.push([pathname, html]);
   if (!noindex) indexable.push(pathname);
 }
@@ -497,14 +498,16 @@ function businessPages() {
     const cr = crumbs([['/', 'Home'], [`/category/${l.cat.slug}/`, l.cat.name], [`/business/${l.slug}/`, l.name]]);
     const addr = fullAddress(l);
     const mapsQ = encodeURIComponent(`${l.name}, ${addr}`);
-    const hoursRows = DAYS.map((d) => `<tr data-day="${d}"><th scope="row">${DAY_NAMES[d]}</th><td>${fmtRange(l.hours[d])}</td></tr>`).join('');
+    const hoursRows = l.hours ? DAYS.map((d) => `<tr data-day="${d}"><th scope="row">${DAY_NAMES[d]}</th><td>${fmtRange(l.hours[d])}</td></tr>`).join('') : '';
     const services = l.services.map((s) => `<li>${icon('check')}${e(s)}</li>`).join('');
     const similar = listings.filter((o) => o.slug !== l.slug && (o.category === l.category || o.town === l.town)).sort((a, b) => (b.category === l.category) - (a.category === l.category)).slice(0, 3);
-    const map = l.sample
+    const map = !l.address
+      ? `<div class="map map-placeholder"><div class="map-grid" aria-hidden="true"></div><span class="map-pin">${icon('pin')}</span><p>${e(l.serviceArea || `Based in ${t.name}, ${t.state}`)}</p></div>`
+      : l.sample
       ? `<div class="map map-placeholder"><div class="map-grid" aria-hidden="true"></div><span class="map-pin">${icon('pin')}</span><p>Map appears on verified listings</p></div>`
       : `<div class="map"><iframe title="Map of ${e(l.name)}" src="https://maps.google.com/maps?q=${mapsQ}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>`;
     const website = l.website ? `<a class="btn btn-ghost btn-block" href="${e(l.website)}" target="_blank" rel="noopener">${icon('globe')}Visit website</a>` : '';
-    const directions = l.sample ? '' : `<a class="btn btn-ghost btn-block" href="https://www.google.com/maps/search/?api=1&query=${mapsQ}" target="_blank" rel="noopener">${icon('navigation')}Get directions</a>`;
+    const directions = l.sample || !l.address ? '' : `<a class="btn btn-ghost btn-block" href="https://www.google.com/maps/search/?api=1&query=${mapsQ}" target="_blank" rel="noopener">${icon('navigation')}Get directions</a>`;
 
     const body = `
 <section class="biz-hero">
@@ -516,7 +519,7 @@ function businessPages() {
         <div class="biz-tags">
           <a class="tag" href="/category/${l.cat.slug}/">${icon(l.cat.icon)}${e(l.cat.name)}</a>
           <a class="tag" href="/town/${t.slug}/">${icon('pin')}${e(t.name)}, ${e(t.state)}</a>
-          <span class="status status-lg" data-hours="${e(JSON.stringify(l.hours))}"></span>
+          ${l.hours ? `<span class="status status-lg" data-hours="${e(JSON.stringify(l.hours))}"></span>` : ''}
           ${l.sample ? '<span class="tag tag-sample">Sample listing</span>' : l.claimed ? '<span class="tag tag-verified">' + icon('shield') + 'Claimed by owner</span>' : '<span class="tag tag-sample" title="Compiled from public information. Not yet claimed by the owner.">Unclaimed</span>'}
         </div>
         <h1 class="display biz-title">${e(l.name)}</h1>
@@ -540,7 +543,8 @@ function businessPages() {
       <article class="panel" data-reveal>
         <h2 class="panel-title">Location</h2>
         ${map}
-        <p class="biz-address">${icon('pin')}${e(addr)}</p>
+        <p class="biz-address">${icon('pin')}${e(addr)}${!l.address && l.serviceArea ? ` · ${e(l.serviceArea)}` : ''}</p>
+        ${l.source === 'osm' ? `<p class="biz-source">Details checked against the business's own website. Base data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, ODbL.</p>` : ''}
       </article>
     </div>
     <aside class="biz-side">
@@ -550,8 +554,8 @@ function businessPages() {
         ${directions}
         <div class="hours" data-hours-table>
           <h2 class="panel-title">Hours</h2>
-          <table>${hoursRows}</table>
-          <p class="hours-note">Times shown in Eastern Time.</p>
+          ${l.hours ? `<table>${hoursRows}</table>
+          <p class="hours-note">Times shown in Eastern Time.</p>` : `<p class="hours-note">Hours aren't listed yet. Call ahead before visiting.</p>`}
         </div>
         ${l.claimed || l.sample ? '' : `<p class="unclaimed-note">${icon('info')}<span>This listing was compiled from public information and hasn't been claimed by the owner yet.</span></p>`}
         <a class="claim" href="/add-your-business/?claim=${l.slug}">${icon('edit')}${l.claimed || l.sample ? 'Own this business? Update this listing' : 'Own this business? Claim this listing'}</a>
@@ -572,11 +576,12 @@ ${similar.length ? `<section class="section section-alt"><div class="wrap"><div 
         description: l.description,
         telephone: l.phone,
         url: l.website || undefined,
-        address: { '@type': 'PostalAddress', streetAddress: l.address, addressLocality: t.name, addressRegion: t.state, postalCode: l.zip, addressCountry: 'US' },
-        openingHoursSpecification: DAYS.filter((d) => l.hours[d]).map((d) => {
+        address: { '@type': 'PostalAddress', streetAddress: l.address || undefined, addressLocality: t.name, addressRegion: t.state, postalCode: l.zip || undefined, addressCountry: 'US' },
+        areaServed: l.serviceArea || undefined,
+        openingHoursSpecification: l.hours ? DAYS.filter((d) => l.hours[d]).map((d) => {
           const [opens, closes] = l.hours[d].split('-');
           return { '@type': 'OpeningHoursSpecification', dayOfWeek: DAY_NAMES[d], opens, closes };
-        }),
+        }) : undefined,
       });
     }
     addPage(`/business/${l.slug}/`, layout({ title: `${l.name} — ${l.cat.name} in ${t.name}, ${t.state}`, description: `${l.name} in ${t.name}, ${t.state}. ${l.summary}`, pathname: `/business/${l.slug}/`, body, jsonld }), { noindex: l.sample });
@@ -700,7 +705,7 @@ function staticPages() {
 <li>Reviews written by the business, its staff or anyone paid to write them.</li>
 </ul>
 <h2>Unclaimed listings</h2>
-<p>Some listings are added by us from public information — the business's own website, signage and public records — so neighbors can find them before the owner has heard of us. Those listings say <strong>Unclaimed</strong> until the owner claims them. We never copy listings from other directories, and we never publish a home address.</p>
+<p>Some listings are added by us from public information — the business's own website, signage, public records and OpenStreetMap's open map data — so neighbors can find them before the owner has heard of us. Those listings say <strong>Unclaimed</strong> until the owner claims them. We never copy listings from other directories, and we never publish a home address.</p>
 <h2>Removals</h2>
 <p>Every listing page has a <strong>Remove this listing</strong> link. We remove listings that close, stop answering, or break these guidelines. If your business has closed or you want your listing taken down, email <a href="mailto:${e(site.email)}">${e(site.email)}</a> and we'll do it within two business days.</p>`,
   });
