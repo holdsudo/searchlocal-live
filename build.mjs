@@ -2,6 +2,7 @@
 // Reads src/data/*.json, writes a complete static site to dist/.
 // Usage: node build.mjs
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { icon } from './src/icons.mjs';
@@ -413,6 +414,7 @@ function home() {
       potentialAction: { '@type': 'SearchAction', target: `${site.url}/browse/?q={search_term_string}`, 'query-input': 'required name=search_term_string' },
     },
     { '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url, email: site.email, logo: `${site.url}/assets/img/icon-512.png`, image: `${site.url}/assets/img/og.jpg` },
+    { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
   ];
   addPage('/', layout({ title: 'Home', description: `Find real local businesses across ${site.region} — restaurants, trades, salons, health and more. Free listings, no pay-to-rank, no fake reviews.`, pathname: '/', body, jsonld, bodyClass: 'page-home' }));
 }
@@ -796,9 +798,20 @@ fs.mkdirSync(path.join(OUT, 'assets', 'data'), { recursive: true });
 fs.writeFileSync(path.join(OUT, 'assets', 'data', 'listings.json'), JSON.stringify(clientData));
 
 const today = new Date().toISOString().slice(0, 10);
+// Real lastmod: a page's date only moves when its content actually changes.
+// Hashes live in src/data/lastmod.json, which is committed — always build locally before pushing.
+const LASTMOD_FILE = path.join(SRC, 'data', 'lastmod.json');
+const lastmod = fs.existsSync(LASTMOD_FILE) ? JSON.parse(fs.readFileSync(LASTMOD_FILE, 'utf8')) : {};
+const pageHtml = Object.fromEntries(pages);
+for (const p of indexable) {
+  const h = crypto.createHash('sha1').update(pageHtml[p].replace(/\?v=[a-z0-9]+/g, '').replace(/© \d{4}/, '')).digest('hex').slice(0, 16);
+  if (!lastmod[p] || lastmod[p].h !== h) lastmod[p] = { h, d: today };
+}
+for (const p of Object.keys(lastmod)) if (!indexable.includes(p)) delete lastmod[p];
+if (!process.env.CI) fs.writeFileSync(LASTMOD_FILE, JSON.stringify(lastmod, null, 1) + '\n');
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${indexable.map((p) => `  <url><loc>${site.url}${p}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
+${indexable.map((p) => `  <url><loc>${site.url}${p}</loc><lastmod>${lastmod[p].d}</lastmod></url>`).join('\n')}
 </urlset>
 `);
 fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${site.url}/sitemap.xml\n`);

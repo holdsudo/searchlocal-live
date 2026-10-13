@@ -35,3 +35,22 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+  indexnow:
+    # Tells Bing, Yandex, Seznam, Naver and Yep about pages whose content changed today
+    # (sitemap lastmod is content-based, so unchanged pages are not resubmitted).
+    needs: deploy
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit changed URLs
+        env:
+          KEY: b8a6e1967596eec38c7645b850123d99
+        run: |
+          sleep 30
+          TODAY=$(date -u +%F)
+          URLS=$(curl -fsSL https://searchlocal.live/sitemap.xml | grep -o "<loc>[^<]*</loc><lastmod>$TODAY" | sed -E 's#<loc>([^<]*)</loc>.*#"\1"#' | paste -sd, -)
+          if [ -z "$URLS" ]; then echo "No changed URLs today"; exit 0; fi
+          echo "Submitting: $URLS"
+          curl -sS -o /dev/null -w "IndexNow HTTP %{http_code}\n" -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            -d "{\"host\":\"searchlocal.live\",\"key\":\"$KEY\",\"keyLocation\":\"https://searchlocal.live/$KEY.txt\",\"urlList\":[$URLS]}"
