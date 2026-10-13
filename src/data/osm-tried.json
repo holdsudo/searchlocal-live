@@ -195,5 +195,16 @@
     "result": "rejected",
     "reason": "Website domain does not resolve (DNS failure); cannot verify.",
     "date": "2026-10-13"
+  },
+  "way/896356627": {
+    "name": "Seaside Park Service Center",
+    "result": "rejected",
+    "reason": "Website returned 403; could not confirm address, phone or operation",
+    "date": "2026-10-13"
+  },
+  "node/14183746698": {
+    "name": "Glen Kelly Real Estate",
+    "result": "listed",
+    "date": "2026-10-13"
   }
 }

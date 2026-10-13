@@ -578,5 +578,30 @@
       "Lease payoff and residual guidance",
       "Online application"
     ]
+  },
+  {
+    "slug": "glen-kelly-real-estate",
+    "name": "Glen Kelly Real Estate",
+    "category": "real-estate",
+    "town": "lanoka-harbor",
+    "address": "629 Route 9, Suite 7",
+    "zip": "08734",
+    "phone": "(732) 244-0567",
+    "website": "https://www.glenkelly.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-13",
+    "summary": "Owner-run residential real estate brokerage in Lanoka Harbor handling home sales and purchases in the Ocean County area.",
+    "description": "Glen Kelly Real Estate is a brokerage with its executive office at Laurel Plaza on Route 9 in Lanoka Harbor. The firm works with buyers and sellers on single-family homes, condos, townhomes and vacant land. Its website also lists relocation help, new construction purchases and home valuations.",
+    "services": [
+      "Residential sales",
+      "Buyer representation",
+      "Relocation",
+      "Home valuations",
+      "New construction purchases"
+    ]
   }
 ]
