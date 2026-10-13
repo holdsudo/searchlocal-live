@@ -96,6 +96,7 @@ function layout({ title, description, pathname, body, noindex = false, jsonld = 
 <link rel="canonical" href="${canonical}">
 <meta name="theme-color" content="#05060a">
 <meta name="color-scheme" content="dark">
+${pathname === '/' ? '<meta name="msvalidate.01" content="0D2D8CE49A2182C71C0E5827E8FC3F91">' : ''}
 <meta name="geo.region" content="US-NJ">
 <meta name="geo.placename" content="${e(site.region)}">
 <meta property="og:type" content="${ogType}">
