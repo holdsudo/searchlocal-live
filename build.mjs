@@ -43,9 +43,13 @@ const listings = rawListings.map((l) => {
 });
 
 const real = (list) => list.filter((l) => !l.sample);
+const LD_TYPES = { restaurants: 'Restaurant', 'cafes-bakeries': 'Bakery', plumbing: 'Plumber', hvac: 'HVACBusiness', electricians: 'Electrician', 'auto-repair': 'AutoRepair', 'salons-barbers': 'BeautySalon', fitness: 'ExerciseGym', 'health-dental': 'MedicalBusiness', legal: 'LegalService', 'real-estate': 'RealEstateAgent', landscaping: 'HomeAndConstructionBusiness', pets: 'LocalBusiness', shopping: 'Store', cleaning: 'HomeAndConstructionBusiness', 'finance-insurance': 'FinancialService' };
+const ldType = (l) => (l.category === 'health-dental' && /dental|dentist|teeth/i.test(l.name)) ? 'Dentist' : (l.category === 'pets' && /veterinar/i.test(l.name)) ? 'VeterinaryCare' : /brew/i.test(l.name) ? 'Brewery' : (LD_TYPES[l.category] || 'LocalBusiness');
+const itemList = (list, name) => ({ '@context': 'https://schema.org', '@type': 'ItemList', name, numberOfItems: real(list).length, itemListElement: real(list).map((l, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site.url}/business/${l.slug}/`, name: l.name })) });
 const canIndex = (list) => real(list).length >= site.minListingsToIndex;
 
 function fmtTime(t) {
+  if (t === '23:59' || t === '24:00') return 'Midnight';
   let [h, m] = t.split(':').map(Number);
   const ap = h >= 12 ? 'PM' : 'AM';
   h = h % 12 || 12;
@@ -74,7 +78,7 @@ const logo = `<a class="logo" href="/" aria-label="${e(site.name)} home">
   <span class="logo-word">Search<em>Local</em></span>
 </a>`;
 
-function layout({ title, description, pathname, body, noindex = false, jsonld = [], bodyClass = '' }) {
+function layout({ title, description, pathname, body, noindex = false, jsonld = [], bodyClass = '', ogType = 'website', extraHead = '' }) {
   const fullTitle = pathname === '/' ? `${site.name} — ${site.tagline} for ${site.region}` : `${title} · ${site.name}`;
   const canonical = site.url + pathname;
   const ld = jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, '\\u003c')}</script>`).join('\n');
@@ -89,19 +93,34 @@ function layout({ title, description, pathname, body, noindex = false, jsonld = 
 <meta name="description" content="${e(description)}">
 <meta name="robots" content="${noindex ? 'noindex,follow' : 'index,follow'}">
 <link rel="canonical" href="${canonical}">
-<meta name="theme-color" content="#070707">
-<meta property="og:type" content="website">
+<meta name="theme-color" content="#05060a">
+<meta name="color-scheme" content="dark">
+<meta name="geo.region" content="US-NJ">
+<meta name="geo.placename" content="${e(site.region)}">
+<meta property="og:type" content="${ogType}">
+<meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="${e(site.name)}">
 <meta property="og:title" content="${e(fullTitle)}">
 <meta property="og:description" content="${e(description)}">
 <meta property="og:url" content="${canonical}">
-<meta property="og:image" content="${site.url}/assets/img/og.svg">
+<meta property="og:image" content="${site.url}/assets/img/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${e(site.name)} — ${e(site.tagline)} for ${e(site.region)}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${e(fullTitle)}">
+<meta name="twitter:description" content="${e(description)}">
+<meta name="twitter:image" content="${site.url}/assets/img/og.jpg">
+${extraHead}
+<link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="/assets/css/style.css?v=${BUILD_ID}">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/assets/fonts/manrope-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/instrument-serif-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/img/street-sky.svg?v=${BUILD_ID}" as="image" type="image/svg+xml" fetchpriority="high">
+<style>${CSS}</style>
 ${ld}
 </head>
 <body class="${bodyClass || 'page-inner'}">
@@ -127,6 +146,13 @@ ${footer()}
 </html>`;
 }
 
+const CSS = fs.readFileSync(path.join(SRC, 'assets', 'css', 'style.css'), 'utf8')
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .replace(/\s+/g, ' ')
+  .replace(/\s*([{}:;,>])\s*/g, '$1')
+  .replace(/;}/g, '}')
+  .replace(/\(\s*/g, '(')
+  .trim();
 const STREET = { sky: skylineLayer(), shops: shopsLayer(), near: nearLayer() };
 function scene() {
   const layer = (key, speed) => `<div class="layer layer-${key}" data-layer data-speed="${speed}" data-aspect="${(STREET[key].width / 600).toFixed(4)}" style="background-image:url(/assets/img/street-${key}.svg?v=${BUILD_ID})"></div>`;
@@ -151,9 +177,9 @@ function footer() {
         <p>${e(site.tagline)} for ${e(site.region)}. Free listings for every real local business — no pay-to-rank, no fake reviews, ever.</p>
         <a class="btn btn-ghost btn-sm" href="/add-your-business/">Add your business ${icon('arrow')}</a>
       </div>
-      <div class="footer-col"><h4>Categories</h4><ul>${topCats}<li><a href="/categories/">All categories</a></li></ul></div>
-      <div class="footer-col"><h4>Towns</h4><ul>${townLinks}</ul></div>
-      <div class="footer-col"><h4>SearchLocal</h4><ul>
+      <div class="footer-col"><h2>Categories</h2><ul>${topCats}<li><a href="/categories/">All categories</a></li></ul></div>
+      <div class="footer-col"><h2>Towns</h2><ul>${townLinks}</ul></div>
+      <div class="footer-col"><h2>SearchLocal</h2><ul>
         <li><a href="/about/">About</a></li>
         <li><a href="/guidelines/">Listing guidelines</a></li>
         <li><a href="/add-your-business/">Add a business</a></li>
@@ -386,7 +412,7 @@ function home() {
       url: site.url,
       potentialAction: { '@type': 'SearchAction', target: `${site.url}/browse/?q={search_term_string}`, 'query-input': 'required name=search_term_string' },
     },
-    { '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url, email: site.email, logo: `${site.url}/assets/img/favicon.svg` },
+    { '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url, email: site.email, logo: `${site.url}/assets/img/icon-512.png`, image: `${site.url}/assets/img/og.jpg` },
   ];
   addPage('/', layout({ title: 'Home', description: `Find real local businesses across ${site.region} — restaurants, trades, salons, health and more. Free listings, no pay-to-rank, no fake reviews.`, pathname: '/', body, jsonld, bodyClass: 'page-home' }));
 }
@@ -399,12 +425,13 @@ ${pageHero({ eyebrow: 'The directory', title: 'Browse <em>everything.</em>', lea
 <section class="section section-tight">
   <div class="wrap">
     <form class="filters" data-filters onsubmit="return false">
-      <label class="f-search">${icon('search')}<input type="search" name="q" placeholder="Search by name, service or keyword" aria-label="Search listings"></label>
+      <label class="f-search">${icon('search')}<input type="search" name="q" placeholder="Search businesses or services" aria-label="Search listings"></label>
       <label class="f-select"><span class="sr-only">Category</span><select name="category"><option value="">All categories</option>${catOptions}</select>${icon('chevron')}</label>
       <label class="f-select"><span class="sr-only">Town</span><select name="town"><option value="">All towns</option>${townOptions}</select>${icon('chevron')}</label>
       <label class="f-toggle"><input type="checkbox" name="open"><span class="toggle" aria-hidden="true"></span>Open now</label>
     </form>
     <p class="results-count" aria-live="polite" data-count>${plural(listings.length, 'business', 'businesses')}</p>
+    <h2 class="sr-only">Listings</h2>
     <div class="card-grid" data-results>${listings.map(card).join('')}</div>
     <div class="empty" data-empty hidden>
       <span class="empty-icon">${icon('search')}</span>
@@ -466,10 +493,10 @@ function categoryPages() {
     const cards = list.map((l) => card(l).replace('<a class="card"', `<a class="card" data-town="${l.town}"`)).join('');
     const body = `${pageHero({ crumbHtml: cr.html, iconName: c.icon, eyebrow: `${plural(list.length, 'listing')} · ${e(site.region)}`, title: `${e(c.name)}`, lead: e(c.blurb), extra: filterChips })}
 <section class="section section-tight"><div class="wrap">
-  ${list.length ? `<div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(c.name)}
+  ${list.length ? `<h2 class="sr-only">${e(c.name)} listings</h2><div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(c.name)}
 </div>${list.length ? sampleNotice() : ''}</section>
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Other categories</h2><div class="chips">${others}</div></div></section>`;
-    addPage(`/category/${c.slug}/`, layout({ title: `${c.name} in ${site.region}`, description: `${c.name} in ${site.region}: ${c.blurb}`, pathname: `/category/${c.slug}/`, body, jsonld: [cr.ld] }), { noindex: !canIndex(list) });
+    addPage(`/category/${c.slug}/`, layout({ title: `${c.name} in ${site.region}`, description: `${c.name} in ${site.region}: ${c.blurb}`, pathname: `/category/${c.slug}/`, body, jsonld: real(list).length ? [cr.ld, itemList(list, `${c.name} in ${site.region}`)] : [cr.ld] }), { noindex: !canIndex(list) });
   }
 }
 
@@ -485,10 +512,10 @@ function townPages() {
     const nearby = towns.filter((o) => o.slug !== t.slug).map((o) => `<a class="chip" href="/town/${o.slug}/">${icon('pin')}${e(o.name)}</a>`).join('');
     const body = `${pageHero({ crumbHtml: cr.html, eyebrow: `${e(t.county)}, ${e(t.state)}`, title: `${e(t.name)}`, lead: `${plural(list.length, 'local business', 'local businesses')} in ${e(t.name)}, ${e(t.state)} — verified details, live hours, and a direct line to the people who run them.`, extra: filterChips })}
 <section class="section section-tight"><div class="wrap">
-  ${list.length ? `<div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(`businesses in ${t.name}`)}
+  ${list.length ? `<h2 class="sr-only">Businesses in ${e(t.name)}</h2><div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(`businesses in ${t.name}`)}
 </div>${list.length ? sampleNotice() : ''}</section>
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Nearby towns</h2><div class="chips">${nearby}</div></div></section>`;
-    addPage(`/town/${t.slug}/`, layout({ title: `Local businesses in ${t.name}, ${t.state}`, description: `Find local businesses in ${t.name}, ${t.state} — ${catsHere.map((c) => c.name).slice(0, 5).join(', ')} and more.`, pathname: `/town/${t.slug}/`, body, jsonld: [cr.ld] }), { noindex: !canIndex(list) });
+    addPage(`/town/${t.slug}/`, layout({ title: `Local businesses in ${t.name}, ${t.state}`, description: `Find local businesses in ${t.name}, ${t.state} — ${catsHere.map((c) => c.name).slice(0, 5).join(', ')} and more.`, pathname: `/town/${t.slug}/`, body, jsonld: real(list).length ? [cr.ld, itemList(list, `Local businesses in ${t.name}, ${t.state}`)] : [cr.ld] }), { noindex: !canIndex(list) });
   }
 }
 
@@ -571,8 +598,11 @@ ${similar.length ? `<section class="section section-alt"><div class="wrap"><div 
     if (!l.sample) {
       jsonld.push({
         '@context': 'https://schema.org',
-        '@type': 'LocalBusiness',
+        '@type': ldType(l),
+        '@id': `${site.url}/business/${l.slug}/#business`,
         name: l.name,
+        image: `${site.url}/assets/img/og.jpg`,
+        mainEntityOfPage: `${site.url}/business/${l.slug}/`,
         description: l.description,
         telephone: l.phone,
         url: l.website || undefined,
@@ -584,7 +614,11 @@ ${similar.length ? `<section class="section section-alt"><div class="wrap"><div 
         }) : undefined,
       });
     }
-    addPage(`/business/${l.slug}/`, layout({ title: `${l.name} — ${l.cat.name} in ${t.name}, ${t.state}`, description: `${l.name} in ${t.name}, ${t.state}. ${l.summary}`, pathname: `/business/${l.slug}/`, body, jsonld }), { noindex: l.sample });
+    const contact = l.sample ? '' : [
+      ['business:contact_data:street_address', l.address], ['business:contact_data:locality', t.name], ['business:contact_data:region', t.state],
+      ['business:contact_data:postal_code', l.zip], ['business:contact_data:country_name', 'United States'], ['business:contact_data:phone_number', l.phone], ['business:contact_data:website', l.website],
+    ].filter(([, v]) => v).map(([k, v]) => `<meta property="${k}" content="${e(v)}">`).join('\n');
+    addPage(`/business/${l.slug}/`, layout({ title: `${l.name} — ${l.cat.name} in ${t.name}, ${t.state}`, description: `${l.name} in ${t.name}, ${t.state}. ${l.summary}`, pathname: `/business/${l.slug}/`, body, jsonld, ogType: l.sample ? 'website' : 'business.business', extraHead: contact }), { noindex: l.sample });
   }
 }
 
@@ -750,7 +784,8 @@ for (const [p, html] of pages) {
 }
 
 fs.cpSync(path.join(SRC, 'assets'), path.join(OUT, 'assets'), { recursive: true });
-for (const [k, v] of Object.entries(STREET)) fs.writeFileSync(path.join(OUT, 'assets', 'img', `street-${k}.svg`), v.svg);
+fs.cpSync(path.join(SRC, 'static'), OUT, { recursive: true });
+for (const [k, v] of Object.entries(STREET)) fs.writeFileSync(path.join(OUT, 'assets', 'img', `street-${k}.svg`), v.svg.replace(/(\d+\.\d)\d+/g, '$1').replace(/>\s+</g, '><'));
 
 // Client-side search index for /browse/
 const clientData = listings.map((l) => ({

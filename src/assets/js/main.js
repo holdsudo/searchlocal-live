@@ -70,7 +70,7 @@
     return { day: parts.weekday.slice(0, 3).toLowerCase(), minutes: Number(parts.hour) * 60 + Number(parts.minute) };
   }
   const toMin = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
-  const fmt = (t) => { let [h, m] = t.split(':').map(Number); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return m ? `${h}:${String(m).padStart(2, '0')} ${ap}` : `${h} ${ap}`; };
+  const fmt = (t) => { if (t === '23:59' || t === '24:00') return 'midnight'; let [h, m] = t.split(':').map(Number); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return m ? `${h}:${String(m).padStart(2, '0')} ${ap}` : `${h} ${ap}`; };
 
   function openState(hours) {
     const { day, minutes } = nowInTz();
