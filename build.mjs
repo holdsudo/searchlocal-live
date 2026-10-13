@@ -256,14 +256,14 @@ function home() {
   const featured = listings.filter((l) => l.featured).slice(0, 6);
   const catCount = (slug) => listings.filter((l) => l.category === slug).length;
   const townCount = (slug) => listings.filter((l) => l.town === slug).length;
-  const chips = categories.slice(0, 6).map((c) => `<a class="chip" href="/category/${c.slug}/">${icon(c.icon)}${e(c.name)}</a>`).join('');
+  const chips = [...categories].sort((a, b) => catCount(b.slug) - catCount(a.slug)).filter((c) => catCount(c.slug)).slice(0, 6).map((c) => `<a class="chip" href="/category/${c.slug}/">${icon(c.icon)}${e(c.name)}</a>`).join('');
   const marquee = [...categories, ...categories].map((c) => `<span>${e(c.name)}</span><i aria-hidden="true">◆</i>`).join('');
   const catTiles = categories
     .map(
       (c) => `<a class="cat-tile" href="/category/${c.slug}/" data-reveal>
   <span class="cat-icon">${icon(c.icon)}</span>
   <span class="cat-name">${e(c.name)}</span>
-  <span class="cat-count">${plural(catCount(c.slug), 'listing')}</span>
+  <span class="cat-count">${catCount(c.slug) ? plural(catCount(c.slug), 'listing') : 'Be the first to list'}</span>
   <span class="cat-arrow" aria-hidden="true">${icon('arrow')}</span>
 </a>`
     )
@@ -274,7 +274,7 @@ function home() {
   <span class="town-num">${String(i + 1).padStart(2, '0')}</span>
   <span class="town-name">${e(t.name)}</span>
   <span class="town-county">${e(t.county)}, ${e(t.state)}</span>
-  <span class="town-count">${plural(townCount(t.slug), 'business', 'businesses')}</span>
+  <span class="town-count">${townCount(t.slug) ? plural(townCount(t.slug), 'business', 'businesses') : 'Coming soon'}</span>
   <span class="town-arrow" aria-hidden="true">${icon('arrowUpRight')}</span>
 </a>`
     )
@@ -453,7 +453,7 @@ function categoriesIndex() {
   <span class="cat-icon">${icon(c.icon)}</span>
   <span class="cat-name">${e(c.name)}</span>
   <span class="cat-blurb">${e(c.blurb)}</span>
-  <span class="cat-count">${plural(n, 'listing')}</span>
+  <span class="cat-count">${n ? plural(n, 'listing') : 'Be the first to list'}</span>
   <span class="cat-arrow" aria-hidden="true">${icon('arrow')}</span>
 </a>`;
     })
