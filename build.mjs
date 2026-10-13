@@ -1,0 +1,764 @@
+// SearchLocal static site generator. Zero dependencies.
+// Reads src/data/*.json, writes a complete static site to dist/.
+// Usage: node build.mjs
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { icon } from './src/icons.mjs';
+import { skylineLayer, shopsLayer, nearLayer } from './src/street.mjs';
+
+const ROOT = path.dirname(fileURLToPath(import.meta.url));
+const SRC = path.join(ROOT, 'src');
+const OUT = path.join(ROOT, 'dist');
+const read = (f) => JSON.parse(fs.readFileSync(path.join(SRC, 'data', f), 'utf8'));
+
+const site = read('site.json');
+const categories = read('categories.json');
+const towns = read('towns.json');
+const rawListings = read('listings.json');
+
+// ---------- helpers ----------
+const e = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const byCat = Object.fromEntries(categories.map((c) => [c.slug, c]));
+const byTown = Object.fromEntries(towns.map((t) => [t.slug, t]));
+const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+const DAY_NAMES = { mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday', sat: 'Saturday', sun: 'Sunday' };
+
+const HOURS_PRESETS = {
+  restaurant: { mon: null, tue: '16:00-22:00', wed: '16:00-22:00', thu: '16:00-22:00', fri: '12:00-23:00', sat: '12:00-23:00', sun: '12:00-21:00' },
+  early: { mon: '06:30-15:00', tue: '06:30-15:00', wed: '06:30-15:00', thu: '06:30-15:00', fri: '06:30-15:00', sat: '07:00-14:00', sun: '07:00-14:00' },
+  trades: { mon: '07:00-18:00', tue: '07:00-18:00', wed: '07:00-18:00', thu: '07:00-18:00', fri: '07:00-18:00', sat: '08:00-14:00', sun: null },
+  office: { mon: '08:00-17:00', tue: '08:00-17:00', wed: '08:00-17:00', thu: '08:00-17:00', fri: '08:00-15:00', sat: null, sun: null },
+  salon: { mon: null, tue: '10:00-19:00', wed: '10:00-19:00', thu: '10:00-19:00', fri: '10:00-19:00', sat: '09:00-16:00', sun: null },
+  gym: { mon: '05:30-21:00', tue: '05:30-21:00', wed: '05:30-21:00', thu: '05:30-21:00', fri: '05:30-21:00', sat: '07:00-14:00', sun: '08:00-12:00' },
+  retail: { mon: '10:00-18:00', tue: '10:00-18:00', wed: '10:00-18:00', thu: '10:00-18:00', fri: '10:00-18:00', sat: '10:00-18:00', sun: '11:00-17:00' },
+};
+
+const listings = rawListings.map((l) => {
+  if (!byCat[l.category]) throw new Error(`${l.slug}: unknown category "${l.category}"`);
+  if (!byTown[l.town]) throw new Error(`${l.slug}: unknown town "${l.town}"`);
+  const hours = typeof l.hours === 'string' ? HOURS_PRESETS[l.hours] : l.hours;
+  if (!hours) throw new Error(`${l.slug}: unknown hours preset "${l.hours}"`);
+  return { ...l, hours, cat: byCat[l.category], townObj: byTown[l.town] };
+});
+
+const real = (list) => list.filter((l) => !l.sample);
+const canIndex = (list) => real(list).length >= site.minListingsToIndex;
+
+function fmtTime(t) {
+  let [h, m] = t.split(':').map(Number);
+  const ap = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return m ? `${h}:${String(m).padStart(2, '0')} ${ap}` : `${h} ${ap}`;
+}
+const fmtRange = (r) => (r ? r.split('-').map(fmtTime).join(' – ') : 'Closed');
+
+function monogram(name) {
+  const skip = new Set(['&', 'and', 'the', 'co.', 'co', 'of']);
+  const words = name.split(/\s+/).filter((w) => !skip.has(w.toLowerCase()));
+  return (words[0][0] + (words[1] ? words[1][0] : '')).toUpperCase();
+}
+const fullAddress = (l) => `${l.address}, ${l.townObj.name}, ${l.townObj.state} ${l.zip}`;
+const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
+
+// ---------- layout ----------
+const NAV = [
+  ['/browse/', 'Browse'],
+  ['/categories/', 'Categories'],
+  ['/towns/', 'Towns'],
+  ['/about/', 'About'],
+];
+
+const logo = `<a class="logo" href="/" aria-label="${e(site.name)} home">
+  <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4dd9c"/><stop offset=".55" stop-color="#d4ad55"/><stop offset="1" stop-color="#9c7629"/></linearGradient></defs><path d="M16 2.5c-6.1 0-11 4.8-11 10.8C5 21.5 16 29.5 16 29.5s11-8 11-16.2c0-6-4.9-10.8-11-10.8Z" fill="none" stroke="url(#lg)" stroke-width="1.6"/><circle cx="16" cy="13.2" r="4.2" fill="url(#lg)"/></svg>
+  <span class="logo-word">Search<em>Local</em></span>
+</a>`;
+
+function layout({ title, description, pathname, body, noindex = false, jsonld = [], bodyClass = '' }) {
+  const fullTitle = pathname === '/' ? `${site.name} — ${site.tagline} for ${site.region}` : `${title} · ${site.name}`;
+  const canonical = site.url + pathname;
+  const ld = jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, '\\u003c')}</script>`).join('\n');
+  const nav = NAV.map(([href, label]) => `<a href="${href}"${pathname.startsWith(href) ? ' aria-current="page"' : ''}>${label}</a>`).join('');
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add('js')</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${e(fullTitle)}</title>
+<meta name="description" content="${e(description)}">
+<meta name="robots" content="${noindex ? 'noindex,follow' : 'index,follow'}">
+<link rel="canonical" href="${canonical}">
+<meta name="theme-color" content="#070707">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${e(site.name)}">
+<meta property="og:title" content="${e(fullTitle)}">
+<meta property="og:description" content="${e(description)}">
+<meta property="og:url" content="${canonical}">
+<meta property="og:image" content="${site.url}/assets/img/og.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/style.css?v=${BUILD_ID}">
+${ld}
+</head>
+<body class="${bodyClass || 'page-inner'}">
+${scene()}
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <div class="wrap header-inner">
+    ${logo}
+    <nav class="nav" aria-label="Primary">${nav}</nav>
+    <a class="btn btn-gold btn-sm header-cta" href="/add-your-business/">List your business <span class="free-tag">Free</span></a>
+    <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav" data-menu-btn>${icon('menu')}</button>
+  </div>
+  <div class="mobile-nav" id="mobile-nav" hidden data-mobile-nav>
+    <nav class="wrap" aria-label="Mobile">${nav}<a class="btn btn-gold" href="/add-your-business/">List your business — free</a></nav>
+  </div>
+</header>
+<main id="main">
+${body}
+</main>
+${footer()}
+<script src="/assets/js/main.js?v=${BUILD_ID}" defer></script>
+</body>
+</html>`;
+}
+
+const STREET = { sky: skylineLayer(), shops: shopsLayer(), near: nearLayer() };
+function scene() {
+  const layer = (key, speed) => `<div class="layer layer-${key}" data-layer data-speed="${speed}" data-aspect="${(STREET[key].width / 600).toFixed(4)}" style="background-image:url(/assets/img/street-${key}.svg?v=${BUILD_ID})"></div>`;
+  return `<div class="scene" aria-hidden="true">
+  <div class="sky"><div class="stars"></div><div class="moon"></div></div>
+  ${layer('sky', 0.12)}
+  <div class="haze"></div>
+  ${layer('shops', 0.5)}
+  ${layer('near', 0.95)}
+  <div class="scene-dim" data-scene-dim></div>
+</div>`;
+}
+
+function footer() {
+  const topCats = categories.slice(0, 8).map((c) => `<li><a href="/category/${c.slug}/">${e(c.name)}</a></li>`).join('');
+  const townLinks = towns.map((t) => `<li><a href="/town/${t.slug}/">${e(t.name)}</a></li>`).join('');
+  return `<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        ${logo}
+        <p>${e(site.tagline)} for ${e(site.region)}. Free listings for every real local business — no pay-to-rank, no fake reviews, ever.</p>
+        <a class="btn btn-ghost btn-sm" href="/add-your-business/">Add your business ${icon('arrow')}</a>
+      </div>
+      <div class="footer-col"><h4>Categories</h4><ul>${topCats}<li><a href="/categories/">All categories</a></li></ul></div>
+      <div class="footer-col"><h4>Towns</h4><ul>${townLinks}</ul></div>
+      <div class="footer-col"><h4>SearchLocal</h4><ul>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/guidelines/">Listing guidelines</a></li>
+        <li><a href="/add-your-business/">Add a business</a></li>
+        <li><a href="/privacy/">Privacy</a></li>
+        <li><a href="mailto:${e(site.email)}">${e(site.email)}</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© ${new Date().getFullYear()} ${e(site.domain)}</span>
+      <span>Made for the businesses that make a town worth living in.</span>
+    </div>
+  </div>
+</footer>`;
+}
+
+// ---------- components ----------
+function card(l) {
+  return `<a class="card" href="/business/${l.slug}/" data-reveal>
+  <div class="card-head">
+    <span class="monogram" aria-hidden="true">${e(monogram(l.name))}</span>
+    <span class="card-cat">${icon(l.cat.icon)}${e(l.cat.name)}</span>
+    ${l.sample ? '<span class="sample-tag" title="Demonstration listing — not a real business">Sample</span>' : ''}
+  </div>
+  <h3 class="card-title">${e(l.name)}</h3>
+  <p class="card-sum">${e(l.summary)}</p>
+  <div class="card-foot">
+    <span class="card-loc">${icon('pin')}${e(l.townObj.name)}, ${e(l.townObj.state)}</span>
+    <span class="status" data-hours="${e(JSON.stringify(l.hours))}"></span>
+  </div>
+  <span class="card-arrow" aria-hidden="true">${icon('arrowUpRight')}</span>
+</a>`;
+}
+
+const grid = (list) => `<div class="card-grid">${list.map(card).join('')}</div>`;
+
+function crumbs(items) {
+  const html = items.map(([href, label], i) => (i === items.length - 1 ? `<span aria-current="page">${e(label)}</span>` : `<a href="${href}">${e(label)}</a>`)).join(`<span class="sep">/</span>`);
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map(([href, label], i) => ({ '@type': 'ListItem', position: i + 1, name: label, item: site.url + href })),
+  };
+  return { html: `<nav class="crumbs" aria-label="Breadcrumb">${html}</nav>`, ld };
+}
+
+function pageHero({ eyebrow, title, lead, extra = '', crumbHtml = '', iconName }) {
+  return `<section class="page-hero">
+  <div class="wrap">
+    ${crumbHtml}
+    ${iconName ? `<span class="hero-icon">${icon(iconName)}</span>` : ''}
+    ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}
+    <h1 class="display">${title}</h1>
+    ${lead ? `<p class="lead">${lead}</p>` : ''}
+    ${extra}
+  </div>
+</section>`;
+}
+
+const sampleNotice = () =>
+  listings.some((l) => l.sample)
+    ? `<div class="wrap"><p class="sample-notice">${icon('info')}<span>Preview mode: the businesses shown are <strong>sample listings</strong> to demonstrate the directory. They are hidden from search engines and will be replaced by verified local businesses.</span></p></div>`
+    : '';
+
+// ---------- pages ----------
+const pages = [];
+const indexable = [];
+function addPage(pathname, html, { noindex = false } = {}) {
+  pages.push([pathname, html]);
+  if (!noindex) indexable.push(pathname);
+}
+
+function home() {
+  const featured = listings.filter((l) => l.featured).slice(0, 6);
+  const catCount = (slug) => listings.filter((l) => l.category === slug).length;
+  const townCount = (slug) => listings.filter((l) => l.town === slug).length;
+  const chips = categories.slice(0, 6).map((c) => `<a class="chip" href="/category/${c.slug}/">${icon(c.icon)}${e(c.name)}</a>`).join('');
+  const marquee = [...categories, ...categories].map((c) => `<span>${e(c.name)}</span><i aria-hidden="true">◆</i>`).join('');
+  const catTiles = categories
+    .map(
+      (c) => `<a class="cat-tile" href="/category/${c.slug}/" data-reveal>
+  <span class="cat-icon">${icon(c.icon)}</span>
+  <span class="cat-name">${e(c.name)}</span>
+  <span class="cat-count">${plural(catCount(c.slug), 'listing')}</span>
+  <span class="cat-arrow" aria-hidden="true">${icon('arrow')}</span>
+</a>`
+    )
+    .join('');
+  const townTiles = towns
+    .map(
+      (t, i) => `<a class="town-row" href="/town/${t.slug}/" data-reveal>
+  <span class="town-num">${String(i + 1).padStart(2, '0')}</span>
+  <span class="town-name">${e(t.name)}</span>
+  <span class="town-county">${e(t.county)}, ${e(t.state)}</span>
+  <span class="town-count">${plural(townCount(t.slug), 'business', 'businesses')}</span>
+  <span class="town-arrow" aria-hidden="true">${icon('arrowUpRight')}</span>
+</a>`
+    )
+    .join('');
+  const townOptions = towns.map((t) => `<option value="${t.slug}">${e(t.name)}</option>`).join('');
+  const catOptions = categories.map((c) => `<option value="${e(c.name)}"></option>`).join('');
+
+  const faqs = [
+    ['Is it really free?', 'Yes. A complete listing — name, address, phone, hours, website link, description and services — costs nothing, and it stays free. We will never charge a business to rank higher in its category.'],
+    ['Will this get my business to the top of Google?', 'Nobody can honestly promise that, and we won\'t. What a listing does give you is another accurate, consistent citation of your name, address and phone, a real link to your website, and a page that local customers can find.'],
+    ['How do you decide who gets listed?', 'Every listing is a real business with a physical presence or service area here. We check details before anything goes live, and we remove listings that close or stop answering. See the listing guidelines for the full standard.'],
+    ['Do you have reviews?', 'Not yet. When we add them, they will come from verified customers only. We will never write, buy or filter reviews for anyone.'],
+    ['Can I update my listing later?', 'Anytime. Changed your hours, moved, or added a service? Send the update and we will refresh your page.'],
+  ];
+  const faqHtml = faqs.map(([q, a]) => `<details class="faq-item" data-reveal><summary>${e(q)}<span class="faq-plus" aria-hidden="true"></span></summary><p>${e(a)}</p></details>`).join('');
+
+  const body = `
+<section class="hero">
+  <div class="wrap hero-inner">
+    <p class="eyebrow eyebrow-pill"><span class="dot" aria-hidden="true"></span>${e(site.tagline)} · ${e(site.region)}</p>
+    <h1 class="display hero-title">Find the <em>best</em> <span class="nowrap">of local.</span></h1>
+    <p class="lead hero-lead">Every shop, crew and kitchen on Main Street, in one place. Real businesses, real details. No pay-to-rank, no fake reviews.</p>
+    <form class="searchbar" action="/browse/" method="get" role="search">
+      <label class="sb-field">
+        <span class="sb-label">What</span>
+        <span class="sb-input">${icon('search')}<input name="q" type="search" placeholder="Plumber, coffee, barber…" list="cat-list" autocomplete="off"></span>
+      </label>
+      <span class="sb-div" aria-hidden="true"></span>
+      <label class="sb-field">
+        <span class="sb-label">Where</span>
+        <span class="sb-input">${icon('pin')}<select name="town"><option value="">All of ${e(site.region)}</option>${townOptions}</select></span>
+      </label>
+      <button class="btn btn-gold sb-btn" type="submit">Search ${icon('arrow')}</button>
+      <datalist id="cat-list">${catOptions}</datalist>
+    </form>
+    <div class="chips"><span class="chips-label">Popular</span>${chips}</div>
+  </div>
+  <a class="stroll" href="#browse-cats"><span>Scroll to stroll</span><i aria-hidden="true"></i></a>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="marquee-track">${marquee}</div></div>
+
+<section class="section stats-band">
+  <div class="wrap stats">
+    <div class="stat" data-reveal><span class="stat-num">${categories.length}</span><span class="stat-label">Categories</span></div>
+    <div class="stat" data-reveal><span class="stat-num">${towns.length}</span><span class="stat-label">Towns covered</span></div>
+    <div class="stat" data-reveal><span class="stat-num">$0</span><span class="stat-label">To list. Forever.</span></div>
+    <div class="stat" data-reveal><span class="stat-num">0</span><span class="stat-label">Paid placements</span></div>
+  </div>
+</section>
+
+<section class="section" id="browse-cats">
+  <div class="wrap">
+    <div class="section-head">
+      <div><p class="eyebrow">Browse by category</p><h2 class="h2">Everything your town <em>runs on.</em></h2></div>
+      <a class="link-arrow" href="/categories/">All categories ${icon('arrow')}</a>
+    </div>
+    <div class="cat-grid">${catTiles}</div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div><p class="eyebrow">Featured</p><h2 class="h2">Local, <em>handpicked.</em></h2></div>
+      <a class="link-arrow" href="/browse/">Browse every listing ${icon('arrow')}</a>
+    </div>
+    ${grid(featured)}
+  </div>
+  ${sampleNotice()}
+</section>
+
+<section class="section">
+  <div class="wrap towns-split">
+    <div class="towns-intro" data-reveal>
+      <p class="eyebrow">Towns</p>
+      <h2 class="h2">Close to <em>home.</em></h2>
+      <p class="muted">We start where we live and grow town by town — only adding a place once it has enough real businesses to be genuinely useful.</p>
+      <a class="btn btn-ghost" href="/towns/">See all towns ${icon('arrow')}</a>
+    </div>
+    <div class="town-list">${townTiles}</div>
+  </div>
+</section>
+
+<section class="section owners">
+  <div class="wrap owners-inner">
+    <div class="owners-copy" data-reveal>
+      <p class="eyebrow">For business owners</p>
+      <h2 class="display owners-title">Free.<br><em>Not freemium.</em><br>Free.</h2>
+      <p class="lead">A beautiful, complete listing for your business — and we never sell your spot to the competitor down the street.</p>
+      <a class="btn btn-gold btn-lg" href="/add-your-business/">List your business ${icon('arrow')}</a>
+    </div>
+    <ul class="perks">
+      <li data-reveal><span class="perk-icon">${icon('link')}</span><div><h3>A real link to your site</h3><p>A standard, followed link to your website — not buried, not paywalled.</p></div></li>
+      <li data-reveal><span class="perk-icon">${icon('target')}</span><div><h3>Consistent details</h3><p>Your name, address and phone exactly as they appear on Google, Apple Maps and Bing.</p></div></li>
+      <li data-reveal><span class="perk-icon">${icon('clock')}</span><div><h3>Live hours</h3><p>Customers see whether you're open right now, on every device.</p></div></li>
+      <li data-reveal><span class="perk-icon">${icon('shield')}</span><div><h3>A level field</h3><p>No paid ranking. The plumber with the bigger budget doesn't get to bury you.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head center"><div><p class="eyebrow">How it works</p><h2 class="h2">Live in <em>three steps.</em></h2></div></div>
+    <ol class="steps">
+      <li class="step" data-reveal><span class="step-num">I</span><h3>Tell us about you</h3><p>Name, address, hours, a short description and the services you offer. Five minutes, tops.</p></li>
+      <li class="step" data-reveal><span class="step-num">II</span><h3>We verify</h3><p>A real person checks your details against public records and gives you a call if anything is off.</p></li>
+      <li class="step" data-reveal><span class="step-num">III</span><h3>You go live</h3><p>Your page publishes with structured data search engines understand, and you can update it anytime.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="wrap faq-wrap">
+    <div class="faq-intro" data-reveal><p class="eyebrow">Questions</p><h2 class="h2">The <em>honest</em> answers.</h2><p class="muted">Still curious? Write to <a href="mailto:${e(site.email)}">${e(site.email)}</a>.</p></div>
+    <div class="faq">${faqHtml}</div>
+  </div>
+</section>
+
+<section class="section cta-band">
+  <div class="wrap cta-inner" data-reveal>
+    <h2 class="display">Your town, <em>found.</em></h2>
+    <div class="cta-actions">
+      <a class="btn btn-gold btn-lg" href="/browse/">Start exploring ${icon('arrow')}</a>
+      <a class="btn btn-ghost btn-lg" href="/add-your-business/">Add a business</a>
+    </div>
+  </div>
+</section>`;
+
+  const jsonld = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: site.name,
+      url: site.url,
+      potentialAction: { '@type': 'SearchAction', target: `${site.url}/browse/?q={search_term_string}`, 'query-input': 'required name=search_term_string' },
+    },
+    { '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url, email: site.email, logo: `${site.url}/assets/img/favicon.svg` },
+  ];
+  addPage('/', layout({ title: 'Home', description: `Find real local businesses across ${site.region} — restaurants, trades, salons, health and more. Free listings, no pay-to-rank, no fake reviews.`, pathname: '/', body, jsonld, bodyClass: 'page-home' }));
+}
+
+function browse() {
+  const townOptions = towns.map((t) => `<option value="${t.slug}">${e(t.name)}</option>`).join('');
+  const catOptions = categories.map((c) => `<option value="${c.slug}">${e(c.name)}</option>`).join('');
+  const body = `
+${pageHero({ eyebrow: 'The directory', title: 'Browse <em>everything.</em>', lead: `Every business in ${e(site.region)}, in one place. Filter by what you need, where you are, and who's open right now.` })}
+<section class="section section-tight">
+  <div class="wrap">
+    <form class="filters" data-filters onsubmit="return false">
+      <label class="f-search">${icon('search')}<input type="search" name="q" placeholder="Search by name, service or keyword" aria-label="Search listings"></label>
+      <label class="f-select"><span class="sr-only">Category</span><select name="category"><option value="">All categories</option>${catOptions}</select>${icon('chevron')}</label>
+      <label class="f-select"><span class="sr-only">Town</span><select name="town"><option value="">All towns</option>${townOptions}</select>${icon('chevron')}</label>
+      <label class="f-toggle"><input type="checkbox" name="open"><span class="toggle" aria-hidden="true"></span>Open now</label>
+    </form>
+    <p class="results-count" aria-live="polite" data-count>${plural(listings.length, 'business', 'businesses')}</p>
+    <div class="card-grid" data-results>${listings.map(card).join('')}</div>
+    <div class="empty" data-empty hidden>
+      <span class="empty-icon">${icon('search')}</span>
+      <h3>Nothing matches — yet.</h3>
+      <p>Try a broader search, or know a great business that belongs here?</p>
+      <div class="cta-actions"><button class="btn btn-ghost" type="button" data-reset>Clear filters</button><a class="btn btn-gold" href="/add-your-business/">Suggest a business</a></div>
+    </div>
+  </div>
+  ${sampleNotice()}
+</section>`;
+  addPage('/browse/', layout({ title: 'Browse local businesses', description: `Search and filter every local business listed on ${site.name} across ${site.region}.`, pathname: '/browse/', body }), { noindex: !canIndex(listings) });
+}
+
+function categoriesIndex() {
+  const tiles = categories
+    .map((c) => {
+      const n = listings.filter((l) => l.category === c.slug).length;
+      return `<a class="cat-tile cat-tile-lg" href="/category/${c.slug}/" data-reveal>
+  <span class="cat-icon">${icon(c.icon)}</span>
+  <span class="cat-name">${e(c.name)}</span>
+  <span class="cat-blurb">${e(c.blurb)}</span>
+  <span class="cat-count">${plural(n, 'listing')}</span>
+  <span class="cat-arrow" aria-hidden="true">${icon('arrow')}</span>
+</a>`;
+    })
+    .join('');
+  const c = crumbs([['/', 'Home'], ['/categories/', 'Categories']]);
+  const body = `${pageHero({ crumbHtml: c.html, eyebrow: 'Categories', title: 'What do you <em>need?</em>', lead: `${categories.length} categories, from dinner tonight to the pipe that burst this morning.` })}
+<section class="section section-tight"><div class="wrap"><div class="cat-grid cat-grid-lg">${tiles}</div></div></section>`;
+  addPage('/categories/', layout({ title: 'All categories', description: `Browse local businesses in ${site.region} by category.`, pathname: '/categories/', body, jsonld: [c.ld] }));
+}
+
+function townsIndex() {
+  const tiles = towns
+    .map((t) => {
+      const list = listings.filter((l) => l.town === t.slug);
+      const cats = [...new Set(list.map((l) => l.cat.name))].slice(0, 4);
+      return `<a class="town-card" href="/town/${t.slug}/" data-reveal>
+  <span class="town-card-county">${e(t.county)}, ${e(t.state)}</span>
+  <span class="town-card-name">${e(t.name)}</span>
+  <span class="town-card-cats">${cats.map(e).join(' · ') || 'Coming soon'}</span>
+  <span class="town-card-foot"><span>${plural(list.length, 'business', 'businesses')}</span>${icon('arrowUpRight')}</span>
+</a>`;
+    })
+    .join('');
+  const c = crumbs([['/', 'Home'], ['/towns/', 'Towns']]);
+  const body = `${pageHero({ crumbHtml: c.html, eyebrow: 'Towns', title: 'Pick a <em>place.</em>', lead: `We cover ${towns.length} towns across ${e(site.region)} and grow one community at a time.` })}
+<section class="section section-tight"><div class="wrap"><div class="town-cards">${tiles}</div></div></section>`;
+  addPage('/towns/', layout({ title: 'All towns', description: `Local businesses by town across ${site.region}.`, pathname: '/towns/', body, jsonld: [c.ld] }));
+}
+
+function categoryPages() {
+  for (const c of categories) {
+    const list = listings.filter((l) => l.category === c.slug);
+    const townsHere = towns.filter((t) => list.some((l) => l.town === t.slug));
+    const filterChips = townsHere.length > 1 ? `<div class="chips chips-filter" data-chip-filter><button class="chip is-active" type="button" data-town="">All towns</button>${townsHere.map((t) => `<button class="chip" type="button" data-town="${t.slug}">${e(t.name)}</button>`).join('')}</div>` : '';
+    const others = categories.filter((o) => o.slug !== c.slug).slice(0, 8).map((o) => `<a class="chip" href="/category/${o.slug}/">${icon(o.icon)}${e(o.name)}</a>`).join('');
+    const cr = crumbs([['/', 'Home'], ['/categories/', 'Categories'], [`/category/${c.slug}/`, c.name]]);
+    const cards = list.map((l) => card(l).replace('<a class="card"', `<a class="card" data-town="${l.town}"`)).join('');
+    const body = `${pageHero({ crumbHtml: cr.html, iconName: c.icon, eyebrow: `${plural(list.length, 'listing')} · ${e(site.region)}`, title: `${e(c.name)}`, lead: e(c.blurb), extra: filterChips })}
+<section class="section section-tight"><div class="wrap">
+  ${list.length ? `<div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(c.name)}
+</div>${list.length ? sampleNotice() : ''}</section>
+<section class="section section-tight related"><div class="wrap"><h2 class="h3">Other categories</h2><div class="chips">${others}</div></div></section>`;
+    addPage(`/category/${c.slug}/`, layout({ title: `${c.name} in ${site.region}`, description: `${c.name} in ${site.region}: ${c.blurb}`, pathname: `/category/${c.slug}/`, body, jsonld: [cr.ld] }), { noindex: !canIndex(list) });
+  }
+}
+
+const emptyCategory = (name) => `<div class="empty"><span class="empty-icon">${icon('sparkles')}</span><h3>No ${e(name.toLowerCase())} listed yet.</h3><p>Be the first — listings are free.</p><div class="cta-actions"><a class="btn btn-gold" href="/add-your-business/">Add a business</a></div></div>`;
+
+function townPages() {
+  for (const t of towns) {
+    const list = listings.filter((l) => l.town === t.slug);
+    const catsHere = categories.filter((c) => list.some((l) => l.category === c.slug));
+    const filterChips = catsHere.length > 1 ? `<div class="chips chips-filter" data-chip-filter><button class="chip is-active" type="button" data-cat="">Everything</button>${catsHere.map((c) => `<button class="chip" type="button" data-cat="${c.slug}">${icon(c.icon)}${e(c.name)}</button>`).join('')}</div>` : '';
+    const cr = crumbs([['/', 'Home'], ['/towns/', 'Towns'], [`/town/${t.slug}/`, t.name]]);
+    const cards = list.map((l) => card(l).replace('<a class="card"', `<a class="card" data-cat="${l.category}"`)).join('');
+    const nearby = towns.filter((o) => o.slug !== t.slug).map((o) => `<a class="chip" href="/town/${o.slug}/">${icon('pin')}${e(o.name)}</a>`).join('');
+    const body = `${pageHero({ crumbHtml: cr.html, eyebrow: `${e(t.county)}, ${e(t.state)}`, title: `${e(t.name)}`, lead: `${plural(list.length, 'local business', 'local businesses')} in ${e(t.name)}, ${e(t.state)} — verified details, live hours, and a direct line to the people who run them.`, extra: filterChips })}
+<section class="section section-tight"><div class="wrap">
+  ${list.length ? `<div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(`businesses in ${t.name}`)}
+</div>${list.length ? sampleNotice() : ''}</section>
+<section class="section section-tight related"><div class="wrap"><h2 class="h3">Nearby towns</h2><div class="chips">${nearby}</div></div></section>`;
+    addPage(`/town/${t.slug}/`, layout({ title: `Local businesses in ${t.name}, ${t.state}`, description: `Find local businesses in ${t.name}, ${t.state} — ${catsHere.map((c) => c.name).slice(0, 5).join(', ')} and more.`, pathname: `/town/${t.slug}/`, body, jsonld: [cr.ld] }), { noindex: !canIndex(list) });
+  }
+}
+
+function businessPages() {
+  for (const l of listings) {
+    const t = l.townObj;
+    const cr = crumbs([['/', 'Home'], [`/category/${l.cat.slug}/`, l.cat.name], [`/business/${l.slug}/`, l.name]]);
+    const addr = fullAddress(l);
+    const mapsQ = encodeURIComponent(`${l.name}, ${addr}`);
+    const hoursRows = DAYS.map((d) => `<tr data-day="${d}"><th scope="row">${DAY_NAMES[d]}</th><td>${fmtRange(l.hours[d])}</td></tr>`).join('');
+    const services = l.services.map((s) => `<li>${icon('check')}${e(s)}</li>`).join('');
+    const similar = listings.filter((o) => o.slug !== l.slug && (o.category === l.category || o.town === l.town)).sort((a, b) => (b.category === l.category) - (a.category === l.category)).slice(0, 3);
+    const map = l.sample
+      ? `<div class="map map-placeholder"><div class="map-grid" aria-hidden="true"></div><span class="map-pin">${icon('pin')}</span><p>Map appears on verified listings</p></div>`
+      : `<div class="map"><iframe title="Map of ${e(l.name)}" src="https://maps.google.com/maps?q=${mapsQ}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>`;
+    const website = l.website ? `<a class="btn btn-ghost btn-block" href="${e(l.website)}" target="_blank" rel="noopener">${icon('globe')}Visit website</a>` : '';
+    const directions = l.sample ? '' : `<a class="btn btn-ghost btn-block" href="https://www.google.com/maps/search/?api=1&query=${mapsQ}" target="_blank" rel="noopener">${icon('navigation')}Get directions</a>`;
+
+    const body = `
+<section class="biz-hero">
+  <div class="wrap">
+    ${cr.html}
+    <div class="biz-head">
+      <span class="monogram monogram-xl" aria-hidden="true">${e(monogram(l.name))}</span>
+      <div>
+        <div class="biz-tags">
+          <a class="tag" href="/category/${l.cat.slug}/">${icon(l.cat.icon)}${e(l.cat.name)}</a>
+          <a class="tag" href="/town/${t.slug}/">${icon('pin')}${e(t.name)}, ${e(t.state)}</a>
+          <span class="status status-lg" data-hours="${e(JSON.stringify(l.hours))}"></span>
+          ${l.sample ? '<span class="tag tag-sample">Sample listing</span>' : '<span class="tag tag-verified">' + icon('shield') + 'Verified</span>'}
+        </div>
+        <h1 class="display biz-title">${e(l.name)}</h1>
+        <p class="lead">${e(l.summary)}</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section section-tight">
+  <div class="wrap biz-layout">
+    <div class="biz-main">
+      <article class="panel" data-reveal>
+        <h2 class="panel-title">About</h2>
+        <p class="biz-desc">${e(l.description)}</p>
+        ${l.since ? `<p class="biz-since">Serving ${e(t.name)} since <strong>${e(l.since)}</strong></p>` : ''}
+      </article>
+      <article class="panel" data-reveal>
+        <h2 class="panel-title">Services</h2>
+        <ul class="services">${services}</ul>
+      </article>
+      <article class="panel" data-reveal>
+        <h2 class="panel-title">Location</h2>
+        ${map}
+        <p class="biz-address">${icon('pin')}${e(addr)}</p>
+      </article>
+    </div>
+    <aside class="biz-side">
+      <div class="panel panel-sticky" data-reveal>
+        <a class="btn btn-gold btn-block btn-lg" href="tel:${l.phone.replace(/[^\d+]/g, '')}">${icon('phone')}${e(l.phone)}</a>
+        ${website}
+        ${directions}
+        <div class="hours" data-hours-table>
+          <h2 class="panel-title">Hours</h2>
+          <table>${hoursRows}</table>
+          <p class="hours-note">Times shown in Eastern Time.</p>
+        </div>
+        <a class="claim" href="/add-your-business/?claim=${l.slug}">${icon('edit')}Own this business? Update this listing</a>
+      </div>
+    </aside>
+  </div>
+  ${l.sample ? `<div class="wrap"><p class="sample-notice">${icon('info')}<span><strong>This is a sample listing.</strong> ${e(l.name)} is a demonstration business, not a real company. Its phone number is in the fictional 555-01xx range.</span></p></div>` : ''}
+</section>
+${similar.length ? `<section class="section section-alt"><div class="wrap"><div class="section-head"><div><p class="eyebrow">Keep exploring</p><h2 class="h2">You might <em>also like.</em></h2></div></div>${grid(similar)}</div></section>` : ''}`;
+
+    const jsonld = [cr.ld];
+    if (!l.sample) {
+      jsonld.push({
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        name: l.name,
+        description: l.description,
+        telephone: l.phone,
+        url: l.website || undefined,
+        address: { '@type': 'PostalAddress', streetAddress: l.address, addressLocality: t.name, addressRegion: t.state, postalCode: l.zip, addressCountry: 'US' },
+        openingHoursSpecification: DAYS.filter((d) => l.hours[d]).map((d) => {
+          const [opens, closes] = l.hours[d].split('-');
+          return { '@type': 'OpeningHoursSpecification', dayOfWeek: DAY_NAMES[d], opens, closes };
+        }),
+      });
+    }
+    addPage(`/business/${l.slug}/`, layout({ title: `${l.name} — ${l.cat.name} in ${t.name}, ${t.state}`, description: `${l.name} in ${t.name}, ${t.state}. ${l.summary}`, pathname: `/business/${l.slug}/`, body, jsonld }), { noindex: l.sample });
+  }
+}
+
+function addBusiness() {
+  const catOptions = categories.map((c) => `<option value="${c.slug}">${e(c.name)}</option>`).join('');
+  const townOptions = towns.map((t) => `<option value="${t.slug}">${e(t.name)}, ${e(t.state)}</option>`).join('');
+  const body = `
+${pageHero({ eyebrow: 'For business owners', title: 'Get <em>listed.</em> Free.', lead: 'Five minutes now, a polished page for your business for good. We verify every submission by hand before it goes live.' })}
+<section class="section section-tight">
+  <div class="wrap add-layout">
+    <aside class="add-aside">
+      <div class="panel" data-reveal>
+        <h2 class="panel-title">What you get</h2>
+        <ul class="services services-stack">
+          <li>${icon('check')}A dedicated page for your business</li>
+          <li>${icon('check')}A followed link to your website</li>
+          <li>${icon('check')}Live "open now" hours</li>
+          <li>${icon('check')}Structured data search engines read</li>
+          <li>${icon('check')}Placement in your category and town</li>
+          <li>${icon('check')}Updates whenever you need them</li>
+        </ul>
+      </div>
+      <div class="panel panel-quiet" data-reveal>
+        <h2 class="panel-title">What we won't do</h2>
+        <p class="muted">Charge you, sell your ranking, write reviews, or promise you page one of Google. Read the <a href="/guidelines/">listing guidelines</a>.</p>
+      </div>
+    </aside>
+    <div class="panel form-panel" data-reveal>
+      <form class="form" data-add-form novalidate data-endpoint="${e(site.formEndpoint)}" data-email="${e(site.email)}">
+        <fieldset>
+          <legend>The business</legend>
+          <div class="field field-full"><label for="f-name">Business name</label><input id="f-name" name="name" required maxlength="120" autocomplete="organization"></div>
+          <div class="field"><label for="f-cat">Category</label><div class="select-wrap"><select id="f-cat" name="category" required><option value="">Choose one</option>${catOptions}<option value="other">Something else</option></select>${icon('chevron')}</div></div>
+          <div class="field"><label for="f-town">Town</label><div class="select-wrap"><select id="f-town" name="town" required><option value="">Choose one</option>${townOptions}<option value="other">Another town</option></select>${icon('chevron')}</div></div>
+          <div class="field field-full"><label for="f-addr">Street address</label><input id="f-addr" name="address" required maxlength="160" autocomplete="street-address" placeholder="As it appears on your Google profile"></div>
+          <div class="field"><label for="f-phone">Public phone</label><input id="f-phone" name="phone" type="tel" required maxlength="30" autocomplete="tel" placeholder="(732) 000-0000"></div>
+          <div class="field"><label for="f-web">Website <span class="opt">optional</span></label><input id="f-web" name="website" type="url" maxlength="200" placeholder="https://"></div>
+        </fieldset>
+        <fieldset>
+          <legend>The details</legend>
+          <div class="field field-full"><label for="f-sum">One-line summary</label><input id="f-sum" name="summary" required maxlength="120" placeholder="What you do, in a sentence"><span class="hint" data-counter-for="f-sum"></span></div>
+          <div class="field field-full"><label for="f-desc">Description</label><textarea id="f-desc" name="description" rows="5" maxlength="600" placeholder="What makes you worth the drive? Specialties, history, what customers love."></textarea><span class="hint" data-counter-for="f-desc"></span></div>
+          <div class="field field-full"><label for="f-services">Services <span class="opt">comma separated</span></label><input id="f-services" name="services" maxlength="300" placeholder="Drain cleaning, water heaters, emergency repair"></div>
+          <div class="field field-full"><label for="f-hours">Hours</label><textarea id="f-hours" name="hours" rows="3" maxlength="300" placeholder="Mon–Fri 8–6, Sat 9–2, Sun closed"></textarea></div>
+        </fieldset>
+        <fieldset>
+          <legend>You</legend>
+          <div class="field"><label for="f-contact">Your name</label><input id="f-contact" name="contact" required maxlength="80" autocomplete="name"></div>
+          <div class="field"><label for="f-email">Your email</label><input id="f-email" name="email" type="email" required maxlength="120" autocomplete="email"><span class="hint">Never shown publicly.</span></div>
+          <label class="check field-full"><input type="checkbox" name="owner" required><span class="check-box" aria-hidden="true">${icon('check')}</span><span>I own or manage this business, or have permission to list it.</span></label>
+        </fieldset>
+        <input type="text" name="company_url" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="form-error" role="alert" data-form-error hidden></p>
+        <button class="btn btn-gold btn-lg btn-block" type="submit">Submit for review ${icon('arrow')}</button>
+        <p class="form-fine">By submitting you agree that we may publish the business details above. Your personal contact details stay private — see our <a href="/privacy/">privacy policy</a>.</p>
+      </form>
+      <div class="form-success" data-form-success hidden tabindex="-1">
+        <span class="success-mark">${icon('check')}</span>
+        <h2 class="h2">Thank <em>you.</em></h2>
+        <p class="lead" data-success-text>We've received your listing. A real person will review it, and you'll hear from us before it goes live.</p>
+        <a class="btn btn-ghost" href="/">Back to SearchLocal</a>
+      </div>
+    </div>
+  </div>
+</section>`;
+  addPage('/add-your-business/', layout({ title: 'Add your business — free', description: `List your business on ${site.name} for free. Verified listings for real local businesses in ${site.region}. No pay-to-rank.`, pathname: '/add-your-business/', body }));
+}
+
+function prose(pathname, { eyebrow, title, lead, html, docTitle, description }) {
+  const body = `${pageHero({ eyebrow, title, lead })}<section class="section section-tight"><div class="wrap prose" data-reveal>${html}</div></section>`;
+  addPage(pathname, layout({ title: docTitle, description, pathname, body }));
+}
+
+function staticPages() {
+  prose('/about/', {
+    docTitle: 'About',
+    description: `${site.name} is a free, independent directory of real local businesses in ${site.region}.`,
+    eyebrow: 'About',
+    title: 'Built for the <em>main street.</em>',
+    lead: 'A free directory for the businesses that make a town worth living in.',
+    html: `<h2>Why we exist</h2>
+<p>Finding a good local business online has gotten harder, not easier. Search results fill up with lead-selling middlemen, national chains and listings that haven't been updated in years. The small shops, crews and kitchens that actually serve a town get buried under whoever pays the most.</p>
+<p>${e(site.name)} is the opposite of that. Every listing is a real local business. Every listing is free. And no one can pay to move up.</p>
+<h2>What we believe</h2>
+<ul>
+<li><strong>Free means free.</strong> No trial, no upsell to unlock your own phone number.</li>
+<li><strong>Accurate beats exhaustive.</strong> We would rather list fifty businesses with correct hours than five thousand with stale ones.</li>
+<li><strong>No fake anything.</strong> No invented reviews, no AI-written testimonials, no padding.</li>
+<li><strong>Honesty about search.</strong> A listing helps people find you. It is not a guarantee of rankings, and we won't sell it as one.</li>
+</ul>
+<h2>Where we are</h2>
+<p>We're starting in ${e(site.region)} and growing town by town. A town gets its own page once it has enough verified businesses to be genuinely useful — not before.</p>
+<p>Questions, corrections, or a business we should know about? <a href="mailto:${e(site.email)}">${e(site.email)}</a>.</p>`,
+  });
+  prose('/guidelines/', {
+    docTitle: 'Listing guidelines',
+    description: `The standard every ${site.name} listing meets.`,
+    eyebrow: 'Standards',
+    title: 'Listing <em>guidelines.</em>',
+    lead: 'The short list of rules that keeps this directory worth using.',
+    html: `<h2>Who can be listed</h2>
+<ul>
+<li>A real, operating business with a physical location or a defined service area in a town we cover.</li>
+<li>One listing per location. Multi-location businesses list each location separately.</li>
+<li>Home-based service businesses are welcome; we can hide your street address and show your service area instead.</li>
+</ul>
+<h2>What every listing must have</h2>
+<ul>
+<li>The business name exactly as customers see it — no added keywords or city names.</li>
+<li>An address and phone number that match your other public profiles.</li>
+<li>Accurate hours. Tell us when they change.</li>
+</ul>
+<h2>What we don't allow</h2>
+<ul>
+<li>Lead-generation services posing as local businesses.</li>
+<li>Duplicate or keyword-stuffed listings.</li>
+<li>Paid placement, of any kind, in any category.</li>
+<li>Reviews written by the business, its staff or anyone paid to write them.</li>
+</ul>
+<h2>Removals</h2>
+<p>We remove listings that close, stop answering, or break these guidelines. If your business has closed or you want your listing taken down, email <a href="mailto:${e(site.email)}">${e(site.email)}</a> and we'll do it within two business days.</p>`,
+  });
+  prose('/privacy/', {
+    docTitle: 'Privacy',
+    description: `How ${site.name} handles information.`,
+    eyebrow: 'Privacy',
+    title: 'Plain-language <em>privacy.</em>',
+    lead: 'Short version: we collect very little, and we sell none of it.',
+    html: `<h2>What's public</h2>
+<p>Business details you submit for a listing — name, address, phone, website, hours, description and services — are published on the listing page. That's the point of a directory.</p>
+<h2>What stays private</h2>
+<p>Your personal name and email from the submission form are used only to verify the listing and contact you about it. We don't publish them, sell them or add you to marketing lists.</p>
+<h2>Browsing</h2>
+<p>We don't run advertising trackers. Maps on verified listing pages are provided by Google Maps and load only on those pages.</p>
+<h2>Contact</h2>
+<p>To correct or remove anything, email <a href="mailto:${e(site.email)}">${e(site.email)}</a>.</p>`,
+  });
+  const nf = `${pageHero({ eyebrow: '404', title: 'Off the <em>map.</em>', lead: "This page doesn't exist — or it moved. Let's get you somewhere useful.", extra: `<div class="cta-actions"><a class="btn btn-gold" href="/browse/">Browse businesses ${icon('arrow')}</a><a class="btn btn-ghost" href="/">Home</a></div>` })}`;
+  pages.push(['/404.html', layout({ title: 'Page not found', description: 'Page not found.', pathname: '/404.html', body: nf, noindex: true })]);
+}
+
+// ---------- write ----------
+const BUILD_ID = Date.now().toString(36);
+fs.rmSync(OUT, { recursive: true, force: true });
+fs.mkdirSync(OUT, { recursive: true });
+
+home();
+browse();
+categoriesIndex();
+townsIndex();
+categoryPages();
+townPages();
+businessPages();
+addBusiness();
+staticPages();
+
+for (const [p, html] of pages) {
+  const file = p.endsWith('.html') ? path.join(OUT, p) : path.join(OUT, p, 'index.html');
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, html);
+}
+
+fs.cpSync(path.join(SRC, 'assets'), path.join(OUT, 'assets'), { recursive: true });
+for (const [k, v] of Object.entries(STREET)) fs.writeFileSync(path.join(OUT, 'assets', 'img', `street-${k}.svg`), v.svg);
+
+// Client-side search index for /browse/
+const clientData = listings.map((l) => ({
+  slug: l.slug, name: l.name, category: l.category, town: l.town,
+  text: [l.name, l.cat.name, l.townObj.name, l.summary, l.description, ...l.services].join(' ').toLowerCase(),
+}));
+fs.mkdirSync(path.join(OUT, 'assets', 'data'), { recursive: true });
+fs.writeFileSync(path.join(OUT, 'assets', 'data', 'listings.json'), JSON.stringify(clientData));
+
+const today = new Date().toISOString().slice(0, 10);
+fs.writeFileSync(path.join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${indexable.map((p) => `  <url><loc>${site.url}${p}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
+</urlset>
+`);
+fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${site.url}/sitemap.xml\n`);
+fs.writeFileSync(path.join(OUT, 'CNAME'), site.domain + '\n');
+fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
+
+console.log(`Built ${pages.length} pages (${indexable.length} indexable) → dist/`);

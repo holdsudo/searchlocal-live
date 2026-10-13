@@ -1,0 +1,11 @@
+{
+  "name": "SearchLocal",
+  "domain": "searchlocal.live",
+  "url": "https://searchlocal.live",
+  "tagline": "The local index",
+  "region": "Ocean County, NJ",
+  "email": "hello@searchlocal.live",
+  "formEndpoint": "",
+  "minListingsToIndex": 3,
+  "timezone": "America/New_York"
+}
