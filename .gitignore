@@ -1,3 +1,7 @@
 dist/
 node_modules/
 .DS_Store
+automation/osm-pool.json
+automation/candidates.json
+automation/result.json
+automation/logs/

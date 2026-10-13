@@ -1,0 +1,199 @@
+{
+  "node/5968596740": {
+    "name": "Spa Virtue",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/6844074911": {
+    "name": "Liu's Kitchen",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/11640819224": {
+    "name": "Solo Bella Brick Oven Bistro",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/12596532516": {
+    "name": "Agripas Street",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/13469107740": {
+    "name": "Ellie's Indian Curry Corner",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "way/940174196": {
+    "name": "Ob-Co's Donuts",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/8846592912": {
+    "name": "Gras Lawn",
+    "result": "rejected",
+    "reason": "Site is live at 950 Airport Rd, Lakewood NJ (888-679-4727) but it is a multi-state commercial landscaping company (DE, NJ, PA, MD, CT, FL), not an independent local business, and has a toll-free numbe",
+    "date": "2026-10-13"
+  },
+  "node/9947699739": {
+    "name": "Tommy Boy's Cafe",
+    "result": "rejected",
+    "reason": "Website tommyboyscafe.com no longer resolves (DNS failure), so address and phone cannot be confirmed.",
+    "date": "2026-10-13"
+  },
+  "node/7036260673": {
+    "name": "Coastal Dental Group",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/12211267285": {
+    "name": "Brady & Kunz",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/13116070157": {
+    "name": "Elite Dental Center of Toms River",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/6021661618": {
+    "name": "Willi's Auto Body",
+    "result": "rejected",
+    "reason": "Website domain willisautobodyllc.com does not resolve (DNS failure); cannot confirm address or phone.",
+    "date": "2026-10-13"
+  },
+  "node/9595988141": {
+    "name": "Picture Perfect",
+    "result": "rejected",
+    "reason": "Own site says it is in its 46th and final year and is retiring (Dec 23); also no address/phone/hours found on the pages checked.",
+    "date": "2026-10-13"
+  },
+  "node/10114044298": {
+    "name": "Mona's Boutique & Tailoring",
+    "result": "rejected",
+    "reason": "Site only redirects to a /lander parked page; no business content, address or phone.",
+    "date": "2026-10-13"
+  },
+  "node/13551393803": {
+    "name": "Chin Wong",
+    "result": "rejected",
+    "reason": "Site blocked by a Vercel security checkpoint (HTTP 429); could not verify address, phone or hours.",
+    "date": "2026-10-13"
+  },
+  "way/947536987": {
+    "name": "Tacoholics",
+    "result": "rejected",
+    "reason": "Own site lists locations only in Red Bank, Brick and Toms River, none in Point Pleasant, and it is a multi-location chain.",
+    "date": "2026-10-13"
+  },
+  "node/8770520349": {
+    "name": "Bridge Veterinary Hospital",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/11598804663": {
+    "name": "Urban Coalhouse Pizza & Bar",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/12467515761": {
+    "name": "Tiny Teeth of Lakewood",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/13457302075": {
+    "name": "Epstein's Meats",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/14011093378": {
+    "name": "Brick Nails and Spa",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "way/1189449651": {
+    "name": "Last Wave Brewing Company",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/6063454033": {
+    "name": "DoughFellas Pizza",
+    "result": "rejected",
+    "reason": "Website doughfellaspizza.com did not respond (connection failed on www and non-www); address/phone unconfirmed.",
+    "date": "2026-10-13"
+  },
+  "node/9697555878": {
+    "name": "R & R Steam",
+    "result": "rejected",
+    "reason": "Own site shows phone (718) 983-5767 but no street address or Jackson location anywhere; also a B2B dry-cleaning equipment installer, not a local consumer business. Address unconfirmed.",
+    "date": "2026-10-13"
+  },
+  "node/13018852481": {
+    "name": "Hiering, Dupignac, Dunn & Schreiber, P.C.",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "way/938254453": {
+    "name": "The Back Stop",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/8770520350": {
+    "name": "Oakwood's Point Pizza",
+    "result": "rejected",
+    "reason": "address only in hidden site metadata",
+    "date": "2026-10-13"
+  },
+  "node/4518838417": {
+    "name": "Gary L. Goldberg Esq.",
+    "result": "rejected",
+    "reason": "Website garygoldbergesq.com returned no content (unreachable/empty); address and phone could not be confirmed.",
+    "date": "2026-10-13"
+  },
+  "node/6640158789": {
+    "name": "Atlantic Remodeling Consultants Inc.",
+    "result": "rejected",
+    "reason": "Site is a skeletal template (placeholder Link 1-4 nav, no address, phone, or hours); cannot confirm address+phone.",
+    "date": "2026-10-13"
+  },
+  "node/11013740701": {
+    "name": "Salon Allure Hair, Nails & Spa",
+    "result": "rejected",
+    "reason": "salonallureandspanj.com shows 'Site not found' (unpublished/no domain assigned).",
+    "date": "2026-10-13"
+  },
+  "node/6406372271": {
+    "name": "Rosato's Pub & Pizzeria",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/9652971081": {
+    "name": "Pho 34",
+    "result": "listed",
+    "date": "2026-10-13"
+  },
+  "node/8124717648": {
+    "name": "Waves Hair Studio",
+    "result": "rejected",
+    "reason": "GoDaddy site is a bare splash/contact form with no address, phone or hours; cannot confirm location.",
+    "date": "2026-10-13"
+  },
+  "node/11358169079": {
+    "name": "Dominican Style Hair Salon",
+    "result": "rejected",
+    "reason": "Website domain does not resolve (DNS failure); cannot verify.",
+    "date": "2026-10-13"
+  },
+  "node/13374785661": {
+    "name": "Melrose Soap",
+    "result": "rejected",
+    "reason": "Online Shopify soap retailer; site shows no storefront address or phone, only email form (Store Locations page lists third-party retailers).",
+    "date": "2026-10-13"
+  },
+  "way/940174197": {
+    "name": "Warren Merguerian, DDS",
+    "result": "rejected",
+    "reason": "Website domain does not resolve (DNS failure); cannot verify.",
+    "date": "2026-10-13"
+  }
+}
