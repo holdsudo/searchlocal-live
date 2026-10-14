@@ -43,6 +43,26 @@ const listings = rawListings.map((l) => {
   return { ...l, hours, cat: byCat[l.category], townObj: byTown[l.town] };
 });
 
+// Blog posts: src/posts/<slug>.html, each starting with a <!-- {json front matter} --> comment.
+// {{card:<listing-slug>}} on its own line embeds that listing's card.
+const POSTS_DIR = path.join(SRC, 'posts');
+const bySlug = Object.fromEntries(listings.map((l) => [l.slug, l]));
+const posts = (fs.existsSync(POSTS_DIR) ? fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith('.html')) : [])
+  .map((f) => {
+    const raw = fs.readFileSync(path.join(POSTS_DIR, f), 'utf8');
+    const m = raw.match(/^<!--([\s\S]*?)-->/);
+    if (!m) throw new Error(`posts/${f}: missing front matter`);
+    const meta = JSON.parse(m[1]);
+    const slug = f.replace(/\.html$/, '');
+    for (const k of ['title', 'description', 'lead', 'date']) if (!meta[k]) throw new Error(`posts/${f}: missing "${k}"`);
+    for (const b of meta.businesses || []) if (!bySlug[b]) throw new Error(`posts/${f}: unknown business "${b}"`);
+    return { ...meta, slug, businesses: meta.businesses || [], html: raw.slice(m[0].length).trim() };
+  })
+  .filter((p) => p.date <= new Date().toISOString().slice(0, 10)) // future-dated posts wait for their day
+  .sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
+const fmtDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const readMins = (html) => Math.max(1, Math.round(html.replace(/<[^>]+>|\{\{[^}]+\}\}/g, ' ').split(/\s+/).filter(Boolean).length / 220));
+
 const real = (list) => list.filter((l) => !l.sample);
 const LD_TYPES = { restaurants: 'Restaurant', 'cafes-bakeries': 'Bakery', plumbing: 'Plumber', hvac: 'HVACBusiness', electricians: 'Electrician', 'auto-repair': 'AutoRepair', 'salons-barbers': 'BeautySalon', fitness: 'ExerciseGym', 'health-dental': 'MedicalBusiness', legal: 'LegalService', 'real-estate': 'RealEstateAgent', landscaping: 'HomeAndConstructionBusiness', pets: 'LocalBusiness', shopping: 'Store', cleaning: 'HomeAndConstructionBusiness', 'finance-insurance': 'FinancialService' };
 const ldType = (l) => (l.category === 'health-dental' && /dental|dentist|teeth/i.test(l.name)) ? 'Dentist' : (l.category === 'pets' && /veterinar/i.test(l.name)) ? 'VeterinaryCare' : /brew/i.test(l.name) ? 'Brewery' : (LD_TYPES[l.category] || 'LocalBusiness');
@@ -71,6 +91,7 @@ const NAV = [
   ['/browse/', 'Browse'],
   ['/categories/', 'Categories'],
   ['/towns/', 'Towns'],
+  ['/blog/', 'Blog'],
   ['/about/', 'About'],
 ];
 
@@ -183,6 +204,7 @@ function footer() {
       <div class="footer-col"><h2>Towns</h2><ul>${townLinks}</ul></div>
       <div class="footer-col"><h2>SearchLocal</h2><ul>
         <li><a href="/about/">About</a></li>
+        <li><a href="/blog/">Blog</a></li>
         <li><a href="/guidelines/">Listing guidelines</a></li>
         <li><a href="/add-your-business/">Add a business</a></li>
         <li><a href="/privacy/">Privacy</a></li>
@@ -530,6 +552,7 @@ function businessPages() {
     const mapsQ = encodeURIComponent(`${l.name}, ${addr}`);
     const hoursRows = l.hours ? DAYS.map((d) => `<tr data-day="${d}"><th scope="row">${DAY_NAMES[d]}</th><td>${fmtRange(l.hours[d])}</td></tr>`).join('') : '';
     const services = l.services.map((s) => `<li>${icon('check')}${e(s)}</li>`).join('');
+    const mentions = posts.filter((p) => p.businesses.includes(l.slug));
     const similar = listings.filter((o) => o.slug !== l.slug && (o.category === l.category || o.town === l.town)).sort((a, b) => (b.category === l.category) - (a.category === l.category)).slice(0, 3);
     const map = !l.address
       ? `<div class="map map-placeholder"><div class="map-grid" aria-hidden="true"></div><span class="map-pin">${icon('pin')}</span><p>${e(l.serviceArea || `Based in ${t.name}, ${t.state}`)}</p></div>`
@@ -576,6 +599,10 @@ function businessPages() {
         <p class="biz-address">${icon('pin')}${e(addr)}${!l.address && l.serviceArea ? ` · ${e(l.serviceArea)}` : ''}</p>
         ${l.source === 'osm' ? `<p class="biz-source">Details checked against the business's own website. Base data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, ODbL.</p>` : ''}
       </article>
+      ${mentions.length ? `<article class="panel" data-reveal>
+        <h2 class="panel-title">On the blog</h2>
+        <ul class="post-mentions">${mentions.map((p) => `<li><a href="/blog/${p.slug}/">${e(p.title)}</a><span>${fmtDate(p.date)}</span></li>`).join('')}</ul>
+      </article>` : ''}
     </div>
     <aside class="biz-side">
       <div class="panel panel-sticky" data-reveal>
@@ -623,6 +650,75 @@ ${similar.length ? `<section class="section section-alt"><div class="wrap"><div 
     ].filter(([, v]) => v).map(([k, v]) => `<meta property="${k}" content="${e(v)}">`).join('\n');
     addPage(`/business/${l.slug}/`, layout({ title: `${l.name} — ${l.cat.name} in ${t.name}, ${t.state}`, description: `${l.name} in ${t.name}, ${t.state}. ${l.summary}`, pathname: `/business/${l.slug}/`, body, jsonld, ogType: l.sample ? 'website' : 'business.business', extraHead: contact }), { noindex: l.sample });
   }
+}
+
+function postCard(p) {
+  return `<a class="card post-card" href="/blog/${p.slug}/" data-reveal>
+  <div class="card-head"><span class="card-cat">${icon('sparkles')}${fmtDate(p.date)} · ${readMins(p.html)} min read</span></div>
+  <h3 class="card-title">${e(p.title)}</h3>
+  <p class="card-sum">${e(p.description)}</p>
+  <div class="card-foot"><span>Read the article</span></div>
+  <span class="card-arrow" aria-hidden="true">${icon('arrowUpRight')}</span>
+</a>`;
+}
+
+function blogPages() {
+  const feedLink = `<link rel="alternate" type="application/rss+xml" title="${e(site.name)} blog" href="${site.url}/blog/feed.xml">`;
+  const publisher = { '@type': 'Organization', name: site.name, url: site.url, logo: { '@type': 'ImageObject', url: `${site.url}/assets/img/icon-512.png` } };
+  const c = crumbs([['/', 'Home'], ['/blog/', 'Blog']]);
+  const body = `${pageHero({ crumbHtml: c.html, eyebrow: 'The blog', title: 'Notes from <em>main street.</em>', lead: `Guides to the independent businesses of ${e(site.region)}. Written from what the businesses publish themselves. Nobody pays to be in them.` })}
+<section class="section section-tight"><div class="wrap">
+  ${posts.length ? `<h2 class="sr-only">Articles</h2><div class="card-grid">${posts.map(postCard).join('')}</div>` : '<p class="muted">The first article is on its way.</p>'}
+</div></section>`;
+  addPage('/blog/', layout({ title: 'Blog', description: `Guides to independent local businesses in ${site.region}, from SearchLocal.`, pathname: '/blog/', body, extraHead: feedLink, jsonld: [c.ld, { '@context': 'https://schema.org', '@type': 'Blog', name: `${site.name} blog`, url: `${site.url}/blog/`, publisher, blogPost: posts.map((p) => ({ '@type': 'BlogPosting', headline: p.title, url: `${site.url}/blog/${p.slug}/`, datePublished: p.date })) }] }), { noindex: !posts.length });
+
+  for (const p of posts) {
+    const url = `${site.url}/blog/${p.slug}/`;
+    const cr = crumbs([['/', 'Home'], ['/blog/', 'Blog'], [`/blog/${p.slug}/`, p.title]]);
+    const html = p.html.replace(/<p>\s*\{\{card:([a-z0-9-]+)\}\}\s*<\/p>|\{\{card:([a-z0-9-]+)\}\}/g, (_, a, b) => {
+      const l = bySlug[a || b];
+      if (!l) throw new Error(`posts/${p.slug}: unknown card "${a || b}"`);
+      return `<div class="card-grid post-embed">${card(l)}</div>`;
+    });
+    const more = posts.filter((o) => o.slug !== p.slug).slice(0, 3);
+    const body = `${pageHero({ crumbHtml: cr.html, eyebrow: `<time datetime="${p.date}">${fmtDate(p.date)}</time> · ${readMins(p.html)} min read`, title: p.h1 || e(p.title), lead: e(p.lead) })}
+<section class="section section-tight"><article class="wrap prose post-body">${html}</article></section>
+${more.length ? `<section class="section section-alt"><div class="wrap"><div class="section-head"><div><p class="eyebrow">Keep reading</p><h2 class="h2">More from <em>the blog.</em></h2></div><a class="link-arrow" href="/blog/">All articles ${icon('arrow')}</a></div><div class="card-grid">${more.map(postCard).join('')}</div></div></section>` : ''}`;
+    const jsonld = [cr.ld, {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: p.title,
+      description: p.description,
+      datePublished: p.date,
+      dateModified: p.updated || p.date,
+      url,
+      mainEntityOfPage: url,
+      image: `${site.url}/assets/img/og.jpg`,
+      author: { '@type': 'Organization', name: site.name, url: site.url },
+      publisher,
+      about: p.businesses.map((b) => ({ '@id': `${site.url}/business/${b}/#business` })),
+      mentions: p.businesses.map((b) => ({ '@type': ldType(bySlug[b]), name: bySlug[b].name, url: `${site.url}/business/${b}/` })),
+    }];
+    const head = `${feedLink}
+<meta property="article:published_time" content="${p.date}">
+<meta property="article:modified_time" content="${p.updated || p.date}">`;
+    addPage(`/blog/${p.slug}/`, layout({ title: p.title, description: p.description, pathname: `/blog/${p.slug}/`, body, jsonld, ogType: 'article', extraHead: head }));
+  }
+
+  const rssDate = (d) => new Date(d + 'T13:00:00Z').toUTCString();
+  fs.mkdirSync(path.join(OUT, 'blog'), { recursive: true });
+  fs.writeFileSync(path.join(OUT, 'blog', 'feed.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>${e(site.name)} blog</title>
+<link>${site.url}/blog/</link>
+<description>${e(`Guides to independent local businesses in ${site.region}.`)}</description>
+<language>en-us</language>
+<atom:link href="${site.url}/blog/feed.xml" rel="self" type="application/rss+xml"/>
+${posts.map((p) => `<item><title>${e(p.title)}</title><link>${site.url}/blog/${p.slug}/</link><guid>${site.url}/blog/${p.slug}/</guid><pubDate>${rssDate(p.date)}</pubDate><description>${e(p.description)}</description></item>`).join('\n')}
+</channel>
+</rss>
+`);
 }
 
 function addBusiness() {
@@ -777,6 +873,7 @@ townsIndex();
 categoryPages();
 townPages();
 businessPages();
+blogPages();
 addBusiness();
 staticPages();
 

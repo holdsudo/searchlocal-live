@@ -505,6 +505,26 @@ a.tag:hover { border-color: var(--line); color: var(--text); }
 .prose li::before { content: "◆"; position: absolute; left: 0; top: 2px; font-size: .62rem; color: var(--gold); }
 .prose strong { color: var(--text); font-weight: 600; }
 
+/* ---------- blog ---------- */
+.post-body { margin: 0 auto; padding: clamp(24px, 4vw, 48px); border-radius: var(--radius); border: 1px solid var(--line-soft); background: rgba(7,7,8,.88); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 40px 80px -40px rgba(0,0,0,.9); }
+.post-body .table-wrap { background: rgba(7,7,8,.6); }
+.post-body > p:first-child { font-size: 1.14rem; color: var(--text); }
+.post-body .post-embed { grid-template-columns: 1fr; margin: 26px 0 8px; }
+.post-body .post-embed .card { text-decoration: none; }
+.post-body .post-embed .card-title { color: var(--text); }
+.post-body .post-embed .card-sum, .post-body .post-embed .card-foot { color: var(--muted); }
+.table-wrap { overflow-x: auto; margin: 6px 0 10px; border: 1px solid var(--line-soft); border-radius: var(--radius-sm); }
+.prose table { width: 100%; border-collapse: collapse; font-size: .94rem; min-width: 560px; }
+.prose th, .prose td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--line-soft); color: #cfc9bc; vertical-align: top; }
+.prose th { font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 700; background: rgba(214,178,94,.04); }
+.prose tbody tr:last-child td { border-bottom: 0; }
+.prose .post-note { margin-top: 48px; padding: 20px 22px; border: 1px dashed var(--line); border-radius: var(--radius-sm); font-size: .9rem; line-height: 1.7; color: var(--muted); background: rgba(10,10,12,.7); }
+.post-card .card-foot { color: var(--gold); font-weight: 600; }
+.post-mentions { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.post-mentions li { display: flex; flex-direction: column; gap: 2px; }
+.post-mentions a { color: var(--gold-hi); text-decoration: underline; text-decoration-color: rgba(214,178,94,.4); text-underline-offset: 3px; font-weight: 600; }
+.post-mentions span { font-size: .8rem; color: var(--dim); }
+
 /* ---------- footer ---------- */
 .site-footer { border-top: 1px solid var(--line-soft); background: var(--bg-2); padding: 80px 0 34px; }
 .footer-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px; }
@@ -643,6 +663,7 @@ a.tag:hover { border-color: var(--line); color: var(--text); }
   .card-cat { letter-spacing: .06em; font-size: .72rem; }
 }
 @media (max-width: 480px) {
+  .post-body { margin: 0 12px; padding: 24px 18px; }
   .card-arrow { display: none; }
   .card-head { padding-right: 0; }
   .f-select, .f-toggle { flex-basis: 100%; }
