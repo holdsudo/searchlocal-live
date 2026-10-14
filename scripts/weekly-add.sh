@@ -1,6 +1,6 @@
 #!/bin/bash
 # Adds one verified business to searchlocal.live. Run by LaunchAgent com.searchlocal.weekly-add
-# (Tue + Fri). Missed runs (Mac asleep) fire on next wake. Safe to run by hand.
+# (daily at 10:00). Missed runs (Mac asleep) fire on next wake. Safe to run by hand.
 set -uo pipefail
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 REPO="$HOME/searchlocal-live"
@@ -9,6 +9,7 @@ mkdir -p "$REPO/automation/logs"
 exec >>"$LOG" 2>&1
 echo "=== $(date) ==="
 cd "$REPO" || exit 1
+source scripts/lock.sh
 
 notify() { osascript -e "display notification \"$1\" with title \"SearchLocal\"" >/dev/null 2>&1 || true; }
 
