@@ -39,9 +39,9 @@ endpoint (Formspree, a Worker, your own API) to switch over.
    (plus `www` CNAME → `<user>.github.io`). `dist/CNAME` is written by the build.
 3. Enable "Enforce HTTPS" once the certificate is issued.
 
-## Automatic listings (2 a week)
+## Automatic listings (1 a day)
 
-LaunchAgent `com.searchlocal.weekly-add` runs `scripts/weekly-add.sh` on Tuesdays and Fridays at 10:00
+LaunchAgent `com.searchlocal.weekly-add` runs `scripts/weekly-add.sh` every day at 10:00
 (missed runs fire on next wake). Each run adds at most one business:
 
 1. `scripts/pick-candidates.mjs` — picks 6 untried independent businesses from OpenStreetMap
@@ -56,3 +56,26 @@ Every candidate looked at is recorded in `src/data/osm-tried.json` and never ret
 Logs: `automation/logs/`. The run skips itself if `src/` has uncommitted edits.
 Pause: `launchctl unload ~/Library/LaunchAgents/com.searchlocal.weekly-add.plist`.
 Run now: `bash scripts/weekly-add.sh`.
+
+## Blog (1 post a week)
+
+Posts live in `src/posts/<slug>.html`: a JSON front-matter comment (title, h1, description, lead, date,
+businesses) followed by HTML. `{{card:<listing-slug>}}` on its own line embeds a listing card. Posts dated
+in the future stay hidden until their day. The build makes `/blog/`, each article, and `/blog/feed.xml`,
+and business pages link back to articles that mention them.
+
+LaunchAgent `com.searchlocal.weekly-post` runs `scripts/weekly-post.sh` on Wednesdays at 11:00:
+
+1. `scripts/pick-topic.mjs` picks a topic from verified listings (a category, a town, opening hours, or
+   new this month) with at least 3 businesses, 2 or more never featured before. Champion Auto Finance is
+   kept out of editorial posts.
+2. `claude -p` with `automation/post-prompt.md` writes `automation/post-draft.html` from the listings and
+   each business's own website.
+3. `scripts/apply-post.mjs` is the gate. It rejects businesses outside the brief, links outside the
+   allow-list, non-whitelisted markup, superlatives ("best", "fastest", "must-try"…), phone numbers that
+   aren't the businesses', prices, and missing disclosure. A rejected draft gets one rewrite with the reasons.
+4. Build, commit, push.
+
+Both jobs share `scripts/lock.sh`, so they never push at the same time.
+Try without publishing: `DRY_RUN=1 bash scripts/weekly-post.sh` (draft kept at `automation/last-dry-run.html`).
+Pause: `launchctl unload ~/Library/LaunchAgents/com.searchlocal.weekly-post.plist`.

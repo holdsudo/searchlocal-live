@@ -13,7 +13,8 @@ Read `automation/post-brief.json`. It gives the article's angle and the business
 - Do NOT rank, crown or praise. Banned words anywhere: best, #1, number one, top-rated, top, award-winning, leading, premier, finest, world-class, unbeatable, guaranteed, cheapest, fastest, must-try, hidden gem, favorite, beloved, famous, renowned, iconic, legendary, delicious, amazing, incredible, perfect.
 - No accreditations or certifications ("licensed", "board-certified", "kosher", etc.) unless the brief or site states them word for word; when you mention one, say "the website says…".
 - Hours: quote them only as published in the brief, and tell readers to call ahead.
-- Attribute site-specific claims: "their website says…", "according to its menu…".
+- Attribute claims to where you actually read them: "its website says…" for things you saw on the site, "the directory lists…" only for facts that are in the brief.
+- Hours in the brief are 24-hour "HH:MM-HH:MM"; null means no hours are listed for that day (say so, don't call it "closed"). "23:59" means midnight; write "midnight".
 - Neutral, warm, plain English. Short paragraphs. Second person is fine. No exclamation marks.
 
 ## Format

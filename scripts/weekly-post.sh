@@ -36,7 +36,7 @@ $REJECTED"
   claude -p "$PROMPT" \
     --model sonnet \
     --allowedTools "WebFetch" "Read" "Edit(automation/post-draft.html)" \
-    --max-turns 40 >/dev/null
+    --max-turns 40 </dev/null >/dev/null
   [ -f automation/post-draft.html ] || { echo "agent wrote no draft"; continue; }
   REJECTED="$(node scripts/apply-post.mjs 2>&1)" && { echo "$REJECTED"; REJECTED=""; break; }
   echo "attempt $attempt: $REJECTED"
