@@ -206,5 +206,28 @@
     "name": "Glen Kelly Real Estate",
     "result": "listed",
     "date": "2026-10-13"
+  },
+  "node/13808420640": {
+    "name": "Express Plumbing, Air, and Roofing",
+    "result": "rejected",
+    "reason": "No street address on own site; contact page 404",
+    "date": "2026-10-15"
+  },
+  "way/708131363": {
+    "name": "Foster's Landscaping",
+    "result": "rejected",
+    "reason": "Website domain does not resolve",
+    "date": "2026-10-15"
+  },
+  "node/11651590823": {
+    "name": "Cream Ridge Transmission And Car Care",
+    "result": "rejected",
+    "reason": "Website domain does not resolve",
+    "date": "2026-10-15"
+  },
+  "node/11370300899": {
+    "name": "Dave's Village Auto Repair",
+    "result": "listed",
+    "date": "2026-10-15"
   }
 }

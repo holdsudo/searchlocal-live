@@ -58,5 +58,11 @@
     "name": "Lanoka Harbor",
     "county": "Ocean County",
     "state": "NJ"
+  },
+  {
+    "slug": "whiting",
+    "name": "Whiting",
+    "county": "Ocean County",
+    "state": "NJ"
   }
 ]

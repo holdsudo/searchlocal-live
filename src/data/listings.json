@@ -603,5 +603,38 @@
       "Home valuations",
       "New construction purchases"
     ]
+  },
+  {
+    "slug": "daves-village-auto-repair",
+    "name": "Dave's Village Auto Repair",
+    "category": "auto-repair",
+    "town": "whiting",
+    "address": "804 County Rd 530",
+    "zip": "08759",
+    "phone": "(732) 350-1007",
+    "website": "https://www.daves-villageautorepair.com",
+    "hours": {
+      "mon": "08:30-17:00",
+      "tue": "08:30-17:00",
+      "wed": "08:30-17:00",
+      "thu": "08:30-17:00",
+      "fri": "08:30-17:00",
+      "sat": null,
+      "sun": null
+    },
+    "since": 1994,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-15",
+    "summary": "Independent auto repair and tire shop on County Road 530 in Whiting, serving Whiting, Beachwood and Toms River.",
+    "description": "Dave's Village Auto Repair is a vehicle repair shop in Whiting, New Jersey that has operated since 1994. The shop handles brake, electrical, steering and suspension work, and sells and installs tires. It is open weekdays and closed on weekends.",
+    "services": [
+      "Brake repair",
+      "Electrical repair",
+      "Steering and suspension",
+      "Tire sales and service",
+      "State inspections"
+    ]
   }
 ]
