@@ -85,6 +85,7 @@ function monogram(name) {
 }
 const fullAddress = (l) => l.address ? `${l.address}, ${l.townObj.name}, ${l.townObj.state} ${l.zip}` : `${l.townObj.name}, ${l.townObj.state}`;
 const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
+const andList = (arr) => arr.length <= 1 ? arr.join('') : `${arr.slice(0, -1).join(', ')} and ${arr[arr.length - 1]}`;
 
 // ---------- layout ----------
 const NAV = [
@@ -436,7 +437,7 @@ function home() {
       url: site.url,
       potentialAction: { '@type': 'SearchAction', target: `${site.url}/browse/?q={search_term_string}`, 'query-input': 'required name=search_term_string' },
     },
-    { '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url, email: site.email, logo: `${site.url}/assets/img/icon-512.png`, image: `${site.url}/assets/img/og.jpg` },
+    { '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url, email: site.email, logo: `${site.url}/assets/img/icon-512.png`, image: `${site.url}/assets/img/og.jpg`, areaServed: { '@type': 'AdministrativeArea', name: site.region }, knowsAbout: categories.map((c) => c.name) },
     { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
   ];
   addPage('/', layout({ title: 'Home', description: `Find real local businesses across ${site.region} — restaurants, trades, salons, health and more. Free listings, no pay-to-rank, no fake reviews.`, pathname: '/', body, jsonld, bodyClass: 'page-home' }));
@@ -516,12 +517,22 @@ function categoryPages() {
     const others = categories.filter((o) => o.slug !== c.slug).slice(0, 8).map((o) => `<a class="chip" href="/category/${o.slug}/">${icon(o.icon)}${e(o.name)}</a>`).join('');
     const cr = crumbs([['/', 'Home'], ['/categories/', 'Categories'], [`/category/${c.slug}/`, c.name]]);
     const cards = list.map((l) => card(l).replace('<a class="card"', `<a class="card" data-town="${l.town}"`)).join('');
-    const body = `${pageHero({ crumbHtml: cr.html, iconName: c.icon, eyebrow: `${plural(list.length, 'listing')} · ${e(site.region)}`, title: `${e(c.name)}`, lead: e(c.blurb), extra: filterChips })}
+    // Real links to each town's page (the filter chips above are buttons, which crawlers don't follow).
+    const townCount = (t) => real(list).filter((l) => l.town === t.slug).length;
+    const byTown = townsHere.filter(townCount).map((t) => `<a class="chip" href="/town/${t.slug}/">${icon('pin')}${e(t.name)} <span class="muted">(${townCount(t)})</span></a>`).join('');
+    const townNames = andList(townsHere.filter(townCount).map((t) => t.name));
+    const n = real(list).length;
+    const lead = n
+      ? `${e(c.blurb)} ${n === 1 ? 'One listing' : `${n} listings`} in ${e(townNames)}, each checked against the business's own website for name, address, phone and hours. No paid placement.`
+      : e(c.blurb);
+    const body = `${pageHero({ crumbHtml: cr.html, iconName: c.icon, eyebrow: `${plural(list.length, 'listing')} · ${e(site.region)}`, title: `${e(c.name)}`, lead, extra: filterChips })}
 <section class="section section-tight"><div class="wrap">
   ${list.length ? `<h2 class="sr-only">${e(c.name)} listings</h2><div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(c.name)}
 </div>${list.length ? sampleNotice() : ''}</section>
+${byTown ? `<section class="section section-tight related"><div class="wrap"><h2 class="h3">${e(c.name)} by town</h2><div class="chips">${byTown}</div></div></section>` : ''}
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Other categories</h2><div class="chips">${others}</div></div></section>`;
-    addPage(`/category/${c.slug}/`, layout({ title: `${c.name} in ${site.region}`, description: `${c.name} in ${site.region}: ${c.blurb}`, pathname: `/category/${c.slug}/`, body, jsonld: real(list).length ? [cr.ld, itemList(list, `${c.name} in ${site.region}`)] : [cr.ld] }), { noindex: !canIndex(list) });
+    const description = n ? `${c.name} in ${site.region}: ${plural(n, 'verified listing')} in ${townNames} with address, phone, hours and website. ${c.blurb}` : `${c.name} in ${site.region}: ${c.blurb}`;
+    addPage(`/category/${c.slug}/`, layout({ title: `${c.name} in ${site.region}`, description, pathname: `/category/${c.slug}/`, body, jsonld: real(list).length ? [cr.ld, itemList(list, `${c.name} in ${site.region}`)] : [cr.ld] }), { noindex: !canIndex(list) });
   }
 }
 
@@ -535,12 +546,23 @@ function townPages() {
     const cr = crumbs([['/', 'Home'], ['/towns/', 'Towns'], [`/town/${t.slug}/`, t.name]]);
     const cards = list.map((l) => card(l).replace('<a class="card"', `<a class="card" data-cat="${l.category}"`)).join('');
     const nearby = towns.filter((o) => o.slug !== t.slug).map((o) => `<a class="chip" href="/town/${o.slug}/">${icon('pin')}${e(o.name)}</a>`).join('');
-    const body = `${pageHero({ crumbHtml: cr.html, eyebrow: `${e(t.county)}, ${e(t.state)}`, title: `${e(t.name)}`, lead: `${plural(list.length, 'local business', 'local businesses')} in ${e(t.name)}, ${e(t.state)} — verified details, live hours, and a direct line to the people who run them.`, extra: filterChips })}
+    // Real links to each category's page (the filter chips above are buttons, which crawlers don't follow).
+    const catCount = (c) => real(list).filter((l) => l.category === c.slug).length;
+    const byCat = catsHere.filter(catCount).map((c) => `<a class="chip" href="/category/${c.slug}/">${icon(c.icon)}${e(c.name)} <span class="muted">(${catCount(c)})</span></a>`).join('');
+    const catNames = andList(catsHere.filter(catCount).map((c) => c.name.toLowerCase()));
+    const n = real(list).length;
+    const lead = n
+      ? `${plural(n, 'local business', 'local businesses')} in ${e(t.name)}, ${e(t.county)}, ${e(t.state)} — ${e(catNames)} — with verified address, phone, live hours and a link to each business's own website.`
+      : `${plural(list.length, 'local business', 'local businesses')} in ${e(t.name)}, ${e(t.state)} — verified details, live hours, and a direct line to the people who run them.`;
+    const body = `${pageHero({ crumbHtml: cr.html, eyebrow: `${e(t.county)}, ${e(t.state)}`, title: `${e(t.name)}`, lead, extra: filterChips })}
 <section class="section section-tight"><div class="wrap">
   ${list.length ? `<h2 class="sr-only">Businesses in ${e(t.name)}</h2><div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(`businesses in ${t.name}`)}
 </div>${list.length ? sampleNotice() : ''}</section>
+${byCat ? `<section class="section section-tight related"><div class="wrap"><h2 class="h3">Categories in ${e(t.name)}</h2><div class="chips">${byCat}</div></div></section>` : ''}
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Nearby towns</h2><div class="chips">${nearby}</div></div></section>`;
-    addPage(`/town/${t.slug}/`, layout({ title: `Local businesses in ${t.name}, ${t.state}`, description: `Find local businesses in ${t.name}, ${t.state} — ${catsHere.map((c) => c.name).slice(0, 5).join(', ')} and more.`, pathname: `/town/${t.slug}/`, body, jsonld: real(list).length ? [cr.ld, itemList(list, `Local businesses in ${t.name}, ${t.state}`)] : [cr.ld] }), { noindex: !canIndex(list) });
+    const place = { '@context': 'https://schema.org', '@type': 'City', name: t.name, containedInPlace: { '@type': 'AdministrativeArea', name: `${t.county}, ${t.state}` } };
+    const description = n ? `${plural(n, 'local business', 'local businesses')} in ${t.name}, ${t.state}: ${catNames}. Verified address, phone, hours and website for each, free to list.` : `Find local businesses in ${t.name}, ${t.state} — ${catsHere.map((c) => c.name).slice(0, 5).join(', ')} and more.`;
+    addPage(`/town/${t.slug}/`, layout({ title: `Local businesses in ${t.name}, ${t.state}`, description, pathname: `/town/${t.slug}/`, body, jsonld: real(list).length ? [cr.ld, { ...itemList(list, `Local businesses in ${t.name}, ${t.state}`), about: place }] : [cr.ld] }), { noindex: !canIndex(list) });
   }
 }
 
@@ -553,7 +575,10 @@ function businessPages() {
     const hoursRows = l.hours ? DAYS.map((d) => `<tr data-day="${d}"><th scope="row">${DAY_NAMES[d]}</th><td>${fmtRange(l.hours[d])}</td></tr>`).join('') : '';
     const services = l.services.map((s) => `<li>${icon('check')}${e(s)}</li>`).join('');
     const mentions = posts.filter((p) => p.businesses.includes(l.slug));
-    const similar = listings.filter((o) => o.slug !== l.slug && (o.category === l.category || o.town === l.town)).sort((a, b) => (b.category === l.category) - (a.category === l.category)).slice(0, 3);
+    // Up to three from the same category, then up to three more from the same town: two crawl paths, not one.
+    const sameCat = listings.filter((o) => o.slug !== l.slug && o.category === l.category).slice(0, 3);
+    const sameTown = listings.filter((o) => o.slug !== l.slug && o.town === l.town && !sameCat.includes(o)).slice(0, 3);
+    const similar = [...sameCat, ...sameTown];
     const map = !l.address
       ? `<div class="map map-placeholder"><div class="map-grid" aria-hidden="true"></div><span class="map-pin">${icon('pin')}</span><p>${e(l.serviceArea || `Based in ${t.name}, ${t.state}`)}</p></div>`
       : l.sample
@@ -636,8 +661,12 @@ ${similar.length ? `<section class="section section-alt"><div class="wrap"><div 
         description: l.description,
         telephone: l.phone,
         url: l.website || undefined,
+        sameAs: l.website ? [l.website] : undefined,
+        foundingDate: l.since ? String(l.since) : undefined,
+        hasMap: l.address ? `https://www.google.com/maps/search/?api=1&query=${mapsQ}` : undefined,
         address: { '@type': 'PostalAddress', streetAddress: l.address || undefined, addressLocality: t.name, addressRegion: t.state, postalCode: l.zip || undefined, addressCountry: 'US' },
-        areaServed: l.serviceArea || undefined,
+        areaServed: l.serviceArea || `${t.name}, ${t.state}`,
+        knowsAbout: l.services.length ? l.services : undefined,
         openingHoursSpecification: l.hours ? DAYS.filter((d) => l.hours[d]).map((d) => {
           const [opens, closes] = l.hours[d].split('-');
           return { '@type': 'OpeningHoursSpecification', dayOfWeek: DAY_NAMES[d], opens, closes };
@@ -696,6 +725,8 @@ ${more.length ? `<section class="section section-alt"><div class="wrap"><div cla
       image: `${site.url}/assets/img/og.jpg`,
       author: { '@type': 'Organization', name: site.name, url: site.url },
       publisher,
+      inLanguage: 'en-US',
+      wordCount: html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length,
       about: p.businesses.map((b) => ({ '@id': `${site.url}/business/${b}/#business` })),
       mentions: p.businesses.map((b) => ({ '@type': ldType(bySlug[b]), name: bySlug[b].name, url: `${site.url}/business/${b}/` })),
     }];
@@ -901,8 +932,16 @@ const today = new Date().toISOString().slice(0, 10);
 const LASTMOD_FILE = path.join(SRC, 'data', 'lastmod.json');
 const lastmod = fs.existsSync(LASTMOD_FILE) ? JSON.parse(fs.readFileSync(LASTMOD_FILE, 'utf8')) : {};
 const pageHtml = Object.fromEntries(pages);
+// Only the page's own content counts: <title>, description, structured data and <main>. The shared
+// header/footer are excluded, otherwise adding one town to the footer stamps every page "changed today".
+const ownContent = (html) => {
+  const head = html.slice(0, html.indexOf('</head>'));
+  const meta = [...head.matchAll(/<title>[\s\S]*?<\/title>|<meta name="description"[^>]*>|<script type="application\/ld\+json">[\s\S]*?<\/script>/g)].map((m) => m[0]).join('');
+  const main = html.slice(html.indexOf('<main id="main">'), html.indexOf('</main>'));
+  return (meta + main).replace(/\?v=[a-z0-9]+/g, '');
+};
 for (const p of indexable) {
-  const h = crypto.createHash('sha1').update(pageHtml[p].replace(/\?v=[a-z0-9]+/g, '').replace(/© \d{4}/, '')).digest('hex').slice(0, 16);
+  const h = crypto.createHash('sha1').update(ownContent(pageHtml[p])).digest('hex').slice(0, 16);
   if (!lastmod[p] || lastmod[p].h !== h) lastmod[p] = { h, d: today };
 }
 for (const p of Object.keys(lastmod)) if (!indexable.includes(p)) delete lastmod[p];
