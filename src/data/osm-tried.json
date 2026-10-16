@@ -229,5 +229,11 @@
     "name": "Dave's Village Auto Repair",
     "result": "listed",
     "date": "2026-10-15"
+  },
+  "way/1557704816": {
+    "name": "Hot or Not Yoga",
+    "result": "gate-rejected",
+    "reason": "website must be https",
+    "date": "2026-10-16"
   }
 }
