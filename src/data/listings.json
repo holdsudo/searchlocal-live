@@ -693,6 +693,19 @@
       "Print-to-scale from PDF",
       "Shipping to a jobsite, office or home"
     ],
-    "logo": "/assets/img/logos/print-my-plans.png"
+    "logo": "/assets/img/logos/print-my-plans.png",
+    "discounts": [
+      {"code": "WELCOME20", "offer": "20% off printing", "who": "New customers, first order"},
+      {"code": "STUDENT25", "offer": "25% off printing", "who": "Students"},
+      {"code": "TEACHER20", "offer": "20% off printing", "who": "Teachers"},
+      {"code": "MILITARY20", "offer": "20% off printing", "who": "Military members and veterans"},
+      {"code": "HERO20", "offer": "20% off printing", "who": "First responders"},
+      {"code": "NONPROFIT20", "offer": "20% off printing", "who": "Nonprofit organizations"},
+      {"code": "SHORE20", "offer": "20% off printing", "who": "Shore Builders Association of Central NJ"},
+      {"code": "CSINJ20", "offer": "20% off printing", "who": "CSI New Jersey"},
+      {"code": "AIANJ20", "offer": "20% off printing", "who": "AIA New Jersey"},
+      {"code": "AIBD20", "offer": "20% off printing", "who": "AIBD members"},
+      {"code": "AIAS20", "offer": "20% off printing", "who": "AIAS members"}
+    ]
   }
 ]

@@ -616,6 +616,16 @@ function businessPages() {
     const mapsQ = encodeURIComponent(`${l.name}, ${addr}`);
     const hoursRows = l.hours ? DAYS.map((d) => `<tr data-day="${d}"><th scope="row">${DAY_NAMES[d]}</th><td>${fmtRange(l.hours[d])}</td></tr>`).join('') : '';
     const services = l.services.map((s) => `<li>${icon('check')}${e(s)}</li>`).join('');
+    const discounts = Array.isArray(l.discounts) && l.discounts.length
+      ? `<article class="panel" data-reveal>
+        <h2 class="panel-title">Discount codes</h2>
+        <div class="table-wrap"><table class="discount-table">
+          <thead><tr><th scope="col">Code</th><th scope="col">Discount</th><th scope="col">Who it's for</th></tr></thead>
+          <tbody>${l.discounts.map((d) => `<tr><td>${e(d.code)}</td><td>${e(d.offer)}</td><td>${e(d.who)}</td></tr>`).join('')}</tbody>
+        </table></div>
+        <p class="hours-note">Same codes as on their site. They apply to printing only, and only one code per order.</p>
+      </article>`
+      : '';
     const mentions = posts.filter((p) => p.businesses.includes(l.slug));
     // Up to three from the same category, then up to three more from the same town: two crawl paths, not one.
     const sameCat = listings.filter((o) => o.slug !== l.slug && o.category === l.category).slice(0, 3);
@@ -660,6 +670,7 @@ function businessPages() {
         <h2 class="panel-title">Services</h2>
         <ul class="services">${services}</ul>
       </article>
+      ${discounts}
       <article class="panel" data-reveal>
         <h2 class="panel-title">Location</h2>
         ${map}
