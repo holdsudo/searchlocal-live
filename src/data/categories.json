@@ -14,5 +14,6 @@
   {"slug":"pets","name":"Pet Services","icon":"heart","blurb":"Groomers, sitters, trainers and the people who love your pets."},
   {"slug":"shopping","name":"Shops & Boutiques","icon":"bag","blurb":"Independent retail worth leaving the house for."},
   {"slug":"cleaning","name":"Cleaning","icon":"sparkles","blurb":"Home and commercial cleaning crews you can trust with a key."},
-  {"slug":"finance-insurance","name":"Finance & Insurance","icon":"landmark","blurb":"Local insurance agents, accountants and financing help, from people you can call."}
+  {"slug":"finance-insurance","name":"Finance & Insurance","icon":"landmark","blurb":"Local insurance agents, accountants and financing help, from people you can call."},
+  {"slug":"printing","name":"Printing","icon":"printer","blurb":"Large-format architectural plans, blueprints and print-to-scale plan sets."}
 ]

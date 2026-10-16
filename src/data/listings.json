@@ -636,5 +636,40 @@
       "Tire sales and service",
       "State inspections"
     ]
+  },
+  {
+    "slug": "print-my-plans",
+    "name": "Print My Plans",
+    "category": "printing",
+    "town": "toms-river",
+    "address": "97 Northampton Blvd",
+    "zip": "08757",
+    "phone": "(732) 701-7919",
+    "email": "support@printmyplans.com",
+    "website": "https://printmyplans.com/",
+    "hours": {
+      "mon": "09:00-17:00",
+      "tue": "09:00-17:00",
+      "wed": "09:00-17:00",
+      "thu": "09:00-17:00",
+      "fri": "09:00-17:00",
+      "sat": null,
+      "sun": null
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "claimed": true,
+    "source": "owner",
+    "added": "2026-10-16",
+    "summary": "Large-format blueprint and architectural plan printing in Toms River, with one price per sheet at any size.",
+    "description": "Print My Plans prints architectural plans and blueprints to scale from PDF at 97 Northampton Blvd in Toms River. Sheet sizes run from 18×24 to 36×48 inches, in black and white or color, with no minimum order. Its website lists black and white at $1.95 a sheet and color at $3.75, at any size. Orders placed by 3 p.m. ET ship the same day within the United States. Email support@printmyplans.com. The office is open Monday to Friday, 9 a.m. to 5 p.m. ET.",
+    "services": [
+      "Architectural plan and blueprint printing",
+      "Black and white and color prints",
+      "Full plan sets and multiple copies",
+      "Print-to-scale from PDF",
+      "Shipping to a jobsite, office or home"
+    ]
   }
 ]

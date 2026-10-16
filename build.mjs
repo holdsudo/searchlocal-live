@@ -64,7 +64,7 @@ const fmtDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { 
 const readMins = (html) => Math.max(1, Math.round(html.replace(/<[^>]+>|\{\{[^}]+\}\}/g, ' ').split(/\s+/).filter(Boolean).length / 220));
 
 const real = (list) => list.filter((l) => !l.sample);
-const LD_TYPES = { restaurants: 'Restaurant', 'cafes-bakeries': 'Bakery', plumbing: 'Plumber', hvac: 'HVACBusiness', electricians: 'Electrician', 'auto-repair': 'AutoRepair', 'salons-barbers': 'BeautySalon', fitness: 'ExerciseGym', 'health-dental': 'MedicalBusiness', legal: 'LegalService', 'real-estate': 'RealEstateAgent', landscaping: 'HomeAndConstructionBusiness', pets: 'LocalBusiness', shopping: 'Store', cleaning: 'HomeAndConstructionBusiness', 'finance-insurance': 'FinancialService' };
+const LD_TYPES = { restaurants: 'Restaurant', 'cafes-bakeries': 'Bakery', plumbing: 'Plumber', hvac: 'HVACBusiness', electricians: 'Electrician', 'auto-repair': 'AutoRepair', 'salons-barbers': 'BeautySalon', fitness: 'ExerciseGym', 'health-dental': 'MedicalBusiness', legal: 'LegalService', 'real-estate': 'RealEstateAgent', landscaping: 'HomeAndConstructionBusiness', pets: 'LocalBusiness', shopping: 'Store', cleaning: 'HomeAndConstructionBusiness', 'finance-insurance': 'FinancialService', printing: 'PrintShop' };
 const ldType = (l) => (l.category === 'health-dental' && /dental|dentist|teeth/i.test(l.name)) ? 'Dentist' : (l.category === 'pets' && /veterinar/i.test(l.name)) ? 'VeterinaryCare' : /brew/i.test(l.name) ? 'Brewery' : (LD_TYPES[l.category] || 'LocalBusiness');
 const itemList = (list, name) => ({ '@context': 'https://schema.org', '@type': 'ItemList', name, numberOfItems: real(list).length, itemListElement: real(list).map((l, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site.url}/business/${l.slug}/`, name: l.name })) });
 const canIndex = (list) => real(list).length >= site.minListingsToIndex;
@@ -660,6 +660,7 @@ ${similar.length ? `<section class="section section-alt"><div class="wrap"><div 
         mainEntityOfPage: `${site.url}/business/${l.slug}/`,
         description: l.description,
         telephone: l.phone,
+        email: l.email || undefined,
         url: l.website || undefined,
         sameAs: l.website ? [l.website] : undefined,
         foundingDate: l.since ? String(l.since) : undefined,
@@ -675,7 +676,7 @@ ${similar.length ? `<section class="section section-alt"><div class="wrap"><div 
     }
     const contact = l.sample ? '' : [
       ['business:contact_data:street_address', l.address], ['business:contact_data:locality', t.name], ['business:contact_data:region', t.state],
-      ['business:contact_data:postal_code', l.zip], ['business:contact_data:country_name', 'United States'], ['business:contact_data:phone_number', l.phone], ['business:contact_data:website', l.website],
+      ['business:contact_data:postal_code', l.zip], ['business:contact_data:country_name', 'United States'], ['business:contact_data:phone_number', l.phone], ['business:contact_data:email', l.email], ['business:contact_data:website', l.website],
     ].filter(([, v]) => v).map(([k, v]) => `<meta property="${k}" content="${e(v)}">`).join('\n');
     addPage(`/business/${l.slug}/`, layout({ title: `${l.name} — ${l.cat.name} in ${t.name}, ${t.state}`, description: `${l.name} in ${t.name}, ${t.state}. ${l.summary}`, pathname: `/business/${l.slug}/`, body, jsonld, ogType: l.sample ? 'website' : 'business.business', extraHead: contact }), { noindex: l.sample });
   }
