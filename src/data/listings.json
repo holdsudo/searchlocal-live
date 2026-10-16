@@ -29,7 +29,8 @@
       "Slim Wrap body wraps",
       "Massage",
       "Lash lift"
-    ]
+    ],
+    "logo": "/assets/img/logos/spa-virtue.png"
   },
   {
     "slug": "lius-kitchen",
@@ -61,7 +62,8 @@
       "Lunch menu",
       "Takeout and delivery",
       "Gift cards"
-    ]
+    ],
+    "logo": "/assets/img/logos/lius-kitchen.png"
   },
   {
     "slug": "solo-bella-brick-oven-bistro",
@@ -93,7 +95,8 @@
       "Catering",
       "In-house parties",
       "Takeout and delivery"
-    ]
+    ],
+    "logo": "/assets/img/logos/solo-bella-brick-oven-bistro.png"
   },
   {
     "slug": "agripas-street",
@@ -125,7 +128,8 @@
       "Reservations",
       "Gift cards",
       "Uber Eats ordering"
-    ]
+    ],
+    "logo": "/assets/img/logos/agripas-street.png"
   },
   {
     "slug": "ellies-indian-curry-corner",
@@ -157,7 +161,8 @@
       "Catering",
       "Private events",
       "Pickup and delivery"
-    ]
+    ],
+    "logo": "/assets/img/logos/ellies-indian-curry-corner.png"
   },
   {
     "slug": "ob-cos-donuts",
@@ -181,7 +186,8 @@
       "Platters",
       "Coffee",
       "Seasonal flavors"
-    ]
+    ],
+    "logo": "/assets/img/logos/ob-cos-donuts.png"
   },
   {
     "slug": "coastal-dental-group",
@@ -205,7 +211,8 @@
       "Periodontal therapy",
       "Dental implants",
       "Invisalign"
-    ]
+    ],
+    "logo": "/assets/img/logos/coastal-dental-group.png"
   },
   {
     "slug": "brady-and-kunz",
@@ -229,7 +236,9 @@
       "Personal injury",
       "Real estate law",
       "Family law"
-    ]
+    ],
+    "logo": "/assets/img/logos/brady-and-kunz.png",
+    "logoTone": "light"
   },
   {
     "slug": "elite-dental-center-of-toms-river",
@@ -253,7 +262,8 @@
       "Invisalign",
       "Teeth whitening",
       "Emergency dentistry"
-    ]
+    ],
+    "logo": "/assets/img/logos/elite-dental-center-of-toms-river.png"
   },
   {
     "slug": "bridge-veterinary-hospital",
@@ -285,7 +295,8 @@
       "Diagnostic imaging and lab work",
       "Exotic pet care",
       "Online pharmacy"
-    ]
+    ],
+    "logo": "/assets/img/logos/bridge-veterinary-hospital.png"
   },
   {
     "slug": "urban-coalhouse-pizza-and-bar",
@@ -309,7 +320,8 @@
       "Craft beer on tap",
       "Catering",
       "Private events"
-    ]
+    ],
+    "logo": "/assets/img/logos/urban-coalhouse-pizza-and-bar.png"
   },
   {
     "slug": "tiny-teeth-of-lakewood",
@@ -341,7 +353,8 @@
       "Restorative dentistry",
       "Sedation dentistry",
       "Dental emergencies"
-    ]
+    ],
+    "logo": "/assets/img/logos/tiny-teeth-of-lakewood.png"
   },
   {
     "slug": "epsteins-meats",
@@ -372,7 +385,8 @@
       "Takeout and prepared foods",
       "Catering orders",
       "Delivery"
-    ]
+    ],
+    "logo": "/assets/img/logos/epsteins-meats.png"
   },
   {
     "slug": "brick-nails-and-spa",
@@ -403,7 +417,8 @@
       "Pedicures",
       "Gel, acrylic and dip powder nails",
       "Waxing"
-    ]
+    ],
+    "logo": "/assets/img/logos/brick-nails-and-spa.png"
   },
   {
     "slug": "last-wave-brewing-company",
@@ -434,7 +449,8 @@
       "Cans and crowlers",
       "Merchandise",
       "Local delivery"
-    ]
+    ],
+    "logo": "/assets/img/logos/last-wave-brewing-company.png"
   },
   {
     "slug": "hiering-dupignac-dunn-and-schreiber",
@@ -466,7 +482,8 @@
       "Guardianships",
       "Land use and zoning",
       "Workers' compensation"
-    ]
+    ],
+    "logo": "/assets/img/logos/hiering-dupignac-dunn-and-schreiber.png"
   },
   {
     "slug": "the-back-stop",
@@ -490,7 +507,8 @@
       "Comic books and toys",
       "Appraisals",
       "Buying collections"
-    ]
+    ],
+    "logo": "/assets/img/logos/the-back-stop.png"
   },
   {
     "slug": "rosatos-pub-and-pizzeria",
@@ -554,7 +572,8 @@
       "Vegetarian options",
       "Carryout",
       "Delivery"
-    ]
+    ],
+    "logo": "/assets/img/logos/pho-34.png"
   },
   {
     "slug": "champion-auto-finance",
@@ -577,7 +596,8 @@
       "Lease buyout financing",
       "Lease payoff and residual guidance",
       "Online application"
-    ]
+    ],
+    "logo": "/assets/img/logos/champion-auto-finance.png"
   },
   {
     "slug": "glen-kelly-real-estate",
@@ -602,7 +622,8 @@
       "Relocation",
       "Home valuations",
       "New construction purchases"
-    ]
+    ],
+    "logo": "/assets/img/logos/glen-kelly-real-estate.png"
   },
   {
     "slug": "daves-village-auto-repair",
@@ -635,7 +656,8 @@
       "Steering and suspension",
       "Tire sales and service",
       "State inspections"
-    ]
+    ],
+    "logo": "/assets/img/logos/daves-village-auto-repair.png"
   },
   {
     "slug": "print-my-plans",
@@ -670,6 +692,7 @@
       "Full plan sets and multiple copies",
       "Print-to-scale from PDF",
       "Shipping to a jobsite, office or home"
-    ]
+    ],
+    "logo": "/assets/img/logos/print-my-plans.png"
   }
 ]

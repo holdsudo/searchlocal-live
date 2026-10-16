@@ -83,6 +83,14 @@ function monogram(name) {
   const words = name.split(/\s+/).filter((w) => !skip.has(w.toLowerCase()));
   return (words[0][0] + (words[1] ? words[1][0] : '')).toUpperCase();
 }
+function mark(l, xl) {
+  const size = xl ? ' monogram-xl' : '';
+  if (!l.logo) return `<span class="monogram${size}" aria-hidden="true">${e(monogram(l.name))}</span>`;
+  if (!fs.existsSync(path.join(SRC, 'assets', 'img', 'logos', `${l.slug}.png`))) throw new Error(`${l.slug}: missing logo file`);
+  const tone = l.logoTone === 'light' ? ' on-dark' : '';
+  const px = xl ? 96 : 50;
+  return `<span class="monogram${size} has-logo${tone}"><img src="${e(l.logo)}" alt="" width="${px}" height="${px}"></span>`;
+}
 const fullAddress = (l) => l.address ? `${l.address}, ${l.townObj.name}, ${l.townObj.state} ${l.zip}` : `${l.townObj.name}, ${l.townObj.state}`;
 const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
 const andList = (arr) => arr.length <= 1 ? arr.join('') : `${arr.slice(0, -1).join(', ')} and ${arr[arr.length - 1]}`;
@@ -224,7 +232,7 @@ function footer() {
 function card(l) {
   return `<a class="card" href="/business/${l.slug}/" data-reveal>
   <div class="card-head">
-    <span class="monogram" aria-hidden="true">${e(monogram(l.name))}</span>
+    ${mark(l)}
     <span class="card-cat">${icon(l.cat.icon)}${e(l.cat.name)}</span>
     ${l.sample ? '<span class="sample-tag" title="Demonstration listing — not a real business">Sample</span>' : l.claimed ? '' : '<span class="sample-tag" title="Compiled from public information. Not yet claimed by the owner.">Unclaimed</span>'}
   </div>
@@ -592,7 +600,7 @@ function businessPages() {
   <div class="wrap">
     ${cr.html}
     <div class="biz-head">
-      <span class="monogram monogram-xl" aria-hidden="true">${e(monogram(l.name))}</span>
+      ${mark(l, true)}
       <div>
         <div class="biz-tags">
           <a class="tag" href="/category/${l.cat.slug}/">${icon(l.cat.icon)}${e(l.cat.name)}</a>
@@ -656,7 +664,8 @@ ${similar.length ? `<section class="section section-alt"><div class="wrap"><div 
         '@type': ldType(l),
         '@id': `${site.url}/business/${l.slug}/#business`,
         name: l.name,
-        image: `${site.url}/assets/img/og.jpg`,
+        image: l.logo ? `${site.url}${l.logo}` : `${site.url}/assets/img/og.jpg`,
+        logo: l.logo ? `${site.url}${l.logo}` : undefined,
         mainEntityOfPage: `${site.url}/business/${l.slug}/`,
         description: l.description,
         telephone: l.phone,
