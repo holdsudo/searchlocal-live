@@ -92,6 +92,11 @@ function mark(l, xl) {
   return `<span class="monogram${size} has-logo${tone}"><img src="${e(l.logo)}" alt="" width="${px}" height="${px}"></span>`;
 }
 const fullAddress = (l) => l.address ? `${l.address}, ${l.townObj.name}, ${l.townObj.state} ${l.zip}` : `${l.townObj.name}, ${l.townObj.state}`;
+// The phrase people type: "dentists in Toms River, NJ", not the directory's category label.
+const searchPhrase = (c) => {
+  const q = c.query || c.name;
+  return q.charAt(0).toUpperCase() + q.slice(1);
+};
 const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
 const andList = (arr) => arr.length <= 1 ? arr.join('') : `${arr.slice(0, -1).join(', ')} and ${arr[arr.length - 1]}`;
 
@@ -527,7 +532,7 @@ function categoryPages() {
     const cards = list.map((l) => card(l).replace('<a class="card"', `<a class="card" data-town="${l.town}"`)).join('');
     // Real links to each town's page (the filter chips above are buttons, which crawlers don't follow).
     const townCount = (t) => real(list).filter((l) => l.town === t.slug).length;
-    const byTown = townsHere.filter(townCount).map((t) => `<a class="chip" href="/town/${t.slug}/">${icon('pin')}${e(t.name)} <span class="muted">(${townCount(t)})</span></a>`).join('');
+    const byTown = townsHere.filter(townCount).map((t) => `<a class="chip" href="/category/${c.slug}/${t.slug}/">${icon('pin')}${e(t.name)} <span class="muted">(${townCount(t)})</span></a>`).join('');
     const townNames = andList(townsHere.filter(townCount).map((t) => t.name));
     const n = real(list).length;
     const lead = n
@@ -539,8 +544,37 @@ function categoryPages() {
 </div>${list.length ? sampleNotice() : ''}</section>
 ${byTown ? `<section class="section section-tight related"><div class="wrap"><h2 class="h3">${e(c.name)} by town</h2><div class="chips">${byTown}</div></div></section>` : ''}
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Other categories</h2><div class="chips">${others}</div></div></section>`;
-    const description = n ? `${c.name} in ${site.region}: ${plural(n, 'verified listing')} in ${townNames} with address, phone, hours and website. ${c.blurb}` : `${c.name} in ${site.region}: ${c.blurb}`;
-    addPage(`/category/${c.slug}/`, layout({ title: `${c.name} in ${site.region}`, description, pathname: `/category/${c.slug}/`, body, jsonld: real(list).length ? [cr.ld, itemList(list, `${c.name} in ${site.region}`)] : [cr.ld] }), { noindex: !canIndex(list) });
+    const phrase = searchPhrase(c);
+    const description = n ? `${phrase} in ${site.region}: ${plural(n, 'verified listing')} in ${townNames} with address, phone, hours and website. ${c.blurb}` : `${phrase} in ${site.region}: ${c.blurb}`;
+    addPage(`/category/${c.slug}/`, layout({ title: `${phrase} in ${site.region}`, description, pathname: `/category/${c.slug}/`, body, jsonld: real(list).length ? [cr.ld, itemList(list, `${phrase} in ${site.region}`)] : [cr.ld] }), { noindex: !canIndex(list) });
+  }
+}
+
+// One page per category in a town: the query "restaurants in Toms River, NJ".
+// Same 3-listing rule as the county and town pages, so a thin pair stays noindex.
+function placePages() {
+  for (const c of categories) {
+    for (const t of towns) {
+      const list = listings.filter((l) => l.category === c.slug && l.town === t.slug);
+      if (!list.length) continue;
+      const phrase = searchPhrase(c);
+      const keyword = `${phrase} in ${t.name}, ${t.state}`;
+      const n = real(list).length;
+      const cr = crumbs([['/', 'Home'], ['/categories/', 'Categories'], [`/category/${c.slug}/`, c.name], [`/category/${c.slug}/${t.slug}/`, t.name]]);
+      const cards = list.map((l) => card(l)).join('');
+      const lead = `${e(keyword)}: ${n === 1 ? 'one verified listing' : `${n} verified listings`}, each checked against the business's own website. ${e(c.blurb)}`;
+      const body = `${pageHero({ crumbHtml: cr.html, iconName: c.icon, eyebrow: `${e(t.county)}, ${e(t.state)}`, title: `${e(phrase)} in <em>${e(t.name)}.</em>`, lead })}
+<section class="section section-tight"><div class="wrap">
+  <h2 class="sr-only">${e(keyword)}</h2>
+  <div class="card-grid">${cards}</div>
+</div>${sampleNotice()}</section>
+<section class="section section-tight related"><div class="wrap"><h2 class="h3">Keep looking</h2><div class="chips">
+  <a class="chip" href="/category/${c.slug}/">${icon(c.icon)}All ${e(c.name.toLowerCase())}</a>
+  <a class="chip" href="/town/${t.slug}/">${icon('pin')}All of ${e(t.name)}</a>
+</div></div></section>`;
+      const description = `${keyword}: ${plural(n, 'verified listing')} with address, phone, hours and website. ${c.blurb}`;
+      addPage(`/category/${c.slug}/${t.slug}/`, layout({ title: keyword, description, pathname: `/category/${c.slug}/${t.slug}/`, body, jsonld: n ? [cr.ld, itemList(list, keyword)] : [cr.ld] }), { noindex: !canIndex(list) });
+    }
   }
 }
 
@@ -556,7 +590,7 @@ function townPages() {
     const nearby = towns.filter((o) => o.slug !== t.slug).map((o) => `<a class="chip" href="/town/${o.slug}/">${icon('pin')}${e(o.name)}</a>`).join('');
     // Real links to each category's page (the filter chips above are buttons, which crawlers don't follow).
     const catCount = (c) => real(list).filter((l) => l.category === c.slug).length;
-    const byCat = catsHere.filter(catCount).map((c) => `<a class="chip" href="/category/${c.slug}/">${icon(c.icon)}${e(c.name)} <span class="muted">(${catCount(c)})</span></a>`).join('');
+    const byCat = catsHere.filter(catCount).map((c) => `<a class="chip" href="/category/${c.slug}/${t.slug}/">${icon(c.icon)}${e(searchPhrase(c))} <span class="muted">(${catCount(c)})</span></a>`).join('');
     const catNames = andList(catsHere.filter(catCount).map((c) => c.name.toLowerCase()));
     const n = real(list).length;
     const lead = n
@@ -913,6 +947,7 @@ categoriesIndex();
 townsIndex();
 categoryPages();
 townPages();
+placePages();
 businessPages();
 blogPages();
 addBusiness();

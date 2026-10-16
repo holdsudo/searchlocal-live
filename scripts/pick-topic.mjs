@@ -10,7 +10,9 @@ const DATA = path.join(ROOT, 'src', 'data');
 const POSTS = path.join(ROOT, 'src', 'posts');
 const read = (f) => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
 const listings = read('listings.json').filter((l) => !l.sample && l.slug !== 'champion-auto-finance'); // keep CAF out of editorial content
-const categories = Object.fromEntries(read('categories.json').map((c) => [c.slug, c.name]));
+const categoryList = read('categories.json');
+const categories = Object.fromEntries(categoryList.map((c) => [c.slug, c.name]));
+const queries = Object.fromEntries(categoryList.map((c) => [c.slug, (c.query || c.name).charAt(0).toUpperCase() + (c.query || c.name).slice(1)]));
 const towns = Object.fromEntries(read('towns.json').map((t) => [t.slug, t.name]));
 
 const posts = fs.readdirSync(POSTS).filter((f) => f.endsWith('.html')).map((f) => {
@@ -33,8 +35,13 @@ const add = (type, key, angle, members) => {
   topics.push({ type, key, angle, fresh, members });
 };
 
-for (const [slug, name] of Object.entries(categories)) add('category', `category:${slug}`, `${name} in Ocean County: a factual guide to the ${name.toLowerCase()} businesses listed in the directory`, listings.filter((l) => l.category === slug));
-for (const [slug, name] of Object.entries(towns)) add('town', `town:${slug}`, `Independent businesses in ${name}: a neighborhood guide to the ${name} listings in the directory`, listings.filter((l) => l.town === slug));
+for (const [slug, name] of Object.entries(categories)) add('category', `category:${slug}`, `${queries[slug]} in Ocean County, NJ: a factual guide to the ${name.toLowerCase()} businesses listed in the directory`, listings.filter((l) => l.category === slug));
+for (const [slug, name] of Object.entries(towns)) add('town', `town:${slug}`, `Local businesses in ${name}, NJ: a neighborhood guide to the ${name} listings in the directory`, listings.filter((l) => l.town === slug));
+for (const [catSlug, phrase] of Object.entries(queries)) {
+  for (const [townSlug, townName] of Object.entries(towns)) {
+    add('place', `place:${catSlug}:${townSlug}`, `${phrase} in ${townName}, NJ: a factual guide to the ${phrase.toLowerCase()} the directory lists in ${townName}`, listings.filter((l) => l.category === catSlug && l.town === townSlug));
+  }
+}
 add('hours', 'hours:sunday', 'Open on Sunday: directory businesses whose published hours include Sundays', listings.filter((l) => open(l, 'sun')));
 add('hours', 'hours:monday', 'Open on Monday: directory businesses whose published hours include Mondays (many local spots close then)', listings.filter((l) => open(l, 'mon')));
 add('hours', 'hours:late', 'Open late: directory businesses whose published hours run to 9 p.m. or later on at least one night', listings.filter((l) => l.hours && Object.keys(l.hours).some((d) => (closesAt(l, d) || '00:00') >= '21:00')));
