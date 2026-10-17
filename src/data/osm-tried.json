@@ -235,5 +235,41 @@
     "result": "gate-rejected",
     "reason": "website must be https",
     "date": "2026-10-16"
+  },
+  "node/12188889865": {
+    "name": "The Gravity Vault",
+    "result": "rejected",
+    "reason": "Multi-state chain (NJ, NY, PA, CA)",
+    "date": "2026-10-17"
+  },
+  "node/6653991102": {
+    "name": "Simply Yoga LBI",
+    "result": "rejected",
+    "reason": "Website does not resolve (domain not found)",
+    "date": "2026-10-17"
+  },
+  "way/780376773": {
+    "name": "Poppy's Ice Cream Parlour",
+    "result": "rejected",
+    "reason": "Site shows no address or phone; unconfirmable",
+    "date": "2026-10-17"
+  },
+  "node/8735307807": {
+    "name": "Sweetwaters Coffee & Tea",
+    "result": "rejected",
+    "reason": "Page returns HTTP 410 Gone",
+    "date": "2026-10-17"
+  },
+  "way/784450641": {
+    "name": "Baked on the Beach",
+    "result": "rejected",
+    "reason": "Site blocked (403); unconfirmable",
+    "date": "2026-10-17"
+  },
+  "node/12828280391": {
+    "name": "Yellow Dog Cofee Roasters",
+    "result": "rejected",
+    "reason": "Phone number not on own site",
+    "date": "2026-10-17"
   }
 }
