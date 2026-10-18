@@ -695,17 +695,84 @@
     ],
     "logo": "/assets/img/logos/print-my-plans.png",
     "discounts": [
-      {"code": "WELCOME20", "offer": "20% off printing", "who": "New customers, first order"},
-      {"code": "STUDENT25", "offer": "25% off printing", "who": "Students"},
-      {"code": "TEACHER20", "offer": "20% off printing", "who": "Teachers"},
-      {"code": "MILITARY20", "offer": "20% off printing", "who": "Military members and veterans"},
-      {"code": "HERO20", "offer": "20% off printing", "who": "First responders"},
-      {"code": "NONPROFIT20", "offer": "20% off printing", "who": "Nonprofit organizations"},
-      {"code": "SHORE20", "offer": "20% off printing", "who": "Shore Builders Association of Central NJ"},
-      {"code": "CSINJ20", "offer": "20% off printing", "who": "CSI New Jersey"},
-      {"code": "AIANJ20", "offer": "20% off printing", "who": "AIA New Jersey"},
-      {"code": "AIBD20", "offer": "20% off printing", "who": "AIBD members"},
-      {"code": "AIAS20", "offer": "20% off printing", "who": "AIAS members"}
+      {
+        "code": "WELCOME20",
+        "offer": "20% off printing",
+        "who": "New customers, first order"
+      },
+      {
+        "code": "STUDENT25",
+        "offer": "25% off printing",
+        "who": "Students"
+      },
+      {
+        "code": "TEACHER20",
+        "offer": "20% off printing",
+        "who": "Teachers"
+      },
+      {
+        "code": "MILITARY20",
+        "offer": "20% off printing",
+        "who": "Military members and veterans"
+      },
+      {
+        "code": "HERO20",
+        "offer": "20% off printing",
+        "who": "First responders"
+      },
+      {
+        "code": "NONPROFIT20",
+        "offer": "20% off printing",
+        "who": "Nonprofit organizations"
+      },
+      {
+        "code": "SHORE20",
+        "offer": "20% off printing",
+        "who": "Shore Builders Association of Central NJ"
+      },
+      {
+        "code": "CSINJ20",
+        "offer": "20% off printing",
+        "who": "CSI New Jersey"
+      },
+      {
+        "code": "AIANJ20",
+        "offer": "20% off printing",
+        "who": "AIA New Jersey"
+      },
+      {
+        "code": "AIBD20",
+        "offer": "20% off printing",
+        "who": "AIBD members"
+      },
+      {
+        "code": "AIAS20",
+        "offer": "20% off printing",
+        "who": "AIAS members"
+      }
+    ]
+  },
+  {
+    "slug": "boba-8tea8",
+    "name": "Boba 8tea8",
+    "category": "cafes-bakeries",
+    "town": "brick",
+    "address": "1801 NJ-88, Unit 1769",
+    "zip": "08724",
+    "phone": "(908) 822-3688",
+    "website": "https://www.boba8tea8.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-18",
+    "summary": "Boba 8tea8 is a drink shop on Route 88 in Brick that takes pickup and delivery orders and offers catering.",
+    "description": "Boba 8tea8 operates from Unit 1769 at 1801 NJ-88 in Brick. Its website carries a menu page and links for ordering online for pickup or delivery. The shop also lists catering and posts seasonal opening hours that change between fall and winter and other times of year.",
+    "services": [
+      "Online pickup ordering",
+      "Delivery ordering",
+      "Catering"
     ]
   }
 ]

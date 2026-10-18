@@ -271,5 +271,10 @@
     "result": "rejected",
     "reason": "Phone number not on own site",
     "date": "2026-10-17"
+  },
+  "node/13776624777": {
+    "name": "Boba 8tea8",
+    "result": "listed",
+    "date": "2026-10-18"
   }
 }
