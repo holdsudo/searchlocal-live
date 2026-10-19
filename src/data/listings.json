@@ -774,5 +774,30 @@
       "Delivery ordering",
       "Catering"
     ]
+  },
+  {
+    "slug": "sand-dollar-real-estate",
+    "name": "Sand Dollar Real Estate",
+    "category": "real-estate",
+    "town": "surf-city",
+    "address": "217 N Long Beach Blvd",
+    "zip": "08008",
+    "phone": "(609) 494-1130",
+    "website": "https://lbirealestatenews.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-19",
+    "summary": "Real estate office on Long Beach Island offering home buying, selling and summer rental services.",
+    "description": "Sand Dollar Real Estate is an office on North Long Beach Boulevard in Surf City on Long Beach Island. Its website lists local MLS property search, market statistics, and buyer, seller and homeowner rental guides. It also describes summer rental programs and consultations before listing or buying.",
+    "services": [
+      "Local MLS property search",
+      "Pre-listing and pre-purchase consultations",
+      "Summer rental programs",
+      "Market evaluations",
+      "Buyer and seller guides"
+    ]
   }
 ]

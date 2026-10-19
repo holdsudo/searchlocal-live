@@ -64,5 +64,11 @@
     "name": "Whiting",
     "county": "Ocean County",
     "state": "NJ"
+  },
+  {
+    "slug": "surf-city",
+    "name": "Surf City",
+    "county": "Ocean County",
+    "state": "NJ"
   }
 ]
