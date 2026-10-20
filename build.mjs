@@ -703,6 +703,72 @@ ${byCat ? `<section class="section section-tight related"><div class="wrap"><h2 
   }
 }
 
+function reviewItem(r) {
+  return `<li class="review-item" data-reveal>
+  <div class="review-head">
+    ${starRow(r.rating)}
+    <span class="review-score" aria-label="${r.rating} out of 5">${r.rating}.0</span>
+    ${r.verified ? `<span class="tag tag-verified review-verified">${icon('shield')}Verified visit</span>` : ''}
+  </div>
+  <h3 class="review-title">${e(r.title)}</h3>
+  <p class="review-body">${e(r.body)}</p>
+  <p class="review-meta"><span class="review-author">${e(r.name)}</span><time datetime="${e(r.date)}">${fmtDate(r.date)}</time></p>
+</li>`;
+}
+
+function reviewsPanel(l) {
+  if (l.sample) return '';
+  const list = reviewsBySlug[l.slug] || [];
+  const agg = reviewAgg(list);
+  const summary = agg
+    ? `<div class="reviews-summary">
+  ${starRow(agg.average)}
+  <span class="reviews-avg">${agg.average.toFixed(1)}</span>
+  <span class="reviews-count">${plural(agg.count, 'SearchLocal review')}</span>
+</div>`
+    : `<p class="reviews-empty">No SearchLocal reviews yet — been here? Be the first.</p>`;
+  const listHtml = list.length ? `<ul class="review-list">${list.map(reviewItem).join('')}</ul>` : '';
+  const sid = e(l.slug);
+  const form = `<form class="form review-form" data-review-form novalidate data-endpoint="${e(site.formEndpoint)}" data-email="${e(site.email)}" data-business="${e(l.name)}" data-slug="${sid}">
+  <fieldset>
+    <legend>Write a review</legend>
+    <p class="hint review-form-note field-full">A real person reads every review before it goes live. Your email stays private.</p>
+    <div class="field"><label for="rv-name-${sid}">Your name</label><input id="rv-name-${sid}" name="name" required maxlength="80" autocomplete="name" placeholder="First name and last initial"></div>
+    <div class="field"><label for="rv-email-${sid}">Your email</label><input id="rv-email-${sid}" name="email" type="email" required maxlength="120" autocomplete="email"><span class="hint">Never shown publicly.</span></div>
+    <div class="field field-full"><label for="rv-rating-${sid}">Rating</label>
+      <div class="select-wrap"><select id="rv-rating-${sid}" name="rating" required>
+        <option value="">Choose a rating</option>
+        <option value="5">5 — Excellent</option>
+        <option value="4">4 — Good</option>
+        <option value="3">3 — Okay</option>
+        <option value="2">2 — Poor</option>
+        <option value="1">1 — Terrible</option>
+      </select>${icon('chevron')}</div>
+    </div>
+    <div class="field field-full"><label for="rv-title-${sid}">Headline</label><input id="rv-title-${sid}" name="title" required maxlength="80" placeholder="Sum it up in a few words"><span class="hint" data-counter-for="rv-title-${sid}"></span></div>
+    <div class="field field-full"><label for="rv-body-${sid}">Your review</label><textarea id="rv-body-${sid}" name="body" required rows="4" maxlength="800" placeholder="What was the visit like? Be specific and fair."></textarea><span class="hint" data-counter-for="rv-body-${sid}"></span></div>
+    <label class="check field-full"><input type="checkbox" name="visited" required><span class="check-box" aria-hidden="true">${icon('check')}</span><span>I visited or used this business and this review is my own experience.</span></label>
+  </fieldset>
+  <input type="text" name="company_url" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <input type="hidden" name="slug" value="${sid}">
+  <input type="hidden" name="business" value="${e(l.name)}">
+  <p class="form-error" role="alert" data-form-error hidden></p>
+  <button class="btn btn-gold btn-block" type="submit">Submit for review ${icon('arrow')}</button>
+  <p class="form-fine">We may edit for length or clarity, but we won't change your rating or invent praise. See our <a href="/privacy/">privacy policy</a>.</p>
+</form>
+<div class="form-success review-success" data-form-success hidden tabindex="-1">
+  <span class="success-mark">${icon('check')}</span>
+  <h3 class="h3">Thanks for <em>sharing.</em></h3>
+  <p class="lead" data-success-text>We've received your review. A real person will check it before it appears on this page.</p>
+</div>`;
+  return `<article class="panel reviews-panel" id="reviews" data-reveal>
+  <h2 class="panel-title">Reviews</h2>
+  ${summary}
+  ${listHtml}
+  ${form}
+</article>`;
+}
+
 function businessPages() {
   for (const l of listings) {
     const t = l.townObj;
@@ -747,6 +813,8 @@ function businessPages() {
   ${dockWebsite}
   ${dockDirections}
 </nav>`;
+    const ownReviews = reviewsBySlug[l.slug] || [];
+    const ownAgg = reviewAgg(ownReviews);
 
     const body = `
 <section class="biz-hero">
@@ -759,6 +827,7 @@ function businessPages() {
           <a class="tag" href="/category/${l.cat.slug}/">${icon(l.cat.icon)}${e(l.cat.name)}</a>
           <a class="tag" href="/town/${t.slug}/">${icon('pin')}${e(t.name)}, ${e(t.state)}</a>
           ${l.hours ? `<span class="status status-lg" data-hours="${e(JSON.stringify(l.hours))}"></span>` : ''}
+          ${ownAgg ? `<a class="tag tag-verified" href="#reviews">${starRow(ownAgg.average)} ${ownAgg.average.toFixed(1)} · ${ownAgg.count}</a>` : ''}
           ${l.sample ? '<span class="tag tag-sample">Sample listing</span>' : l.claimed ? '<span class="tag tag-verified">' + icon('shield') + 'Claimed by owner</span>' : '<span class="tag tag-sample" title="Compiled from public information. Not yet claimed by the owner.">Unclaimed</span>'}
         </div>
         <h1 class="display biz-title">${e(l.name)}</h1>
@@ -780,6 +849,7 @@ function businessPages() {
         <ul class="services">${services}</ul>
       </article>
       ${discounts}
+      ${reviewsPanel(l)}
       <article class="panel" data-reveal>
         <h2 class="panel-title">Location</h2>
         ${map}
@@ -830,17 +900,22 @@ ${dock}`;
           const urls = [...(l.website ? [l.website] : []), ...(l.yelp?.url ? [l.yelp.url] : [])];
           return urls.length ? urls : undefined;
         })(),
-        aggregateRating: (() => {
-          const cr = cardRating(l);
-          if (!cr) return undefined;
-          return {
-            '@type': 'AggregateRating',
-            ratingValue: cr.rating,
-            reviewCount: cr.count || undefined,
-            bestRating: 5,
-            worstRating: 1,
-          };
-        })(),
+        // SearchLocal moderated reviews only — never emit Google/Yelp aggregates here.
+        aggregateRating: ownAgg ? {
+          '@type': 'AggregateRating',
+          ratingValue: ownAgg.average,
+          reviewCount: ownAgg.count,
+          bestRating: 5,
+          worstRating: 1,
+        } : undefined,
+        review: ownReviews.length ? ownReviews.map((r) => ({
+          '@type': 'Review',
+          author: { '@type': 'Person', name: r.name },
+          datePublished: r.date,
+          name: r.title,
+          reviewBody: r.body,
+          reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5, worstRating: 1 },
+        })) : undefined,
         foundingDate: l.since ? String(l.since) : undefined,
         hasMap: l.address ? `https://www.google.com/maps/search/?api=1&query=${mapsQ}` : undefined,
         address: { '@type': 'PostalAddress', streetAddress: l.address || undefined, addressLocality: t.name, addressRegion: t.state, postalCode: l.zip || undefined, addressCountry: 'US' },

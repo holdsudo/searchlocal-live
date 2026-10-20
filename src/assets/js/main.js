@@ -349,4 +349,96 @@
       success.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   }
+
+  /* ---------- review form (moderated; mailto or formEndpoint) ---------- */
+  $$('[data-review-form]').forEach((form) => {
+    const panel = form.closest('.reviews-panel') || form.parentElement;
+    const errorBox = $('[data-form-error]', form);
+    const success = panel ? $('[data-form-success]', panel) : null;
+
+    $$('[data-counter-for]', form).forEach((hint) => {
+      const el = form.querySelector(`#${CSS.escape(hint.dataset.counterFor)}`);
+      if (!el) return;
+      const max = el.maxLength;
+      const update = () => { hint.textContent = `${el.value.length} / ${max}`; };
+      el.addEventListener('input', update);
+      update();
+    });
+
+    function validate() {
+      let firstBad = null;
+      $$('input, select, textarea', form).forEach((el) => {
+        if (el.classList.contains('hp')) return;
+        const wrap = el.closest('.field, .check');
+        const bad = !el.checkValidity();
+        wrap?.classList.toggle('is-invalid', bad);
+        if (bad && !firstBad) firstBad = el;
+      });
+      return firstBad;
+    }
+
+    form.addEventListener('input', (ev) => {
+      const wrap = ev.target.closest('.field, .check');
+      if (wrap?.classList.contains('is-invalid') && ev.target.checkValidity()) wrap.classList.remove('is-invalid');
+    });
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (errorBox) errorBox.hidden = true;
+      if (form.elements.company_url?.value) return;
+      const bad = validate();
+      if (bad) {
+        if (errorBox) {
+          errorBox.textContent = 'A few details need another look — the highlighted fields are required.';
+          errorBox.hidden = false;
+        }
+        bad.focus();
+        return;
+      }
+      const data = Object.fromEntries(new FormData(form));
+      delete data.company_url;
+      const btn = form.querySelector('button[type=submit]');
+      if (btn) btn.disabled = true;
+
+      const endpoint = form.dataset.endpoint;
+      if (endpoint) {
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ type: 'review', ...data }),
+          });
+          if (!res.ok) throw new Error(res.status);
+        } catch {
+          if (btn) btn.disabled = false;
+          if (errorBox) {
+            errorBox.textContent = "We couldn't send that just now. Please try again in a moment.";
+            errorBox.hidden = false;
+          }
+          return;
+        }
+      } else {
+        const body = [
+          `Business: ${data.business || form.dataset.business}`,
+          `Listing: ${data.slug || form.dataset.slug}`,
+          `Rating: ${data.rating} / 5`,
+          `Headline: ${data.title}`,
+          '',
+          data.body,
+          '',
+          `Reviewer: ${data.name} <${data.email}>`,
+          `Visited checkbox: ${data.visited ? 'yes' : 'no'}`,
+        ].join('\n');
+        location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(`Review: ${data.business || form.dataset.business} (${data.rating}/5)`)}&body=${encodeURIComponent(body)}`;
+        const okText = $('[data-success-text]', success || document);
+        if (okText) okText.textContent = 'Your email app should open with the review filled in — press send. A real person will check it before it goes live.';
+      }
+      form.hidden = true;
+      if (success) {
+        success.hidden = false;
+        success.focus();
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  });
 })();

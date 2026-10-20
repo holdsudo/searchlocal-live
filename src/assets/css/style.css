@@ -204,6 +204,28 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .empty-suggest { justify-content: center; margin: 22px 0 4px; }
 .empty-suggest:empty { display: none; }
 
+/* ---------- reviews (listing pages) ---------- */
+.reviews-panel { display: grid; gap: 22px; }
+.reviews-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.reviews-avg { font-size: 1.6rem; font-weight: 700; letter-spacing: .01em; }
+.reviews-count { color: var(--muted); font-size: .92rem; }
+.reviews-empty { margin: 0; color: var(--muted); }
+.review-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.review-item { padding: 20px 22px; border-radius: 18px; border: 1px solid var(--line-soft); background: rgba(255,255,255,.02); }
+.review-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 10px; }
+.review-score { font-weight: 700; color: var(--text); }
+.review-verified { margin-left: auto; }
+.review-title { margin: 0 0 8px; font-size: 1.15rem; font-weight: 600; }
+.review-body { margin: 0 0 14px; color: var(--muted); line-height: 1.55; }
+.review-meta { margin: 0; display: flex; flex-wrap: wrap; gap: 10px 16px; font-size: .86rem; color: var(--dim); }
+.review-author { color: var(--text); font-weight: 600; }
+.review-form { margin-top: 8px; padding-top: 22px; border-top: 1px solid var(--line-soft); }
+.review-form-note { margin: -6px 0 4px; }
+.review-success { margin-top: 12px; text-align: center; padding: 28px 18px; border-radius: 18px; border: 1px dashed var(--line); }
+.review-success .h3 { margin: 12px 0 8px; }
+.biz-tags .card-stars { gap: 1px; }
+.biz-tags .card-star .i { width: 12px; height: 12px; }
+
 /* ---------- marquee ---------- */
 .marquee { border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); overflow: hidden; padding: 22px 0; background: var(--bg-2); }
 .marquee-track { display: flex; gap: 36px; width: max-content; animation: marquee 60s linear infinite; font-family: var(--serif); font-size: 1.7rem; color: var(--dim); white-space: nowrap; align-items: center; }

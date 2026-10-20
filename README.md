@@ -11,6 +11,7 @@ node serve.mjs        # preview at http://localhost:4321
 ## Layout
 - `src/data/site.json`: name, domain, region, contact email, `formEndpoint`, `minListingsToIndex`
 - `src/data/categories.json`, `towns.json`, `listings.json`: the directory itself
+- `src/data/reviews.json`: moderated SearchLocal reviews keyed by listing slug
 - `src/icons.mjs`: line icons; `src/assets/`: CSS, JS and images, copied as-is
 - `.github/workflows/pages.yml`: builds and deploys to GitHub Pages on every push to `main`
 
@@ -18,6 +19,28 @@ node serve.mjs        # preview at http://localhost:4321
 Add an object to `listings.json`. `hours` is either a preset name (`restaurant`, `early`,
 `trades`, `office`, `salon`, `gym`, `retail`) or an object like
 `{"mon":"08:00-17:00", …, "sun":null}`. `website` gets a normal followed link.
+
+## Reviews (moderated)
+Visitors submit from the listing page (mailto when `formEndpoint` is empty). **Nothing
+publishes until you paste it into `src/data/reviews.json`**, then `node build.mjs` and push.
+
+```json
+{
+  "tardis-ristorante-italiano": [
+    {
+      "id": "tr-1",
+      "name": "Maria K.",
+      "rating": 5,
+      "title": "Great family dinner",
+      "body": "Specific, fair note about the visit.",
+      "date": "2026-10-18",
+      "verified": true
+    }
+  ]
+}
+```
+
+Never invent reviews. Presence in this file is the approval gate.
 
 ## Sample data (important)
 Every listing currently in the repo is **fictional** (`"sample": true`, phones in the
@@ -29,9 +52,9 @@ A category or town page is `noindex` and stays out of the sitemap until it has a
 `minListingsToIndex` (3) real listings. Don't lower this to mint more pages.
 
 ## Submissions
-No backend yet. With `formEndpoint` empty, the "Add your business" form validates, then opens
-the visitor's email app pre-filled to `site.email`. Set `formEndpoint` to any JSON POST
-endpoint (Formspree, a Worker, your own API) to switch over.
+No backend yet. With `formEndpoint` empty, the "Add your business" and review forms validate,
+then open the visitor's email app pre-filled to `site.email`. Set `formEndpoint` to any JSON
+POST endpoint (Formspree, a Worker, your own API) to switch over.
 
 ## Deploy (GitHub Pages)
 1. Push to a GitHub repo, then go to Settings → Pages → Source: **GitHub Actions**.
