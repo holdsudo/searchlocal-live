@@ -91,6 +91,8 @@
     return { open: false, label: 'Closed' };
   }
 
+  window.SearchLocal = { openState, nowInTz, toMin, fmt };
+
   function paintStatus() {
     $$('[data-hours]').forEach((el) => {
       try {
@@ -101,11 +103,49 @@
         el.closest('.card')?.toggleAttribute('data-open', s.open);
       } catch { /* leave blank */ }
     });
-    const today = nowInTz().day;
-    $$('[data-hours-table] tr').forEach((tr) => tr.classList.toggle('is-today', tr.dataset.day === today));
+    const now = nowInTz();
+    $$('[data-hours-table] [data-day]').forEach((row) => row.classList.toggle('is-today', row.dataset.day === now.day));
+    $$('[data-hours-viz]').forEach((viz) => {
+      try {
+        const hours = JSON.parse(viz.dataset.hoursJson);
+        viz.style.setProperty('--now', `${((now.minutes / 1440) * 100).toFixed(2)}%`);
+        const out = $('[data-hours-now]', viz);
+        if (!out) return;
+        const s = openState(hours);
+        let label = s.label;
+        const today = hours[now.day];
+        if (today) {
+          const [o, c] = today.split('-').map(toMin);
+          const span = (m) => (m >= 60 ? `${Math.floor(m / 60)}h${m % 60 ? ` ${m % 60}m` : ''}` : `${m}m`);
+          if (s.open) label = `Open now · closes in ${span(c - now.minutes)}`;
+          else if (now.minutes < o) label = `Opens in ${span(o - now.minutes)} · at ${fmt(today.split('-')[0])}`;
+        }
+        out.textContent = label;
+        out.classList.toggle('is-open', s.open);
+        out.classList.toggle('is-closed', !s.open);
+      } catch { /* leave blank */ }
+    });
   }
   paintStatus();
   setInterval(paintStatus, 60_000);
+
+  /* ---------- count-up numbers ---------- */
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function countUp(el) {
+    if (el.dataset.counted) return;
+    el.dataset.counted = '1';
+    const target = Number(el.dataset.countup);
+    if (!Number.isFinite(target) || reduceMotion.matches) return;
+    const dur = 1100, t0 = performance.now();
+    const tick = (t) => {
+      const p = Math.min(1, (t - t0) / dur);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * ease).toLocaleString('en-US');
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+  $$('[data-countup]').filter((el) => !el.closest('[data-reveal]')).forEach(countUp);
 
   /* ---------- reveal on scroll ---------- */
   const revealEls = $$('[data-reveal]');
@@ -116,12 +156,15 @@
         const sibs = [...en.target.parentElement.children].filter((c) => c.hasAttribute('data-reveal'));
         en.target.style.setProperty('--d', `${Math.min(sibs.indexOf(en.target), 6) * 0.06}s`);
         en.target.classList.add('is-in');
+        $$('[data-countup]', en.target).forEach(countUp);
+        if (en.target.matches('[data-countup]')) countUp(en.target);
         io.unobserve(en.target);
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
     revealEls.forEach((el) => io.observe(el));
   } else {
     revealEls.forEach((el) => el.classList.add('is-in'));
+    $$('[data-countup]').forEach(countUp);
   }
 
   /* ---------- tile spotlight ---------- */
@@ -130,6 +173,43 @@
     t.style.setProperty('--mx', `${ev.clientX - r.left}px`);
     t.style.setProperty('--my', `${ev.clientY - r.top}px`);
   }));
+
+  /* ---------- card tilt + sheen ---------- */
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion.matches) {
+    document.addEventListener('pointermove', (ev) => {
+      const card = ev.target.closest?.('.card');
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      const px = (ev.clientX - r.left) / r.width, py = (ev.clientY - r.top) / r.height;
+      card.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
+      card.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
+      card.style.setProperty('--ry', `${((px - 0.5) * 5).toFixed(2)}deg`);
+      card.style.setProperty('--rx', `${((0.5 - py) * 5).toFixed(2)}deg`);
+    }, { passive: true });
+    document.addEventListener('pointerout', (ev) => {
+      const card = ev.target.closest?.('.card');
+      if (card && !card.contains(ev.relatedTarget)) { card.style.removeProperty('--rx'); card.style.removeProperty('--ry'); }
+    });
+  }
+
+  /* ---------- share (listing pages) ---------- */
+  $$('[data-share]').forEach((box) => {
+    const data = { title: box.dataset.title, text: box.dataset.text, url: box.dataset.url };
+    const nat = $('[data-share-native]', box);
+    if (nat && navigator.share) {
+      nat.hidden = false;
+      nat.addEventListener('click', () => navigator.share(data).catch(() => {}));
+    }
+    const copy = $('[data-share-copy]', box);
+    copy?.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(data.url); }
+      catch { const i = document.createElement('input'); i.value = data.url; document.body.appendChild(i); i.select(); document.execCommand('copy'); i.remove(); }
+      const lbl = $('[data-copy-label]', copy);
+      copy.classList.add('is-done');
+      if (lbl) lbl.textContent = 'Copied';
+      setTimeout(() => { copy.classList.remove('is-done'); if (lbl) lbl.textContent = 'Copy link'; }, 1800);
+    });
+  });
 
   /* ---------- chip filters (category & town pages) ---------- */
   const chipBar = $('[data-chip-filter]');
@@ -142,6 +222,7 @@
       const key = 'town' in chip.dataset ? 'town' : 'cat';
       const val = chip.dataset[key];
       $$('.card', chipResults).forEach((card) => { card.hidden = !!val && card.dataset[key] !== val; card.classList.add('is-in'); });
+      $('[data-map]')?.slmap?.setVisible(val ? new Set($$('.card', chipResults).filter((c) => !c.hidden).map((c) => c.dataset.slug)) : null);
     });
   }
 
@@ -238,12 +319,15 @@
         }
       });
       matched.sort((a, b) => {
+        const ad = a.dataset.dist, bd = b.dataset.dist;
+        if (ad != null && bd != null && ad !== bd) return Number(ad) - Number(bd);
         const ao = a.hasAttribute('data-open') ? 0 : 1;
         const bo = b.hasAttribute('data-open') ? 0 : 1;
         if (ao !== bo) return ao - bo;
         return cardName(a).localeCompare(cardName(b), undefined, { sensitivity: 'base' });
       });
       matched.forEach((card) => results.appendChild(card));
+      $('[data-map]')?.slmap?.setVisible(new Set(matched.map(cardSlug)));
       const shown = matched.length;
       countEl.textContent = `${shown} ${shown === 1 ? 'business' : 'businesses'}${cat || town || terms.length || openOnly ? ' match' : ''}`;
       emptyEl.hidden = shown > 0;

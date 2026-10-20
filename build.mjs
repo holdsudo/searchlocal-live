@@ -32,6 +32,9 @@ function adBars() {
 }
 const categories = read('categories.json');
 const towns = read('towns.json');
+// Coordinates per listing slug (and "town:<slug>" centroids), filled by scripts/geocode.mjs. A listing
+// without its own entry falls back to its town centroid so it still appears on the map.
+const geo = fs.existsSync(path.join(SRC, 'data', 'geo.json')) ? read('geo.json') : {};
 const rawListings = read('listings.json');
 const rawReviews = fs.existsSync(path.join(SRC, 'data', 'reviews.json')) ? read('reviews.json') : {};
 
@@ -83,7 +86,7 @@ const listings = rawListings.map((l) => {
   if (!byTown[l.town]) throw new Error(`${l.slug}: unknown town "${l.town}"`);
   const hours = l.hours == null ? null : typeof l.hours === 'string' ? HOURS_PRESETS[l.hours] : l.hours;
   if (l.hours != null && !hours) throw new Error(`${l.slug}: unknown hours preset "${l.hours}"`);
-  return { ...l, hours, cat: byCat[l.category], townObj: byTown[l.town] };
+  return { ...l, hours, cat: byCat[l.category], townObj: byTown[l.town], geo: geo[l.slug] || geo['town:' + l.town] || null };
 });
 
 // Blog posts: src/posts/<slug>.html, each starting with a <!-- {json front matter} --> comment.
@@ -226,7 +229,7 @@ ${body}
 </main>
 ${footer()}
 ${adBars()}
-<script src="/assets/js/main.js?v=${BUILD_ID}" defer></script>
+<script src="/assets/js/main.js?v=${BUILD_ID}" defer></script>${body.includes('data-map') ? `\n<script src="/assets/js/map.js?v=${BUILD_ID}" defer></script>` : ''}
 </body>
 </html>`;
 }
@@ -331,6 +334,18 @@ function card(l) {
 
 const grid = (list) => `<div class="card-grid">${list.map(card).join('')}</div>`;
 
+// ---------- map ----------
+const mapPoints = (list) => real(list).filter((l) => l.geo).map((l) => ({ slug: l.slug, name: l.name, cat: l.cat.name, town: l.townObj.name, lat: l.geo.lat, lng: l.geo.lng, href: `/business/${l.slug}/`, hours: l.hours || undefined }));
+/** A map of the given listings. `cards` is a selector for the card grid on the same page (pin ↔ card sync, "Near me" sorting). */
+function mapPanel(list, { cards = '', label = 'Map of listings', size = '' } = {}) {
+  const pts = mapPoints(list);
+  if (!pts.length) return '';
+  return `<div class="map-panel${size ? ` map-${size}` : ''}" data-reveal>
+  <div class="slmap" data-map${cards ? ` data-cards="${e(cards)}"` : ''} data-points='${e(JSON.stringify(pts))}' aria-label="${e(label)}"><noscript><p class="slmap-fallback">Turn on JavaScript to see the map.</p></noscript></div>
+  <p class="map-near-note" data-near-note hidden>${icon('navigation')}Sorted by distance from you — nearest first.</p>
+</div>`;
+}
+
 function crumbs(items) {
   const html = items.map(([href, label], i) => (i === items.length - 1 ? `<span aria-current="page">${e(label)}</span>` : `<a href="${href}">${e(label)}</a>`)).join(`<span class="sep">/</span>`);
   const ld = {
@@ -420,7 +435,7 @@ function home() {
 <section class="hero">
   <div class="wrap hero-inner">
     <p class="eyebrow eyebrow-pill"><span class="dot" aria-hidden="true"></span>${e(site.tagline)} · ${e(site.region)}</p>
-    <h1 class="display hero-title">Find the <em>best</em> <span class="nowrap">of local.</span></h1>
+    <h1 class="display hero-title"><span class="w" style="--i:0"><span>Find</span></span> <span class="w" style="--i:1"><span>the</span></span> <span class="w" style="--i:2"><em>best</em></span> <span class="nowrap"><span class="w" style="--i:3"><span>of</span></span> <span class="w" style="--i:4"><span>local.</span></span></span></h1>
     <p class="lead hero-lead">Search by what you need, filter who's open, and call from the listing. Real businesses — no fake reviews.</p>
     <form class="searchbar" action="/browse/" method="get" role="search">
       <label class="sb-field">
@@ -453,6 +468,16 @@ ${marquee ? `<div class="marquee" aria-hidden="true"><div class="marquee-track">
   </div>
 </section>
 
+<section class="section map-section" id="map">
+  <div class="wrap">
+    <div class="section-head">
+      <div><p class="eyebrow">On the map</p><h2 class="h2">Right <em>around you.</em></h2></div>
+      <p class="map-hint">Tap a pin for details. Use the crosshair to sort by distance from you.</p>
+    </div>
+    ${mapPanel(listings, { label: 'Map of every listed business' })}
+  </div>
+</section>
+
 <section class="section section-alt">
   <div class="wrap">
     <div class="section-head">
@@ -482,8 +507,8 @@ ${marquee ? `<div class="marquee" aria-hidden="true"><div class="marquee-track">
 
 <section class="section stats-band">
   <div class="wrap stats">
-    <div class="stat" data-reveal><span class="stat-num">${filledCats.length}</span><span class="stat-label">Active categories</span></div>
-    <div class="stat" data-reveal><span class="stat-num">${filledTowns.length}</span><span class="stat-label">Towns with listings</span></div>
+    <div class="stat" data-reveal><span class="stat-num" data-countup="${filledCats.length}">${filledCats.length}</span><span class="stat-label">Active categories</span></div>
+    <div class="stat" data-reveal><span class="stat-num" data-countup="${filledTowns.length}">${filledTowns.length}</span><span class="stat-label">Towns with listings</span></div>
     <div class="stat" data-reveal><span class="stat-num">$0</span><span class="stat-label">To list. Forever.</span></div>
     <div class="stat" data-reveal><span class="stat-num">${real(listings).length}</span><span class="stat-label">Local businesses</span></div>
   </div>
@@ -581,6 +606,7 @@ ${pageHero({
       <label class="f-select"><span class="sr-only">Town</span><select name="town"><option value="">All towns</option>${townOptions}</select>${icon('chevron')}</label>
       <label class="f-toggle"><input type="checkbox" name="open"><span class="toggle" aria-hidden="true"></span>Open now</label>
     </form>
+    ${mapPanel(listings, { cards: '[data-results]', label: 'Map of every listed business', size: 'sm' })}
     <p class="results-count" aria-live="polite" data-count>${plural(listings.length, 'business', 'businesses')}</p>
     <h2 class="sr-only">Listings</h2>
     <div class="card-grid" data-results>${listings.map(card).join('')}</div>
@@ -655,7 +681,7 @@ function categoryPages() {
       : e(c.blurb);
     const body = `${pageHero({ crumbHtml: cr.html, iconName: c.icon, eyebrow: `${plural(list.length, 'listing')} · ${e(site.region)}`, title: `${e(c.name)}`, lead, extra: filterChips })}
 <section class="section section-tight"><div class="wrap">
-  ${list.length ? `<h2 class="sr-only">${e(c.name)} listings</h2><div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(c.name)}
+  ${list.length ? `${mapPanel(list, { cards: '[data-chip-results]', label: `Map of ${e(c.name.toLowerCase())} in ${e(site.region)}`, size: 'sm' })}<h2 class="sr-only">${e(c.name)} listings</h2><div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(c.name)}
 </div>${list.length ? sampleNotice() : ''}</section>
 ${byTown ? `<section class="section section-tight related"><div class="wrap"><h2 class="h3">${e(c.name)} by town</h2><div class="chips">${byTown}</div></div></section>` : ''}
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Other categories</h2><div class="chips">${others}</div></div></section>`;
@@ -680,8 +706,9 @@ function placePages() {
       const lead = `${e(keyword)}: ${n === 1 ? 'one verified listing' : `${n} verified listings`}, each checked against the business's own website. ${e(c.blurb)}`;
       const body = `${pageHero({ crumbHtml: cr.html, iconName: c.icon, eyebrow: `${e(t.county)}, ${e(t.state)}`, title: `${e(phrase)} in <em>${e(t.name)}.</em>`, lead })}
 <section class="section section-tight"><div class="wrap">
+  ${mapPanel(list, { cards: '[data-place-results]', label: `Map of ${e(keyword)}`, size: 'sm' })}
   <h2 class="sr-only">${e(keyword)}</h2>
-  <div class="card-grid">${cards}</div>
+  <div class="card-grid" data-place-results>${cards}</div>
 </div>${sampleNotice()}</section>
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Keep looking</h2><div class="chips">
   <a class="chip" href="/category/${c.slug}/">${icon(c.icon)}All ${e(c.name.toLowerCase())}</a>
@@ -713,7 +740,7 @@ function townPages() {
       : `${plural(list.length, 'local business', 'local businesses')} in ${e(t.name)}, ${e(t.state)} — verified details, live hours, and a direct line to the people who run them.`;
     const body = `${pageHero({ crumbHtml: cr.html, eyebrow: `${e(t.county)}, ${e(t.state)}`, title: `${e(t.name)}`, lead, extra: filterChips })}
 <section class="section section-tight"><div class="wrap">
-  ${list.length ? `<h2 class="sr-only">Businesses in ${e(t.name)}</h2><div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(`businesses in ${t.name}`)}
+  ${list.length ? `${mapPanel(list, { cards: '[data-chip-results]', label: `Map of businesses in ${e(t.name)}`, size: 'sm' })}<h2 class="sr-only">Businesses in ${e(t.name)}</h2><div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(`businesses in ${t.name}`)}
 </div>${list.length ? sampleNotice() : ''}</section>
 ${byCat ? `<section class="section section-tight related"><div class="wrap"><h2 class="h3">Categories in ${e(t.name)}</h2><div class="chips">${byCat}</div></div></section>` : ''}
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Nearby towns</h2><div class="chips">${nearby}</div></div></section>`;
@@ -795,7 +822,30 @@ function businessPages() {
     const cr = crumbs([['/', 'Home'], [`/category/${l.cat.slug}/`, l.cat.name], [`/business/${l.slug}/`, l.name]]);
     const addr = fullAddress(l);
     const mapsQ = encodeURIComponent(`${l.name}, ${addr}`);
-    const hoursRows = l.hours ? DAYS.map((d) => `<tr data-day="${d}"><th scope="row">${DAY_NAMES[d]}</th><td>${fmtRange(l.hours[d])}</td></tr>`).join('') : '';
+    // Hours as a week timeline: one bar per day across a 24h track; main.js adds today's "now" line + countdown.
+    const toMin = (x) => { const [h, m] = x.split(':').map(Number); return h * 60 + m; };
+    const hoursViz = l.hours ? `<div class="hv" data-hours-viz data-hours-json="${e(JSON.stringify(l.hours))}">
+${DAYS.map((d) => { const r = l.hours[d]; let bar = ''; if (r) { const [o, c] = r.split('-').map(toMin); bar = `<span class="hv-bar" style="left:${((o / 1440) * 100).toFixed(2)}%;width:${(((c - o) / 1440) * 100).toFixed(2)}%"></span>`; } return `<div class="hv-row${r ? '' : ' is-closed'}" data-day="${d}"><span class="hv-day" title="${DAY_NAMES[d]}">${DAY_NAMES[d].slice(0, 3)}</span><span class="hv-track"><span class="hv-now" aria-hidden="true"></span>${bar}</span><span class="hv-txt">${fmtRange(r)}</span></div>`; }).join('')}
+<div class="hv-axis" aria-hidden="true"><span>12a</span><span>6a</span><span>12p</span><span>6p</span><span>12a</span></div>
+<p class="hv-status" data-hours-now aria-live="polite"></p>
+</div>` : '';
+    const yrs = l.since ? new Date().getFullYear() - Number(l.since) : 0;
+    const glance = l.sample ? '' : `<ul class="glance" aria-label="At a glance">
+${yrs > 0 ? `<li><span class="glance-num" data-countup="${yrs}">${yrs}</span><span class="glance-label">Years in ${e(t.name)}</span></li>` : ''}
+${l.google?.rating != null ? `<li><span class="glance-num">${Number(l.google.rating).toFixed(1)}<i class="glance-star">${icon('star')}</i></span><span class="glance-label">${l.google.reviewCount != null ? `${Number(l.google.reviewCount).toLocaleString('en-US')} Google reviews` : 'Google rating'}</span></li>` : ''}
+${l.services.length ? `<li><span class="glance-num" data-countup="${l.services.length}">${l.services.length}</span><span class="glance-label">Services listed</span></li>` : ''}
+<li><span class="glance-num glance-town">${e(t.name)}</span><span class="glance-label">${e(t.county)}, ${e(t.state)}</span></li>
+</ul>`;
+    const seal = l.sample ? '' : `<span class="tag tag-seal" title="Name, address, phone and hours checked against the business's own website">${icon('check')}Verified listing</span>`;
+    const pageUrl = `${site.url}/business/${l.slug}/`;
+    const shareText = `${l.name} — ${l.cat.name} in ${t.name}, ${t.state}`;
+    const share = l.sample ? '' : `<div class="share" data-share data-title="${e(l.name)}" data-text="${e(shareText)}" data-url="${pageUrl}">
+  <span class="share-label">Share</span>
+  <button type="button" class="share-btn" data-share-native hidden>${icon('arrowUpRight')}Share</button>
+  <button type="button" class="share-btn" data-share-copy>${icon('link')}<span data-copy-label>Copy link</span></button>
+  <a class="share-btn" href="sms:?&amp;body=${encodeURIComponent(`${shareText} ${pageUrl}`)}">${icon('phone')}Text</a>
+  <a class="share-btn" href="mailto:?subject=${encodeURIComponent(shareText)}&amp;body=${encodeURIComponent(`${shareText}\n${pageUrl}`)}">${icon('globe')}Email</a>
+</div>`;
     const services = l.services.map((s) => `<li>${icon('check')}${e(s)}</li>`).join('');
     const discounts = Array.isArray(l.discounts) && l.discounts.length
       ? `<article class="panel" data-reveal>
@@ -875,9 +925,11 @@ function businessPages() {
           ${l.hours ? `<span class="status status-lg" data-hours="${e(JSON.stringify(l.hours))}"></span>` : ''}
           ${ownAgg ? `<a class="tag tag-verified" href="#reviews">${starRow(ownAgg.average)} ${ownAgg.average.toFixed(1)} · ${ownAgg.count}</a>` : ''}
           ${l.sample ? '<span class="tag tag-sample">Sample listing</span>' : l.claimed ? '<span class="tag tag-verified">' + icon('shield') + 'Claimed by owner</span>' : '<span class="tag tag-sample" title="Compiled from public information. Not yet claimed by the owner.">Unclaimed</span>'}
+          ${seal}
         </div>
         <h1 class="display biz-title">${e(l.name)}</h1>
         <p class="lead">${e(l.summary)}</p>
+        ${glance}
       </div>
     </div>
   </div>
@@ -913,9 +965,10 @@ function businessPages() {
         ${website}
         ${directions}
         ${ratingsBlock}
+        ${share}
         <div class="hours" data-hours-table>
           <h2 class="panel-title">Hours</h2>
-          ${l.hours ? `<table>${hoursRows}</table>
+          ${l.hours ? `${hoursViz}
           <p class="hours-note">Times shown in Eastern Time.</p>` : `<p class="hours-note">Hours aren't listed yet. Call ahead before visiting.</p>`}
         </div>
         ${l.claimed || l.sample ? '' : `<p class="unclaimed-note">${icon('info')}<span>This listing was compiled from public information and hasn't been claimed by the owner yet.</span></p>`}

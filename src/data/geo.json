@@ -62,97 +62,97 @@
  "spa-virtue": {
   "lat": 40.036311,
   "lng": -74.24659,
-  "src": "name"
+  "src": "osm"
  },
  "lius-kitchen": {
   "lat": 40.071889,
   "lng": -74.117576,
-  "src": "name"
+  "src": "osm"
  },
  "solo-bella-brick-oven-bistro": {
   "lat": 40.163231,
   "lng": -74.295149,
-  "src": "address"
+  "src": "osm"
  },
  "agripas-street": {
   "lat": 40.087972,
   "lng": -74.255197,
-  "src": "address"
+  "src": "osm"
  },
  "ellies-indian-curry-corner": {
   "lat": 39.953314,
   "lng": -74.197985,
-  "src": "name"
+  "src": "osm"
  },
  "ob-cos-donuts": {
   "lat": 39.953697,
   "lng": -74.123667,
-  "src": "address"
+  "src": "osm"
  },
  "coastal-dental-group": {
   "lat": 40.07333,
   "lng": -74.074703,
-  "src": "address"
+  "src": "osm"
  },
  "brady-and-kunz": {
   "lat": 39.960529,
   "lng": -74.190065,
-  "src": "name"
+  "src": "osm"
  },
  "elite-dental-center-of-toms-river": {
-  "lat": 39.98697,
-  "lng": -74.178454,
-  "src": "address"
+  "lat": 39.987892,
+  "lng": -74.17916,
+  "src": "osm"
  },
  "bridge-veterinary-hospital": {
   "lat": 40.074454,
   "lng": -74.0806,
-  "src": "address"
+  "src": "osm"
  },
  "urban-coalhouse-pizza-and-bar": {
-  "lat": 40.055894,
-  "lng": -74.1529,
-  "src": "address"
+  "lat": 40.056111,
+  "lng": -74.152918,
+  "src": "osm"
  },
  "tiny-teeth-of-lakewood": {
   "lat": 40.052319,
   "lng": -74.175827,
-  "src": "name"
+  "src": "osm"
  },
  "epsteins-meats": {
   "lat": 40.094411,
   "lng": -74.209893,
-  "src": "address"
+  "src": "osm"
  },
  "brick-nails-and-spa": {
-  "lat": 40.070724,
-  "lng": -74.128056,
-  "src": "town"
+  "lat": 40.05755,
+  "lng": -74.138897,
+  "src": "osm"
  },
  "last-wave-brewing-company": {
   "lat": 40.090364,
   "lng": -74.052081,
-  "src": "address"
+  "src": "osm"
  },
  "hiering-dupignac-dunn-and-schreiber": {
   "lat": 39.95251,
   "lng": -74.191391,
-  "src": "address"
+  "src": "osm"
  },
  "the-back-stop": {
-  "lat": 39.949435,
-  "lng": -74.117822,
-  "src": "address"
+  "lat": 39.949905,
+  "lng": -74.117217,
+  "src": "osm"
  },
  "rosatos-pub-and-pizzeria": {
   "lat": 39.956611,
   "lng": -74.245203,
-  "src": "address"
+  "src": "osm"
  },
  "pho-34": {
-  "lat": 39.953314,
-  "lng": -74.197985,
-  "src": "address"
+  "lat": 39.953268,
+  "lng": -74.197948,
+  "src": "osm"
  },
  "champion-auto-finance": {
   "lat": 40.094099,
@@ -162,12 +162,12 @@
  "glen-kelly-real-estate": {
   "lat": 39.861047,
   "lng": -74.173398,
-  "src": "name"
+  "src": "osm"
  },
  "daves-village-auto-repair": {
   "lat": 39.942349,
   "lng": -74.302018,
-  "src": "address"
+  "src": "osm"
  },
  "print-my-plans": {
   "lat": 39.989338,
@@ -177,12 +177,12 @@
  "boba-8tea8": {
   "lat": 40.068388,
   "lng": -74.129037,
-  "src": "name"
+  "src": "osm"
  },
  "sand-dollar-real-estate": {
-  "lat": 39.656541,
+  "lat": 39.656534,
   "lng": -74.170492,
-  "src": "address"
+  "src": "osm"
  },
  "tardis-ristorante-italiano": {
   "lat": 39.976844,
