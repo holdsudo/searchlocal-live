@@ -849,13 +849,13 @@ function businessPages() {
         <ul class="services">${services}</ul>
       </article>
       ${discounts}
-      ${reviewsPanel(l)}
       <article class="panel" data-reveal>
         <h2 class="panel-title">Location</h2>
         ${map}
         <p class="biz-address">${icon('pin')}${e(addr)}${!l.address && l.serviceArea ? ` · ${e(l.serviceArea)}` : ''}</p>
         ${l.source === 'osm' ? `<p class="biz-source">Details checked against the business's own website. Base data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, ODbL.</p>` : ''}
       </article>
+      ${reviewsPanel(l)}
       ${mentions.length ? `<article class="panel" data-reveal>
         <h2 class="panel-title">On the blog</h2>
         <ul class="post-mentions">${mentions.map((p) => `<li><a href="/blog/${p.slug}/">${e(p.title)}</a><span>${fmtDate(p.date)}</span></li>`).join('')}</ul>
