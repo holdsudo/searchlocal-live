@@ -17,6 +17,7 @@ const site = read('site.json');
 const categories = read('categories.json');
 const towns = read('towns.json');
 const rawListings = read('listings.json');
+const rawReviews = fs.existsSync(path.join(SRC, 'data', 'reviews.json')) ? read('reviews.json') : {};
 
 // ---------- helpers ----------
 const e = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -24,6 +25,32 @@ const byCat = Object.fromEntries(categories.map((c) => [c.slug, c]));
 const byTown = Object.fromEntries(towns.map((t) => [t.slug, t]));
 const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 const DAY_NAMES = { mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday', sat: 'Saturday', sun: 'Sunday' };
+
+/** Approved reviews only — presence in reviews.json is the moderation gate. */
+function loadReviews(raw, listingSlugs) {
+  const out = {};
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('reviews.json must be an object keyed by listing slug');
+  for (const [slug, list] of Object.entries(raw)) {
+    if (!listingSlugs.has(slug)) throw new Error(`reviews.json: unknown listing "${slug}"`);
+    if (!Array.isArray(list)) throw new Error(`reviews.json: "${slug}" must be an array`);
+    const seen = new Set();
+    out[slug] = list.map((r, i) => {
+      for (const k of ['id', 'name', 'title', 'body', 'date']) if (!r[k] || typeof r[k] !== 'string') throw new Error(`reviews.json: ${slug}[${i}] missing "${k}"`);
+      if (seen.has(r.id)) throw new Error(`reviews.json: duplicate id "${r.id}" under ${slug}`);
+      seen.add(r.id);
+      const rating = Number(r.rating);
+      if (!Number.isInteger(rating) || rating < 1 || rating > 5) throw new Error(`reviews.json: ${slug}[${i}] rating must be 1–5`);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(r.date)) throw new Error(`reviews.json: ${slug}[${i}] bad date`);
+      return { id: r.id, name: r.name.trim(), rating, title: r.title.trim(), body: r.body.trim(), date: r.date, verified: r.verified !== false };
+    }).sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
+  }
+  return out;
+}
+function reviewAgg(list) {
+  if (!list?.length) return null;
+  const sum = list.reduce((n, r) => n + r.rating, 0);
+  return { count: list.length, average: Math.round((sum / list.length) * 10) / 10 };
+}
 
 const HOURS_PRESETS = {
   restaurant: { mon: null, tue: '16:00-22:00', wed: '16:00-22:00', thu: '16:00-22:00', fri: '12:00-23:00', sat: '12:00-23:00', sun: '12:00-21:00' },
@@ -47,6 +74,7 @@ const listings = rawListings.map((l) => {
 // {{card:<listing-slug>}} on its own line embeds that listing's card.
 const POSTS_DIR = path.join(SRC, 'posts');
 const bySlug = Object.fromEntries(listings.map((l) => [l.slug, l]));
+const reviewsBySlug = loadReviews(rawReviews, new Set(Object.keys(bySlug)));
 const posts = (fs.existsSync(POSTS_DIR) ? fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith('.html')) : [])
   .map((f) => {
     const raw = fs.readFileSync(path.join(POSTS_DIR, f), 'utf8');
@@ -234,13 +262,6 @@ function footer() {
 }
 
 // ---------- components ----------
-function yelpHref(l) {
-  if (l.yelp?.url) return l.yelp.url;
-  if (l.sample) return '';
-  const loc = `${l.townObj.name}, ${l.townObj.state}`;
-  return `https://www.yelp.com/search?find_desc=${encodeURIComponent(l.name)}&find_loc=${encodeURIComponent(loc)}`;
-}
-
 function starRow(rating) {
   const r = Math.round(Number(rating) * 2) / 2;
   let html = '<span class="card-stars" aria-hidden="true">';
@@ -252,16 +273,22 @@ function starRow(rating) {
   return `${html}</span>`;
 }
 
+function cardRating(l) {
+  const own = reviewAgg(reviewsBySlug[l.slug]);
+  if (own) return { rating: own.average, count: own.count, src: 'SearchLocal' };
+  if (l.google?.rating != null) return { rating: Number(l.google.rating), count: l.google.reviewCount, src: 'Google' };
+  return null;
+}
+
 function card(l) {
   const href = `/business/${l.slug}/`;
-  const yUrl = yelpHref(l);
-  const rating = l.yelp?.rating;
-  const count = l.yelp?.reviewCount;
-  const ratingBlock = rating != null
-    ? `<div class="card-rating">${starRow(rating)}<span class="card-rating-score">${Number(rating).toFixed(1)}</span>${count != null ? `<span class="card-rating-count">(${count.toLocaleString('en-US')})</span>` : ''}<span class="card-rating-src">Yelp</span></div>`
+  // Only a real Yelp business URL — no search fallback.
+  const yelpBtn = l.yelp?.url
+    ? `<a class="card-yelp" href="${e(l.yelp.url)}" target="_blank" rel="noopener noreferrer" aria-label="View ${e(l.name)} on Yelp">Yelp</a>`
     : '';
-  const yelpBtn = yUrl
-    ? `<a class="card-yelp" href="${e(yUrl)}" target="_blank" rel="noopener noreferrer" aria-label="View ${e(l.name)} on Yelp">Yelp</a>`
+  const cr = cardRating(l);
+  const ratingBlock = cr
+    ? `<div class="card-rating">${starRow(cr.rating)}<span class="card-rating-score">${cr.rating.toFixed(1)}</span>${cr.count != null ? `<span class="card-rating-count">(${Number(cr.count).toLocaleString('en-US')})</span>` : ''}<span class="card-rating-src">${cr.src}</span></div>`
     : '';
   return `<article class="card" data-slug="${e(l.slug)}" href="${href}" data-reveal>
   <a class="card-hit" href="${href}" tabindex="-1" aria-hidden="true"></a>
@@ -364,7 +391,7 @@ function home() {
     ['Is it really free?', 'Yes. A complete listing — name, address, phone, hours, website link, description and services — costs nothing, and it stays free. We will never charge a business to rank higher in its category.'],
     ['Will this get my business to the top of Google?', 'Nobody can honestly promise that, and we won\'t. What a listing does give you is another accurate, consistent citation of your name, address and phone, a real link to your website, and a page that local customers can find.'],
     ['How do you decide who gets listed?', 'Every listing is a real business with a physical presence or service area here. We check details before anything goes live, and we remove listings that close or stop answering. See the listing guidelines for the full standard.'],
-    ['Do you have reviews?', 'Not yet. When we add them, they will come from verified customers only. We will never write, buy or filter reviews for anyone.'],
+    ['Do you have reviews?', 'Yes — on each listing. Customers submit a review, a real person checks it, and only then does it go live. We never write, buy or invent reviews for anyone.'],
     ['Can I update my listing later?', 'Anytime. Changed your hours, moved, or added a service? Send the update and we will refresh your page.'],
   ];
   const faqHtml = faqs.map(([q, a]) => `<details class="faq-item" data-reveal><summary>${e(q)}<span class="faq-plus" aria-hidden="true"></span></summary><p>${e(a)}</p></details>`).join('');
@@ -803,13 +830,17 @@ ${dock}`;
           const urls = [...(l.website ? [l.website] : []), ...(l.yelp?.url ? [l.yelp.url] : [])];
           return urls.length ? urls : undefined;
         })(),
-        aggregateRating: l.yelp?.rating != null ? {
-          '@type': 'AggregateRating',
-          ratingValue: l.yelp.rating,
-          reviewCount: l.yelp.reviewCount || undefined,
-          bestRating: 5,
-          worstRating: 1,
-        } : undefined,
+        aggregateRating: (() => {
+          const cr = cardRating(l);
+          if (!cr) return undefined;
+          return {
+            '@type': 'AggregateRating',
+            ratingValue: cr.rating,
+            reviewCount: cr.count || undefined,
+            bestRating: 5,
+            worstRating: 1,
+          };
+        })(),
         foundingDate: l.since ? String(l.since) : undefined,
         hasMap: l.address ? `https://www.google.com/maps/search/?api=1&query=${mapsQ}` : undefined,
         address: { '@type': 'PostalAddress', streetAddress: l.address || undefined, addressLocality: t.name, addressRegion: t.state, postalCode: l.zip || undefined, addressCountry: 'US' },

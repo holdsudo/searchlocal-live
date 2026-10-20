@@ -30,7 +30,11 @@
       "Massage",
       "Lash lift"
     ],
-    "logo": "/assets/img/logos/spa-virtue.png"
+    "logo": "/assets/img/logos/spa-virtue.png",
+    "google": {
+      "rating": 4.7,
+      "reviewCount": 129
+    }
   },
   {
     "slug": "lius-kitchen",
@@ -68,6 +72,10 @@
       "url": "https://www.yelp.com/biz/lius-kitchen-brick",
       "rating": 4,
       "reviewCount": 45
+    },
+    "google": {
+      "rating": 4.3,
+      "reviewCount": 304
     }
   },
   {
@@ -106,6 +114,10 @@
       "url": "https://www.yelp.com/biz/solo-bella-jackson",
       "rating": 3.6,
       "reviewCount": 304
+    },
+    "google": {
+      "rating": 4.5,
+      "reviewCount": 1082
     }
   },
   {
@@ -139,7 +151,11 @@
       "Gift cards",
       "Uber Eats ordering"
     ],
-    "logo": "/assets/img/logos/agripas-street.png"
+    "logo": "/assets/img/logos/agripas-street.png",
+    "google": {
+      "rating": 4.9,
+      "reviewCount": 137
+    }
   },
   {
     "slug": "ellies-indian-curry-corner",
@@ -172,7 +188,11 @@
       "Private events",
       "Pickup and delivery"
     ],
-    "logo": "/assets/img/logos/ellies-indian-curry-corner.png"
+    "logo": "/assets/img/logos/ellies-indian-curry-corner.png",
+    "google": {
+      "rating": 4.9,
+      "reviewCount": 307
+    }
   },
   {
     "slug": "ob-cos-donuts",
@@ -197,7 +217,11 @@
       "Coffee",
       "Seasonal flavors"
     ],
-    "logo": "/assets/img/logos/ob-cos-donuts.png"
+    "logo": "/assets/img/logos/ob-cos-donuts.png",
+    "google": {
+      "rating": 4.7,
+      "reviewCount": 741
+    }
   },
   {
     "slug": "coastal-dental-group",
@@ -222,7 +246,11 @@
       "Dental implants",
       "Invisalign"
     ],
-    "logo": "/assets/img/logos/coastal-dental-group.png"
+    "logo": "/assets/img/logos/coastal-dental-group.png",
+    "google": {
+      "rating": 4.7,
+      "reviewCount": 221
+    }
   },
   {
     "slug": "brady-and-kunz",
@@ -273,7 +301,11 @@
       "Teeth whitening",
       "Emergency dentistry"
     ],
-    "logo": "/assets/img/logos/elite-dental-center-of-toms-river.png"
+    "logo": "/assets/img/logos/elite-dental-center-of-toms-river.png",
+    "google": {
+      "rating": 5,
+      "reviewCount": 69
+    }
   },
   {
     "slug": "bridge-veterinary-hospital",
@@ -306,7 +338,11 @@
       "Exotic pet care",
       "Online pharmacy"
     ],
-    "logo": "/assets/img/logos/bridge-veterinary-hospital.png"
+    "logo": "/assets/img/logos/bridge-veterinary-hospital.png",
+    "google": {
+      "rating": 4.9,
+      "reviewCount": 260
+    }
   },
   {
     "slug": "urban-coalhouse-pizza-and-bar",
@@ -331,7 +367,11 @@
       "Catering",
       "Private events"
     ],
-    "logo": "/assets/img/logos/urban-coalhouse-pizza-and-bar.png"
+    "logo": "/assets/img/logos/urban-coalhouse-pizza-and-bar.png",
+    "google": {
+      "rating": 4.4,
+      "reviewCount": 874
+    }
   },
   {
     "slug": "tiny-teeth-of-lakewood",
@@ -364,7 +404,11 @@
       "Sedation dentistry",
       "Dental emergencies"
     ],
-    "logo": "/assets/img/logos/tiny-teeth-of-lakewood.png"
+    "logo": "/assets/img/logos/tiny-teeth-of-lakewood.png",
+    "google": {
+      "rating": 5,
+      "reviewCount": 210
+    }
   },
   {
     "slug": "epsteins-meats",
@@ -396,7 +440,11 @@
       "Catering orders",
       "Delivery"
     ],
-    "logo": "/assets/img/logos/epsteins-meats.png"
+    "logo": "/assets/img/logos/epsteins-meats.png",
+    "google": {
+      "rating": 4.9,
+      "reviewCount": 113
+    }
   },
   {
     "slug": "brick-nails-and-spa",
@@ -428,7 +476,11 @@
       "Gel, acrylic and dip powder nails",
       "Waxing"
     ],
-    "logo": "/assets/img/logos/brick-nails-and-spa.png"
+    "logo": "/assets/img/logos/brick-nails-and-spa.png",
+    "google": {
+      "rating": 3.8,
+      "reviewCount": 283
+    }
   },
   {
     "slug": "last-wave-brewing-company",
@@ -460,7 +512,11 @@
       "Merchandise",
       "Local delivery"
     ],
-    "logo": "/assets/img/logos/last-wave-brewing-company.png"
+    "logo": "/assets/img/logos/last-wave-brewing-company.png",
+    "google": {
+      "rating": 4.7,
+      "reviewCount": 260
+    }
   },
   {
     "slug": "hiering-dupignac-dunn-and-schreiber",
@@ -518,7 +574,11 @@
       "Appraisals",
       "Buying collections"
     ],
-    "logo": "/assets/img/logos/the-back-stop.png"
+    "logo": "/assets/img/logos/the-back-stop.png",
+    "google": {
+      "rating": 4.8,
+      "reviewCount": 34
+    }
   },
   {
     "slug": "rosatos-pub-and-pizzeria",
@@ -555,6 +615,10 @@
       "url": "https://www.yelp.com/biz/rosatos-pub-and-pizzeria-toms-river",
       "rating": 3.7,
       "reviewCount": 51
+    },
+    "google": {
+      "rating": 4.4,
+      "reviewCount": 249
     }
   },
   {
@@ -588,7 +652,11 @@
       "Carryout",
       "Delivery"
     ],
-    "logo": "/assets/img/logos/pho-34.png"
+    "logo": "/assets/img/logos/pho-34.png",
+    "google": {
+      "rating": 4.6,
+      "reviewCount": 245
+    }
   },
   {
     "slug": "champion-auto-finance",
@@ -638,7 +706,11 @@
       "Home valuations",
       "New construction purchases"
     ],
-    "logo": "/assets/img/logos/glen-kelly-real-estate.png"
+    "logo": "/assets/img/logos/glen-kelly-real-estate.png",
+    "google": {
+      "rating": 5,
+      "reviewCount": 48
+    }
   },
   {
     "slug": "daves-village-auto-repair",
@@ -672,7 +744,11 @@
       "Tire sales and service",
       "State inspections"
     ],
-    "logo": "/assets/img/logos/daves-village-auto-repair.png"
+    "logo": "/assets/img/logos/daves-village-auto-repair.png",
+    "google": {
+      "rating": 4.9,
+      "reviewCount": 131
+    }
   },
   {
     "slug": "print-my-plans",
@@ -788,7 +864,11 @@
       "Online pickup ordering",
       "Delivery ordering",
       "Catering"
-    ]
+    ],
+    "google": {
+      "rating": 4.9,
+      "reviewCount": 102
+    }
   },
   {
     "slug": "sand-dollar-real-estate",
@@ -851,6 +931,10 @@
       "url": "https://www.yelp.com/biz/tardis-ristorante-italiano-toms-river-2",
       "rating": 4.4,
       "reviewCount": 270
+    },
+    "google": {
+      "rating": 4.5,
+      "reviewCount": 427
     }
   },
   {
@@ -884,7 +968,11 @@
       "Private event rooms",
       "Catering",
       "Gift cards"
-    ]
+    ],
+    "google": {
+      "rating": 4.6,
+      "reviewCount": 631
+    }
   },
   {
     "slug": "royal-grill-37",
@@ -917,7 +1005,11 @@
       "Halal platters",
       "Falafel",
       "Takeout"
-    ]
+    ],
+    "google": {
+      "rating": 4.7,
+      "reviewCount": 1136
+    }
   },
   {
     "slug": "apache-crossfit",
@@ -941,7 +1033,11 @@
       "Nutrition coaching",
       "Teen athletic performance",
       "Drop-in workouts"
-    ]
+    ],
+    "google": {
+      "rating": 5,
+      "reviewCount": 248
+    }
   },
   {
     "slug": "nick-catone-mma-and-fitness",
@@ -966,6 +1062,10 @@
       "Muay Thai kickboxing",
       "MMA classes",
       "Kids program"
-    ]
+    ],
+    "google": {
+      "rating": 4.6,
+      "reviewCount": 177
+    }
   }
 ]
