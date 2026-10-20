@@ -5,7 +5,7 @@
   "tagline": "The local index",
   "region": "Ocean County, NJ",
   "email": "hello@searchlocal.live",
-  "formEndpoint": "",
+  "formEndpoint": "https://sl-forms.jmizrahi99.workers.dev",
   "minListingsToIndex": 1,
   "timezone": "America/New_York",
   "adsense": {
