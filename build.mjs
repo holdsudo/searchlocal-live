@@ -815,6 +815,32 @@ function businessPages() {
 </nav>`;
     const ownReviews = reviewsBySlug[l.slug] || [];
     const ownAgg = reviewAgg(ownReviews);
+    const googleMapsReviews = l.sample || !l.address
+      ? ''
+      : `https://www.google.com/maps/search/?api=1&query=${mapsQ}`;
+    const googleRow = l.google?.rating != null
+      ? `<${googleMapsReviews ? `a href="${googleMapsReviews}" target="_blank" rel="noopener noreferrer"` : 'div'} class="biz-rate biz-rate-google"${googleMapsReviews ? ` aria-label="Google rating for ${e(l.name)}"` : ''}>
+  ${starRow(l.google.rating)}
+  <span class="biz-rate-score">${Number(l.google.rating).toFixed(1)}</span>
+  ${l.google.reviewCount != null ? `<span class="biz-rate-count">(${Number(l.google.reviewCount).toLocaleString('en-US')})</span>` : ''}
+  <span class="biz-rate-src">Google</span>
+</${googleMapsReviews ? 'a' : 'div'}>`
+      : '';
+    const reviewsRow = !l.sample
+      ? `<a class="biz-rate biz-rate-reviews" href="#reviews">
+  ${ownAgg ? `${starRow(ownAgg.average)}<span class="biz-rate-score">${ownAgg.average.toFixed(1)}</span><span class="biz-rate-count">(${ownAgg.count})</span>` : `<span class="biz-rate-score">Reviews</span>`}
+  <span class="biz-rate-src">${ownAgg ? 'SearchLocal' : 'Write a review'}</span>
+</a>`
+      : '';
+    const yelpRow = l.yelp?.url
+      ? `<a class="biz-rate biz-rate-yelp" href="${e(l.yelp.url)}" target="_blank" rel="noopener noreferrer" aria-label="View ${e(l.name)} on Yelp">
+  ${l.yelp.rating != null ? `${starRow(l.yelp.rating)}<span class="biz-rate-score">${Number(l.yelp.rating).toFixed(1)}</span>${l.yelp.reviewCount != null ? `<span class="biz-rate-count">(${Number(l.yelp.reviewCount).toLocaleString('en-US')})</span>` : ''}` : '<span class="biz-rate-score">Yelp</span>'}
+  <span class="biz-rate-src">Yelp</span>
+</a>`
+      : '';
+    const ratingsBlock = (googleRow || reviewsRow || yelpRow)
+      ? `<div class="biz-ratings">${googleRow}${reviewsRow}${yelpRow}</div>`
+      : '';
 
     const body = `
 <section class="biz-hero">
@@ -866,6 +892,7 @@ function businessPages() {
         <a class="btn btn-gold btn-block btn-lg" href="${telHref}">${icon('phone')}${e(l.phone)}</a>
         ${website}
         ${directions}
+        ${ratingsBlock}
         <div class="hours" data-hours-table>
           <h2 class="panel-title">Hours</h2>
           ${l.hours ? `<table>${hoursRows}</table>

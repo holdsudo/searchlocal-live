@@ -486,6 +486,29 @@ a.tag:hover { border-color: var(--line); color: var(--text); }
 .panel { padding: 30px; border-radius: var(--radius); border: 1px solid var(--line-soft); background: linear-gradient(180deg, var(--surface-2), var(--surface)); }
 .panel-quiet { background: transparent; border-style: dashed; border-color: var(--line); }
 .panel-sticky { position: sticky; top: 100px; display: grid; gap: 10px; }
+.biz-ratings {
+  display: grid; gap: 8px;
+  margin-top: 8px; padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+.biz-rate {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  padding: 10px 12px; border-radius: 12px;
+  border: 1px solid var(--line-soft);
+  background: rgba(255,255,255,.02);
+  color: var(--muted); font-size: .88rem; text-decoration: none;
+  transition: border-color .25s, background .25s, color .25s;
+}
+a.biz-rate:hover { border-color: rgba(214,178,94,.45); background: rgba(214,178,94,.06); color: var(--text); }
+.biz-rate .card-stars { gap: 2px; }
+.biz-rate .card-star { width: 14px; height: 14px; }
+.biz-rate .card-star .i { width: 14px; height: 14px; }
+.biz-rate-score { color: var(--text); font-weight: 700; letter-spacing: .01em; }
+.biz-rate-count { color: var(--dim); }
+.biz-rate-src { margin-left: auto; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
+.biz-rate-yelp { border-color: rgba(255,26,26,.28); }
+.biz-rate-yelp .biz-rate-src { color: #ff6b6b; }
+a.biz-rate-yelp:hover { border-color: rgba(255,26,26,.5); background: rgba(255,26,26,.08); }
 
 /* Mobile quick-action dock on business pages */
 .biz-dock { display: none; }
