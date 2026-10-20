@@ -281,5 +281,41 @@
     "name": "Sand Dollar Real Estate",
     "result": "listed",
     "date": "2026-10-19"
+  },
+  "node/11378590124": {
+    "name": "Sit Means Sit Dog Training",
+    "result": "rejected",
+    "reason": "Franchise (157 locations); site redirects to another domain",
+    "date": "2026-10-20"
+  },
+  "node/4847618862": {
+    "name": "Anderson Insurance Agency",
+    "result": "rejected",
+    "reason": "Site redirects to renamed McMahon Insurance Agency with multiple offices; phone/hours differ",
+    "date": "2026-10-20"
+  },
+  "way/878929235": {
+    "name": "Mavis Discount Tires",
+    "result": "rejected",
+    "reason": "National chain",
+    "date": "2026-10-20"
+  },
+  "way/829481926": {
+    "name": "Conner Strong & Buckelew",
+    "result": "rejected",
+    "reason": "Multi-office East Coast firm; address and phone not on site",
+    "date": "2026-10-20"
+  },
+  "way/510530593": {
+    "name": "Mr.Tire",
+    "result": "rejected",
+    "reason": "National chain",
+    "date": "2026-10-20"
+  },
+  "node/9448645011": {
+    "name": "Law Offices of Bartholomew Baffuto",
+    "result": "rejected",
+    "reason": "Website redirects to unrelated gambling site; unconfirmable",
+    "date": "2026-10-20"
   }
 }
