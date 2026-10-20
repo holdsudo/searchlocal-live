@@ -1,0 +1,212 @@
+{
+ "town:lakewood": {
+  "lat": 40.0940995,
+  "lng": -74.2149889,
+  "src": "town"
+ },
+ "town:toms-river": {
+  "lat": 39.9528389,
+  "lng": -74.196741,
+  "src": "town"
+ },
+ "town:brick": {
+  "lat": 40.0707244,
+  "lng": -74.1280562,
+  "src": "town"
+ },
+ "town:jackson": {
+  "lat": 40.12048,
+  "lng": -74.4385679,
+  "src": "town"
+ },
+ "town:point-pleasant-beach": {
+  "lat": 40.0919203,
+  "lng": -74.0482024,
+  "src": "town"
+ },
+ "town:point-pleasant": {
+  "lat": 40.0831714,
+  "lng": -74.0681931,
+  "src": "town"
+ },
+ "town:manchester": {
+  "lat": 39.9734957,
+  "lng": -74.3816966,
+  "src": "town"
+ },
+ "town:howell": {
+  "lat": 40.1413032,
+  "lng": -74.2236618,
+  "src": "town"
+ },
+ "town:freehold": {
+  "lat": 40.2601096,
+  "lng": -74.2737573,
+  "src": "town"
+ },
+ "town:lanoka-harbor": {
+  "lat": 39.8667856,
+  "lng": -74.167917,
+  "src": "town"
+ },
+ "town:whiting": {
+  "lat": 39.9545613,
+  "lng": -74.3784815,
+  "src": "town"
+ },
+ "town:surf-city": {
+  "lat": 39.6587349,
+  "lng": -74.168292,
+  "src": "town"
+ },
+ "spa-virtue": {
+  "lat": 40.036311,
+  "lng": -74.24659,
+  "src": "name"
+ },
+ "lius-kitchen": {
+  "lat": 40.071889,
+  "lng": -74.117576,
+  "src": "name"
+ },
+ "solo-bella-brick-oven-bistro": {
+  "lat": 40.163231,
+  "lng": -74.295149,
+  "src": "address"
+ },
+ "agripas-street": {
+  "lat": 40.087972,
+  "lng": -74.255197,
+  "src": "address"
+ },
+ "ellies-indian-curry-corner": {
+  "lat": 39.953314,
+  "lng": -74.197985,
+  "src": "name"
+ },
+ "ob-cos-donuts": {
+  "lat": 39.953697,
+  "lng": -74.123667,
+  "src": "address"
+ },
+ "coastal-dental-group": {
+  "lat": 40.07333,
+  "lng": -74.074703,
+  "src": "address"
+ },
+ "brady-and-kunz": {
+  "lat": 39.960529,
+  "lng": -74.190065,
+  "src": "name"
+ },
+ "elite-dental-center-of-toms-river": {
+  "lat": 39.98697,
+  "lng": -74.178454,
+  "src": "address"
+ },
+ "bridge-veterinary-hospital": {
+  "lat": 40.074454,
+  "lng": -74.0806,
+  "src": "address"
+ },
+ "urban-coalhouse-pizza-and-bar": {
+  "lat": 40.055894,
+  "lng": -74.1529,
+  "src": "address"
+ },
+ "tiny-teeth-of-lakewood": {
+  "lat": 40.052319,
+  "lng": -74.175827,
+  "src": "name"
+ },
+ "epsteins-meats": {
+  "lat": 40.094411,
+  "lng": -74.209893,
+  "src": "address"
+ },
+ "brick-nails-and-spa": {
+  "lat": 40.070724,
+  "lng": -74.128056,
+  "src": "town"
+ },
+ "last-wave-brewing-company": {
+  "lat": 40.090364,
+  "lng": -74.052081,
+  "src": "address"
+ },
+ "hiering-dupignac-dunn-and-schreiber": {
+  "lat": 39.95251,
+  "lng": -74.191391,
+  "src": "address"
+ },
+ "the-back-stop": {
+  "lat": 39.949435,
+  "lng": -74.117822,
+  "src": "address"
+ },
+ "rosatos-pub-and-pizzeria": {
+  "lat": 39.956611,
+  "lng": -74.245203,
+  "src": "address"
+ },
+ "pho-34": {
+  "lat": 39.953314,
+  "lng": -74.197985,
+  "src": "address"
+ },
+ "champion-auto-finance": {
+  "lat": 40.094099,
+  "lng": -74.214989,
+  "src": "town"
+ },
+ "glen-kelly-real-estate": {
+  "lat": 39.861047,
+  "lng": -74.173398,
+  "src": "name"
+ },
+ "daves-village-auto-repair": {
+  "lat": 39.942349,
+  "lng": -74.302018,
+  "src": "address"
+ },
+ "print-my-plans": {
+  "lat": 39.989338,
+  "lng": -74.26711,
+  "src": "address"
+ },
+ "boba-8tea8": {
+  "lat": 40.068388,
+  "lng": -74.129037,
+  "src": "name"
+ },
+ "sand-dollar-real-estate": {
+  "lat": 39.656541,
+  "lng": -74.170492,
+  "src": "address"
+ },
+ "tardis-ristorante-italiano": {
+  "lat": 39.976844,
+  "lng": -74.138471,
+  "src": "address"
+ },
+ "maneras-restaurant": {
+  "lat": 40.05329,
+  "lng": -74.13699,
+  "src": "address"
+ },
+ "royal-grill-37": {
+  "lat": 39.963337,
+  "lng": -74.200758,
+  "src": "address"
+ },
+ "apache-crossfit": {
+  "lat": 39.960717,
+  "lng": -74.126608,
+  "src": "address"
+ },
+ "nick-catone-mma-and-fitness": {
+  "lat": 40.063779,
+  "lng": -74.13671,
+  "src": "address"
+ }
+}

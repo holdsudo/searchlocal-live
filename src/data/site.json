@@ -6,7 +6,7 @@
   "region": "Ocean County, NJ",
   "email": "hello@searchlocal.live",
   "formEndpoint": "",
-  "minListingsToIndex": 3,
+  "minListingsToIndex": 1,
   "timezone": "America/New_York",
   "adsense": {
     "client": "ca-pub-3180594322281400",

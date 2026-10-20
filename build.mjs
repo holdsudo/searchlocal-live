@@ -108,6 +108,8 @@ const fmtDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { 
 const readMins = (html) => Math.max(1, Math.round(html.replace(/<[^>]+>|\{\{[^}]+\}\}/g, ' ').split(/\s+/).filter(Boolean).length / 220));
 
 const real = (list) => list.filter((l) => !l.sample);
+// Ratings pulled from Google/Yelp are a snapshot; show when they were captured.
+const asOf = (d, prefix = '') => d ? ` · ${prefix}${new Date(`${d}T12:00:00Z`).toLocaleString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' })}` : '';
 const LD_TYPES = { restaurants: 'Restaurant', 'cafes-bakeries': 'Bakery', plumbing: 'Plumber', hvac: 'HVACBusiness', electricians: 'Electrician', 'auto-repair': 'AutoRepair', 'salons-barbers': 'BeautySalon', fitness: 'ExerciseGym', 'health-dental': 'MedicalBusiness', legal: 'LegalService', 'real-estate': 'RealEstateAgent', landscaping: 'HomeAndConstructionBusiness', pets: 'LocalBusiness', shopping: 'Store', cleaning: 'HomeAndConstructionBusiness', 'finance-insurance': 'FinancialService', printing: 'PrintShop' };
 const ldType = (l) => (l.category === 'health-dental' && /dental|dentist|teeth/i.test(l.name)) ? 'Dentist' : (l.category === 'pets' && /veterinar/i.test(l.name)) ? 'VeterinaryCare' : /brew/i.test(l.name) ? 'Brewery' : (LD_TYPES[l.category] || 'LocalBusiness');
 const itemList = (list, name) => ({ '@context': 'https://schema.org', '@type': 'ItemList', name, numberOfItems: real(list).length, itemListElement: real(list).map((l, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site.url}/business/${l.slug}/`, name: l.name })) });
@@ -257,7 +259,7 @@ function footer() {
     <div class="footer-top">
       <div class="footer-brand">
         ${logo}
-        <p>${e(site.tagline)} for ${e(site.region)}. Free listings for every real local business — no pay-to-rank, no fake reviews, ever.</p>
+        <p>${e(site.tagline)} for ${e(site.region)}. Free listings for every real local business — no fake reviews, ever.</p>
         <a class="btn btn-ghost btn-sm" href="/add-your-business/">Add your business ${icon('arrow')}</a>
       </div>
       <div class="footer-col"><h2>Categories</h2><ul>${topCats}<li><a href="/categories/">All categories</a></li></ul></div>
@@ -294,7 +296,7 @@ function starRow(rating) {
 function cardRating(l) {
   const own = reviewAgg(reviewsBySlug[l.slug]);
   if (own) return { rating: own.average, count: own.count, src: 'SearchLocal' };
-  if (l.google?.rating != null) return { rating: Number(l.google.rating), count: l.google.reviewCount, src: 'Google' };
+  if (l.google?.rating != null) return { rating: Number(l.google.rating), count: l.google.reviewCount, src: 'Google', asOf: l.google.asOf };
   return null;
 }
 
@@ -306,7 +308,7 @@ function card(l) {
     : '';
   const cr = cardRating(l);
   const ratingBlock = cr
-    ? `<div class="card-rating">${starRow(cr.rating)}<span class="card-rating-score">${cr.rating.toFixed(1)}</span>${cr.count != null ? `<span class="card-rating-count">(${Number(cr.count).toLocaleString('en-US')})</span>` : ''}<span class="card-rating-src">${cr.src}</span></div>`
+    ? `<div class="card-rating">${starRow(cr.rating)}<span class="card-rating-score">${cr.rating.toFixed(1)}</span>${cr.count != null ? `<span class="card-rating-count">(${Number(cr.count).toLocaleString('en-US')})</span>` : ''}<span class="card-rating-src">${cr.src}${asOf(cr.asOf)}</span></div>`
     : '';
   return `<article class="card" data-slug="${e(l.slug)}" href="${href}" data-reveal>
   <a class="card-hit" href="${href}" aria-label="${e(l.name)}"></a>
@@ -406,7 +408,7 @@ function home() {
   const catOptions = categories.map((c) => `<option value="${e(c.name)}"></option>`).join('');
 
   const faqs = [
-    ['Is it really free?', 'Yes. A complete listing — name, address, phone, hours, website link, description and services — costs nothing, and it stays free. We will never charge a business to rank higher in its category.'],
+    ['Is it really free?', 'Yes. A complete listing — name, address, phone, hours, website link, description and services — costs nothing, and it stays free.'],
     ['Will this get my business to the top of Google?', 'Nobody can honestly promise that, and we won\'t. What a listing does give you is another accurate, consistent citation of your name, address and phone, a real link to your website, and a page that local customers can find.'],
     ['How do you decide who gets listed?', 'Every listing is a real business with a physical presence or service area here. We check details before anything goes live, and we remove listings that close or stop answering. See the listing guidelines for the full standard.'],
     ['Do you have reviews?', 'Yes — on each listing. Customers submit a review, a real person checks it, and only then does it go live. We never write, buy or invent reviews for anyone.'],
@@ -419,7 +421,7 @@ function home() {
   <div class="wrap hero-inner">
     <p class="eyebrow eyebrow-pill"><span class="dot" aria-hidden="true"></span>${e(site.tagline)} · ${e(site.region)}</p>
     <h1 class="display hero-title">Find the <em>best</em> <span class="nowrap">of local.</span></h1>
-    <p class="lead hero-lead">Search by what you need, filter who's open, and call from the listing. Real businesses — no pay-to-rank, no fake reviews.</p>
+    <p class="lead hero-lead">Search by what you need, filter who's open, and call from the listing. Real businesses — no fake reviews.</p>
     <form class="searchbar" action="/browse/" method="get" role="search">
       <label class="sb-field">
         <span class="sb-label">What</span>
@@ -483,7 +485,7 @@ ${marquee ? `<div class="marquee" aria-hidden="true"><div class="marquee-track">
     <div class="stat" data-reveal><span class="stat-num">${filledCats.length}</span><span class="stat-label">Active categories</span></div>
     <div class="stat" data-reveal><span class="stat-num">${filledTowns.length}</span><span class="stat-label">Towns with listings</span></div>
     <div class="stat" data-reveal><span class="stat-num">$0</span><span class="stat-label">To list. Forever.</span></div>
-    <div class="stat" data-reveal><span class="stat-num">0</span><span class="stat-label">Paid placements</span></div>
+    <div class="stat" data-reveal><span class="stat-num">${real(listings).length}</span><span class="stat-label">Local businesses</span></div>
   </div>
 </section>
 
@@ -543,7 +545,7 @@ ${marquee ? `<div class="marquee" aria-hidden="true"><div class="marquee-track">
     { '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url, email: site.email, logo: `${site.url}/assets/img/icon-512.png`, image: `${site.url}/assets/img/og.jpg`, areaServed: { '@type': 'AdministrativeArea', name: site.region }, knowsAbout: categories.map((c) => c.name) },
     { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
   ];
-  addPage('/', layout({ title: 'Home', description: `Find real local businesses across ${site.region} — restaurants, trades, salons, health and more. Free listings, no pay-to-rank, no fake reviews.`, pathname: '/', body, jsonld, bodyClass: 'page-home' }));
+  addPage('/', layout({ title: 'Home', description: `Find real local businesses across ${site.region} — restaurants, trades, salons, health and more. Free listings, no fake reviews.`, pathname: '/', body, jsonld, bodyClass: 'page-home' }));
 }
 
 function browse() {
@@ -649,7 +651,7 @@ function categoryPages() {
     const townNames = andList(townsHere.filter(townCount).map((t) => t.name));
     const n = real(list).length;
     const lead = n
-      ? `${e(c.blurb)} ${n === 1 ? 'One listing' : `${n} listings`} in ${e(townNames)}, each checked against the business's own website for name, address, phone and hours. No paid placement.`
+      ? `${e(c.blurb)} ${n === 1 ? 'One listing' : `${n} listings`} in ${e(townNames)}, each checked against the business's own website for name, address, phone and hours.`
       : e(c.blurb);
     const body = `${pageHero({ crumbHtml: cr.html, iconName: c.icon, eyebrow: `${plural(list.length, 'listing')} · ${e(site.region)}`, title: `${e(c.name)}`, lead, extra: filterChips })}
 <section class="section section-tight"><div class="wrap">
@@ -841,7 +843,7 @@ function businessPages() {
   ${starRow(l.google.rating)}
   <span class="biz-rate-score">${Number(l.google.rating).toFixed(1)}</span>
   ${l.google.reviewCount != null ? `<span class="biz-rate-count">(${Number(l.google.reviewCount).toLocaleString('en-US')})</span>` : ''}
-  <span class="biz-rate-src">Google</span>
+  <span class="biz-rate-src">Google${asOf(l.google.asOf, 'as of ')}</span>
 </${googleMapsReviews ? 'a' : 'div'}>`
       : '';
     const reviewsRow = !l.sample
@@ -853,7 +855,7 @@ function businessPages() {
     const yelpRow = l.yelp?.url
       ? `<a class="biz-rate biz-rate-yelp" href="${e(l.yelp.url)}" target="_blank" rel="noopener noreferrer" aria-label="View ${e(l.name)} on Yelp">
   ${l.yelp.rating != null ? `${starRow(l.yelp.rating)}<span class="biz-rate-score">${Number(l.yelp.rating).toFixed(1)}</span>${l.yelp.reviewCount != null ? `<span class="biz-rate-count">(${Number(l.yelp.reviewCount).toLocaleString('en-US')})</span>` : ''}` : '<span class="biz-rate-score">Yelp</span>'}
-  <span class="biz-rate-src">Yelp</span>
+  <span class="biz-rate-src">Yelp${asOf(l.yelp.asOf, 'as of ')}</span>
 </a>`
       : '';
     const ratingsBlock = (googleRow || reviewsRow || yelpRow)
@@ -1113,7 +1115,7 @@ ${pageHero({ eyebrow: 'For business owners', title: 'Get <em>listed.</em> Free.'
     </div>
   </div>
 </section>`;
-  addPage('/add-your-business/', layout({ title: 'Add your business — free', description: `List your business on ${site.name} for free. Verified listings for real local businesses in ${site.region}. No pay-to-rank.`, pathname: '/add-your-business/', body }));
+  addPage('/add-your-business/', layout({ title: 'Add your business — free', description: `List your business on ${site.name} for free. Verified listings for real local businesses in ${site.region}.`, pathname: '/add-your-business/', body }));
 }
 
 function prose(pathname, { eyebrow, title, lead, html, docTitle, description }) {
@@ -1164,7 +1166,6 @@ function staticPages() {
 <ul>
 <li>Lead-generation services posing as local businesses.</li>
 <li>Duplicate or keyword-stuffed listings.</li>
-<li>Paid placement, of any kind, in any category.</li>
 <li>Reviews written by the business, its staff or anyone paid to write them.</li>
 </ul>
 <h2>Unclaimed listings</h2>
