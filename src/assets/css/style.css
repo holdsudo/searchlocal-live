@@ -281,7 +281,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   background: linear-gradient(180deg, var(--surface-2), var(--surface));
   border: 1px solid var(--line-soft);
   overflow: hidden; isolation: isolate;
-  color: inherit; text-decoration: none;
+  color: inherit; text-decoration: none; cursor: pointer;
   transition: border-color .3s, transform .45s var(--ease), box-shadow .45s var(--ease);
 }
 .card::before { /* gold hairline on hover */
@@ -291,9 +291,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 .card:hover { border-color: var(--line); transform: translateY(-4px); box-shadow: 0 30px 60px -30px rgba(0,0,0,.9), 0 0 50px -25px rgba(214,178,94,.35); }
 .card:hover::before { opacity: 1; }
-.card-hit { position: absolute; inset: 0; z-index: 0; }
+/* Stretched hit covers the whole card; Yelp sits above it. */
+.card-hit { position: absolute; inset: 0; z-index: 2; }
 .card-head, .card-title, .card-sum, .card-rating, .card-foot, .card-arrow { position: relative; z-index: 1; }
-.card-yelp, .card-title a { position: relative; z-index: 2; }
+.card-yelp { position: relative; z-index: 3; }
 .card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; padding-right: 48px; }
 .monogram {
   width: 50px; height: 50px; flex: none; border-radius: 14px;
@@ -313,7 +314,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .card-cat .i { flex: none; width: 15px; height: 15px; color: var(--gold); }
 .card-head .monogram, .card-head .sample-tag, .card-head .card-yelp { flex: none; }
 .card-title { margin: 0 0 8px; font-family: var(--serif); font-weight: 400; font-size: 1.75rem; line-height: 1.1; letter-spacing: -0.01em; }
-.card-title a { color: inherit; text-decoration: none; }
 .card-sum { margin: 0 0 24px; color: var(--muted); font-size: .95rem; line-height: 1.55; }
 .card-sum + .card-rating { margin: -8px 0 20px; }
 .card-rating { display: flex; align-items: center; gap: 8px; font-size: .88rem; color: var(--muted); }

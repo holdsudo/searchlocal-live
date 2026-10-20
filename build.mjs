@@ -291,14 +291,14 @@ function card(l) {
     ? `<div class="card-rating">${starRow(cr.rating)}<span class="card-rating-score">${cr.rating.toFixed(1)}</span>${cr.count != null ? `<span class="card-rating-count">(${Number(cr.count).toLocaleString('en-US')})</span>` : ''}<span class="card-rating-src">${cr.src}</span></div>`
     : '';
   return `<article class="card" data-slug="${e(l.slug)}" href="${href}" data-reveal>
-  <a class="card-hit" href="${href}" tabindex="-1" aria-hidden="true"></a>
+  <a class="card-hit" href="${href}" aria-label="${e(l.name)}"></a>
   <div class="card-head">
     ${mark(l)}
     <span class="card-cat">${icon(l.cat.icon)}${e(l.cat.name)}</span>
     ${l.sample ? '<span class="sample-tag" title="Demonstration listing — not a real business">Sample</span>' : ''}
     ${yelpBtn}
   </div>
-  <h3 class="card-title"><a href="${href}">${e(l.name)}</a></h3>
+  <h3 class="card-title">${e(l.name)}</h3>
   <p class="card-sum">${e(l.summary)}</p>
   ${ratingBlock}
   <div class="card-foot">
