@@ -63,7 +63,12 @@
       "Takeout and delivery",
       "Gift cards"
     ],
-    "logo": "/assets/img/logos/lius-kitchen.png"
+    "logo": "/assets/img/logos/lius-kitchen.png",
+    "yelp": {
+      "url": "https://www.yelp.com/biz/lius-kitchen-brick",
+      "rating": 4,
+      "reviewCount": 45
+    }
   },
   {
     "slug": "solo-bella-brick-oven-bistro",
@@ -96,7 +101,12 @@
       "In-house parties",
       "Takeout and delivery"
     ],
-    "logo": "/assets/img/logos/solo-bella-brick-oven-bistro.png"
+    "logo": "/assets/img/logos/solo-bella-brick-oven-bistro.png",
+    "yelp": {
+      "url": "https://www.yelp.com/biz/solo-bella-jackson",
+      "rating": 3.6,
+      "reviewCount": 304
+    }
   },
   {
     "slug": "agripas-street",
@@ -540,7 +550,12 @@
       "Pub dining",
       "Delivery",
       "Catering"
-    ]
+    ],
+    "yelp": {
+      "url": "https://www.yelp.com/biz/rosatos-pub-and-pizzeria-toms-river",
+      "rating": 3.7,
+      "reviewCount": 51
+    }
   },
   {
     "slug": "pho-34",
@@ -685,7 +700,7 @@
     "source": "owner",
     "added": "2026-10-16",
     "summary": "Large-format blueprint and architectural plan printing in Toms River, with one price per sheet at any size.",
-    "description": "Print My Plans prints architectural plans and blueprints to scale from PDF at 97 Northampton Blvd in Toms River. Sheet sizes run from 18\u00d724 to 36\u00d748 inches, in black and white or color, with no minimum order. Its website lists black and white at $1.95 a sheet and color at $3.75, at any size. Orders placed by 3 p.m. ET ship the same day within the United States. Email support@printmyplans.com. The office is open Monday to Friday, 9 a.m. to 5 p.m. ET.",
+    "description": "Print My Plans prints architectural plans and blueprints to scale from PDF at 97 Northampton Blvd in Toms River. Sheet sizes run from 18×24 to 36×48 inches, in black and white or color, with no minimum order. Its website lists black and white at $1.95 a sheet and color at $3.75, at any size. Orders placed by 3 p.m. ET ship the same day within the United States. Email support@printmyplans.com. The office is open Monday to Friday, 9 a.m. to 5 p.m. ET.",
     "services": [
       "Architectural plan and blueprint printing",
       "Black and white and color prints",
@@ -824,14 +839,19 @@
     "source": "manual",
     "added": "2026-10-20",
     "summary": "Family Italian restaurant on Fischer Boulevard in Toms River, open daily for dinner with takeout.",
-    "description": "Tardi's Ristorante Italiano is a family-run Italian restaurant at 931 Fischer Boulevard in Toms River's Bellcrest Plaza. The kitchen prepares Italian appetizers and entr\u00e9es to order, with daily specials alongside the regular menu. The restaurant is BYOB, offers takeout, and hosts private parties for groups of up to 40, plus off-premise catering.",
+    "description": "Tardi's Ristorante Italiano is a family-run Italian restaurant at 931 Fischer Boulevard in Toms River's Bellcrest Plaza. The kitchen prepares Italian appetizers and entrées to order, with daily specials alongside the regular menu. The restaurant is BYOB, offers takeout, and hosts private parties for groups of up to 40, plus off-premise catering.",
     "services": [
       "Italian dinner menu",
       "Daily specials",
       "Takeout",
       "Private parties",
       "Off-premise catering"
-    ]
+    ],
+    "yelp": {
+      "url": "https://www.yelp.com/biz/tardis-ristorante-italiano-toms-river-2",
+      "rating": 4.4,
+      "reviewCount": 270
+    }
   },
   {
     "slug": "maneras-restaurant",
