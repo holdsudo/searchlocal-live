@@ -424,7 +424,7 @@
           `Phone: ${data.phone}`, `Website: ${data.website || '—'}`, '', `Summary: ${data.summary}`, '', `Description: ${data.description || '—'}`,
           '', `Services: ${data.services || '—'}`, `Hours: ${data.hours || '—'}`, '', `Contact: ${data.contact} <${data.email}>`,
         ].join('\n');
-        location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(`New listing: ${data.name}`)}&body=${encodeURIComponent(body)}`;
+        location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(`🔥🔥🔥 SearchLocal new lead: New listing: ${data.name}`)}&body=${encodeURIComponent(body)}`;
         $('[data-success-text]').textContent = 'Your email app should open with the listing details filled in — just press send. A real person will review it before it goes live.';
       }
       form.hidden = true;
@@ -513,7 +513,7 @@
           `Reviewer: ${data.name} <${data.email}>`,
           `Visited checkbox: ${data.visited ? 'yes' : 'no'}`,
         ].join('\n');
-        location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(`Review: ${data.business || form.dataset.business} (${data.rating}/5)`)}&body=${encodeURIComponent(body)}`;
+        location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(`🔥🔥🔥 SearchLocal new lead: Review: ${data.business || form.dataset.business} (${data.rating}/5)`)}&body=${encodeURIComponent(body)}`;
         const okText = $('[data-success-text]', success || document);
         if (okText) okText.textContent = 'Your email app should open with the review filled in — press send. A real person will check it before it goes live.';
       }
