@@ -685,7 +685,7 @@
     "source": "owner",
     "added": "2026-10-16",
     "summary": "Large-format blueprint and architectural plan printing in Toms River, with one price per sheet at any size.",
-    "description": "Print My Plans prints architectural plans and blueprints to scale from PDF at 97 Northampton Blvd in Toms River. Sheet sizes run from 18×24 to 36×48 inches, in black and white or color, with no minimum order. Its website lists black and white at $1.95 a sheet and color at $3.75, at any size. Orders placed by 3 p.m. ET ship the same day within the United States. Email support@printmyplans.com. The office is open Monday to Friday, 9 a.m. to 5 p.m. ET.",
+    "description": "Print My Plans prints architectural plans and blueprints to scale from PDF at 97 Northampton Blvd in Toms River. Sheet sizes run from 18\u00d724 to 36\u00d748 inches, in black and white or color, with no minimum order. Its website lists black and white at $1.95 a sheet and color at $3.75, at any size. Orders placed by 3 p.m. ET ship the same day within the United States. Email support@printmyplans.com. The office is open Monday to Friday, 9 a.m. to 5 p.m. ET.",
     "services": [
       "Architectural plan and blueprint printing",
       "Black and white and color prints",
@@ -798,6 +798,154 @@
       "Summer rental programs",
       "Market evaluations",
       "Buyer and seller guides"
+    ]
+  },
+  {
+    "slug": "tardis-ristorante-italiano",
+    "name": "Tardi's Ristorante Italiano",
+    "category": "restaurants",
+    "town": "toms-river",
+    "address": "931 Fischer Blvd",
+    "zip": "08753",
+    "phone": "(732) 270-2111",
+    "website": "https://www.tardisristorante.com/",
+    "hours": {
+      "mon": "15:00-20:00",
+      "tue": "15:00-20:00",
+      "wed": "15:00-20:00",
+      "thu": "15:00-20:00",
+      "fri": "15:00-21:00",
+      "sat": "15:00-21:00",
+      "sun": "15:00-20:00"
+    },
+    "since": 1979,
+    "featured": false,
+    "sample": false,
+    "source": "manual",
+    "added": "2026-10-20",
+    "summary": "Family Italian restaurant on Fischer Boulevard in Toms River, open daily for dinner with takeout.",
+    "description": "Tardi's Ristorante Italiano is a family-run Italian restaurant at 931 Fischer Boulevard in Toms River's Bellcrest Plaza. The kitchen prepares Italian appetizers and entr\u00e9es to order, with daily specials alongside the regular menu. The restaurant is BYOB, offers takeout, and hosts private parties for groups of up to 40, plus off-premise catering.",
+    "services": [
+      "Italian dinner menu",
+      "Daily specials",
+      "Takeout",
+      "Private parties",
+      "Off-premise catering"
+    ]
+  },
+  {
+    "slug": "maneras-restaurant",
+    "name": "Manera's Restaurant",
+    "category": "restaurants",
+    "town": "brick",
+    "address": "950 Cedar Bridge Ave",
+    "zip": "08723",
+    "phone": "(732) 451-1111",
+    "website": "https://www.manerasrestaurant.com/brick",
+    "hours": {
+      "mon": null,
+      "tue": "12:00-20:00",
+      "wed": "12:00-20:00",
+      "thu": "12:00-20:00",
+      "fri": "12:00-21:00",
+      "sat": "12:00-21:00",
+      "sun": "12:00-20:00"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "manual",
+    "added": "2026-10-20",
+    "summary": "Chef-owned restaurant on Cedar Bridge Avenue in Brick serving made-to-order plates, catering and private events.",
+    "description": "Manera's Restaurant is a chef-owned spot at 950 Cedar Bridge Avenue in Brick. Dishes are prepared fresh to order from a broad menu, and the Brick location lists online ordering along with private-event rooms and catering. A second Manera's location operates in Manahawkin.",
+    "services": [
+      "Dine-in lunch and dinner",
+      "Online ordering",
+      "Private event rooms",
+      "Catering",
+      "Gift cards"
+    ]
+  },
+  {
+    "slug": "royal-grill-37",
+    "name": "Royal Grill 37",
+    "category": "restaurants",
+    "town": "toms-river",
+    "address": "10 Route 37",
+    "zip": "08753",
+    "phone": "(732) 505-9696",
+    "website": "https://royalgrill37.com/",
+    "hours": {
+      "mon": "10:00-22:00",
+      "tue": "10:00-22:00",
+      "wed": "10:00-22:00",
+      "thu": "10:00-22:00",
+      "fri": "10:00-22:00",
+      "sat": "10:00-22:00",
+      "sun": null
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "manual",
+    "added": "2026-10-20",
+    "summary": "Family-owned counter restaurant on Route 37 in Toms River serving gyros, kebabs and halal platters.",
+    "description": "Royal Grill 37 is a family-owned restaurant at 10 Route 37 in Toms River. The open kitchen prepares gyros, kebabs, falafels and halal platters made to order, with house sauces and rice recipes the owners describe as family-made. The shop is open Monday through Saturday.",
+    "services": [
+      "Gyros",
+      "Kebabs",
+      "Halal platters",
+      "Falafel",
+      "Takeout"
+    ]
+  },
+  {
+    "slug": "apache-crossfit",
+    "name": "Apache CrossFit",
+    "category": "fitness",
+    "town": "toms-river",
+    "address": "669 Fischer Blvd",
+    "zip": "08753",
+    "phone": "(732) 607-5717",
+    "website": "https://apachecrossfit.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "manual",
+    "added": "2026-10-20",
+    "summary": "CrossFit gym on Fischer Boulevard in Toms River with group classes, nutrition coaching and teen athletic training.",
+    "description": "Apache CrossFit is a training gym at 669 Fischer Boulevard in Toms River. Its programs include CrossFit group classes, nutrition coaching and teen athletic performance training, with coaches on the floor for form and scaling. Drop-in workouts are listed for visitors on the website.",
+    "services": [
+      "CrossFit classes",
+      "Nutrition coaching",
+      "Teen athletic performance",
+      "Drop-in workouts"
+    ]
+  },
+  {
+    "slug": "nick-catone-mma-and-fitness",
+    "name": "Nick Catone MMA & Fitness",
+    "category": "fitness",
+    "town": "brick",
+    "address": "781 Brick Boulevard",
+    "zip": "08723",
+    "phone": "(732) 458-0133",
+    "website": "https://www.nickcatonefitness.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "manual",
+    "added": "2026-10-20",
+    "summary": "MMA and fitness training center on Brick Boulevard with boxing, jiu-jitsu, Muay Thai and kids programs.",
+    "description": "Nick Catone MMA & Fitness is a training center at 781 Brick Boulevard in Brick. The facility lists classes in boxing, Brazilian jiu-jitsu, Muay Thai kickboxing and MMA, plus a kids program and private training. The site describes large mat space, a boxing ring, heavy bags and octagons on the training floor.",
+    "services": [
+      "Boxing",
+      "Brazilian jiu-jitsu",
+      "Muay Thai kickboxing",
+      "MMA classes",
+      "Kids program"
     ]
   }
 ]

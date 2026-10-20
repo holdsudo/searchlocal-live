@@ -1,23 +1,23 @@
 {
  "/": {
-  "h": "b43492f553405a8d",
-  "d": "2026-10-19"
+  "h": "1ac1fe5b8c84ece9",
+  "d": "2026-10-20"
  },
  "/browse/": {
-  "h": "c108f72f5135a549",
-  "d": "2026-10-19"
+  "h": "0ca088b45f7b4798",
+  "d": "2026-10-20"
  },
  "/categories/": {
-  "h": "92693c05a5e8bdb8",
-  "d": "2026-10-19"
+  "h": "54de8396d81e1838",
+  "d": "2026-10-20"
  },
  "/towns/": {
-  "h": "8da5cff92f2721a5",
-  "d": "2026-10-19"
+  "h": "becd413de4c1f021",
+  "d": "2026-10-20"
  },
  "/category/restaurants/": {
-  "h": "f3828ff960adc9f8",
-  "d": "2026-10-16"
+  "h": "ff14c73d81d2d884",
+  "d": "2026-10-20"
  },
  "/category/health-dental/": {
   "h": "38f3ccd6fe4c63ea",
@@ -28,12 +28,12 @@
   "d": "2026-10-19"
  },
  "/town/toms-river/": {
-  "h": "f6a7208e34422268",
-  "d": "2026-10-19"
+  "h": "c774a8323fc2707f",
+  "d": "2026-10-20"
  },
  "/town/brick/": {
-  "h": "f040abe21ff32fde",
-  "d": "2026-10-19"
+  "h": "eaac17471f8e4793",
+  "d": "2026-10-20"
  },
  "/business/spa-virtue/": {
   "h": "d70cc146b8e745ce",
@@ -76,8 +76,8 @@
   "d": "2026-10-16"
  },
  "/business/urban-coalhouse-pizza-and-bar/": {
-  "h": "0c50205fc1dda7b5",
-  "d": "2026-10-18"
+  "h": "7669b0821d6cd06b",
+  "d": "2026-10-20"
  },
  "/business/tiny-teeth-of-lakewood/": {
   "h": "66d32ead83e3063c",
@@ -156,8 +156,8 @@
   "d": "2026-10-16"
  },
  "/category/restaurants/toms-river/": {
-  "h": "bd9c7e11234c53ff",
-  "d": "2026-10-16"
+  "h": "d5efb7cda2bc66f8",
+  "d": "2026-10-20"
  },
  "/business/boba-8tea8/": {
   "h": "066db3fd788fc8fd",
@@ -166,5 +166,29 @@
  "/business/sand-dollar-real-estate/": {
   "h": "529f1146271bddb4",
   "d": "2026-10-19"
+ },
+ "/category/restaurants/brick/": {
+  "h": "28668b65bae93281",
+  "d": "2026-10-20"
+ },
+ "/business/tardis-ristorante-italiano/": {
+  "h": "80179efd601a4285",
+  "d": "2026-10-20"
+ },
+ "/business/maneras-restaurant/": {
+  "h": "8154e2c32e78104f",
+  "d": "2026-10-20"
+ },
+ "/business/royal-grill-37/": {
+  "h": "074efd415116cd3d",
+  "d": "2026-10-20"
+ },
+ "/business/apache-crossfit/": {
+  "h": "c68279446050be34",
+  "d": "2026-10-20"
+ },
+ "/business/nick-catone-mma-and-fitness/": {
+  "h": "d55e0e569fd0a118",
+  "d": "2026-10-20"
  }
 }
