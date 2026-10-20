@@ -14,6 +14,22 @@ const OUT = path.join(ROOT, 'dist');
 const read = (f) => JSON.parse(fs.readFileSync(path.join(SRC, 'data', f), 'utf8'));
 
 const site = read('site.json');
+// Google AdSense. Set adsense.client ("ca-pub-…") in site.json to load the library (this is also
+// how AdSense verifies the site) and write ads.txt; each rail/bar renders only once its slot id is set.
+const ADS = site.adsense || {};
+const ADS_ON = /^ca-pub-\d+$/.test(ADS.client || '');
+const ADS_SLOTS = ADS_ON ? (ADS.slots || {}) : {};
+function adUnit(where, slot, w, h) {
+  return `<aside class="ad ad-${where}" aria-label="Advertisement"><ins class="adsbygoogle" style="display:inline-block;width:${w}px;height:${h}px" data-ad-client="${ADS.client}" data-ad-slot="${slot}"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></aside>`;
+}
+function adBars() {
+  if (!ADS_ON) return '';
+  return [
+    ADS_SLOTS.left ? adUnit('left', ADS_SLOTS.left, 160, 600) : '',
+    ADS_SLOTS.right ? adUnit('right', ADS_SLOTS.right, 160, 600) : '',
+    ADS_SLOTS.bottom ? `<aside class="ad ad-bottom" aria-label="Advertisement"><ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${ADS_SLOTS.bottom}" data-ad-format="horizontal" data-full-width-responsive="false"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></aside>` : '',
+  ].join('\n');
+}
 const categories = read('categories.json');
 const towns = read('towns.json');
 const rawListings = read('listings.json');
@@ -178,6 +194,7 @@ ${pathname === '/' ? '<meta name="msvalidate.01" content="0D2D8CE49A2182C71C0E58
 <meta name="twitter:description" content="${e(description)}">
 <meta name="twitter:image" content="${site.url}/assets/img/og.jpg">
 ${extraHead}
+${ADS_ON ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADS.client}" crossorigin="anonymous"></script>` : ''}
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
@@ -188,7 +205,7 @@ ${extraHead}
 <style>${CSS}</style>
 ${ld}
 </head>
-<body class="${bodyClass || 'page-inner'}">
+<body class="${bodyClass || 'page-inner'}${ADS_SLOTS.bottom ? ' has-ad-bottom' : ''}">
 ${scene()}
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header" data-header>
@@ -206,6 +223,7 @@ ${scene()}
 ${body}
 </main>
 ${footer()}
+${adBars()}
 <script src="/assets/js/main.js?v=${BUILD_ID}" defer></script>
 </body>
 </html>`;
@@ -1235,6 +1253,7 @@ ${indexable.map((p) => `  <url><loc>${site.url}${p}</loc><lastmod>${lastmod[p].d
 `);
 fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${site.url}/sitemap.xml\n`);
 fs.writeFileSync(path.join(OUT, 'CNAME'), site.domain + '\n');
+if (ADS_ON) fs.writeFileSync(path.join(OUT, 'ads.txt'), `google.com, ${ADS.client.replace(/^ca-/, '')}, DIRECT, f08c47fec0942fa0\n`);
 fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
 
 console.log(`Built ${pages.length} pages (${indexable.length} indexable) → dist/`);

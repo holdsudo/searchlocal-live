@@ -813,3 +813,21 @@ a.biz-rate-yelp:hover { border-color: rgba(255,26,26,.5); background: rgba(255,2
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .js [data-reveal] { opacity: 1; transform: none; }
 }
+
+/* Ads — left/right rails sit just outside the 1200px .wrap and only exist when the viewport has room;
+   the bottom bar is fixed and body.has-ad-bottom reserves its height so it never covers content. */
+.ad { display: none; }
+.ad-left, .ad-right { position: fixed; top: 50%; transform: translateY(-50%); width: 160px; height: 600px; z-index: 20; }
+.ad-left { left: calc(50% - var(--wrap) / 2 - 184px); }
+.ad-right { right: calc(50% - var(--wrap) / 2 - 184px); }
+@media (min-width: 1600px) { .ad-left, .ad-right { display: block; } }
+.ad-bottom { display: block; position: fixed; left: 0; right: 0; bottom: 0; height: 90px; z-index: 40; background: rgba(12,12,12,.96); border-top: 1px solid var(--line-soft); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.ad-bottom .adsbygoogle { width: min(728px, 100%); height: 90px; }
+body.has-ad-bottom { padding-bottom: 90px; }
+@media (max-width: 760px) {
+  .ad-bottom { height: 50px; }
+  .ad-bottom .adsbygoogle { width: min(320px, 100%); height: 50px; }
+  body.has-ad-bottom { padding-bottom: 50px; }
+}
+.ad .adsbygoogle { background: transparent; }
+.ad:has(.adsbygoogle[data-ad-status="unfilled"]) { display: none; }
