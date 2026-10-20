@@ -151,9 +151,15 @@
     const results = $('[data-results]');
     const countEl = $('[data-count]');
     const emptyEl = $('[data-empty]');
+    const emptyTitle = emptyEl ? $('[data-empty-title]', emptyEl) : null;
+    const emptyLead = emptyEl ? $('[data-empty-lead]', emptyEl) : null;
     const cards = $$('.card', results);
-    const bySlug = new Map(cards.map((c) => [c.getAttribute('href').split('/')[2], c]));
+    const cardSlug = (c) => c.dataset.slug || c.getAttribute('href')?.split('/')[2];
+    const bySlug = new Map(cards.map((c) => [cardSlug(c), c]));
+    const cardName = (c) => (c.querySelector('.card-title')?.textContent || '').trim();
     let index = [];
+    let catHints = [];
+    try { catHints = JSON.parse(emptyEl?.getAttribute('data-cat-hints') || '[]'); } catch { catHints = []; }
 
     const params = new URLSearchParams(location.search);
     const catSelect = filters.elements.category;
@@ -166,24 +172,85 @@
     filters.elements.town.value = params.get('town') || '';
     filters.elements.open.checked = params.get('open') === '1';
 
+    function matchHint(qRaw, catSlug) {
+      const qLower = (qRaw || '').toLowerCase().trim();
+      if (catSlug) return catHints.find((h) => h.slug === catSlug) || null;
+      if (!qLower) return null;
+      return catHints.find((h) => {
+        const name = String(h.name || '').toLowerCase();
+        const query = String(h.query || '').toLowerCase();
+        return qLower === name || qLower === query
+          || name.includes(qLower) || query.includes(qLower)
+          || qLower.includes(name.split('&')[0].trim())
+          || query.split(/\s+/).some((w) => w.length > 3 && qLower.includes(w));
+      }) || null;
+    }
+
+    function setEmptyMessage({ qRaw, cat, town, openOnly }) {
+      if (!emptyTitle || !emptyLead) return;
+      const hint = matchHint(qRaw, cat);
+      const townLabel = town
+        ? ([...filters.elements.town.options].find((o) => o.value === town)?.text || town)
+        : '';
+      if (hint && hint.n === 0) {
+        const label = (hint.query || hint.name || 'that').toLowerCase();
+        emptyTitle.textContent = `No ${label} listed yet.`;
+        emptyLead.textContent = townLabel
+          ? `We don't have ${label} in ${townLabel} yet — try another category below, or add one.`
+          : `Try one of the categories below, or add a ${label.replace(/s$/, '')} you trust.`;
+        return;
+      }
+      if (openOnly && !qRaw && !cat && !town) {
+        emptyTitle.textContent = 'Nobody with listed hours is open right now.';
+        emptyLead.textContent = 'Clear Open now to see every business, or check back later today.';
+        return;
+      }
+      if (openOnly) {
+        emptyTitle.textContent = 'Nothing open matches that search.';
+        emptyLead.textContent = 'Turn off Open now, or try a broader category or town.';
+        return;
+      }
+      if (hint && hint.n > 0 && (town || openOnly)) {
+        emptyTitle.textContent = `No ${hint.name.toLowerCase()} match those filters.`;
+        emptyLead.textContent = 'Clear the town or Open now filter, or browse that whole category.';
+        return;
+      }
+      emptyTitle.textContent = 'Nothing matches — yet.';
+      emptyLead.textContent = 'Try a broader search, pick a category below, or suggest a business we should add.';
+    }
+
     function apply() {
-      const terms = filters.elements.q.value.toLowerCase().split(/\s+/).filter(Boolean);
+      paintStatus();
+      const qRaw = filters.elements.q.value.trim();
+      const terms = qRaw.toLowerCase().split(/\s+/).filter(Boolean);
       const cat = catSelect.value;
       const town = filters.elements.town.value;
       const openOnly = filters.elements.open.checked;
-      let shown = 0;
+      const matched = [];
       index.forEach((l) => {
         const card = bySlug.get(l.slug);
         if (!card) return;
         const ok = (!cat || l.category === cat) && (!town || l.town === town) && (!openOnly || card.hasAttribute('data-open')) && terms.every((t) => l.text.includes(t));
         card.hidden = !ok;
-        if (ok) { shown++; card.classList.add('is-in'); }
+        if (ok) {
+          card.classList.add('is-in');
+          matched.push(card);
+        }
       });
+      matched.sort((a, b) => {
+        const ao = a.hasAttribute('data-open') ? 0 : 1;
+        const bo = b.hasAttribute('data-open') ? 0 : 1;
+        if (ao !== bo) return ao - bo;
+        return cardName(a).localeCompare(cardName(b), undefined, { sensitivity: 'base' });
+      });
+      matched.forEach((card) => results.appendChild(card));
+      const shown = matched.length;
       countEl.textContent = `${shown} ${shown === 1 ? 'business' : 'businesses'}${cat || town || terms.length || openOnly ? ' match' : ''}`;
       emptyEl.hidden = shown > 0;
       results.hidden = shown === 0;
+      if (shown === 0) setEmptyMessage({ qRaw, cat, town, openOnly });
       const p = new URLSearchParams();
-      if (filters.elements.q.value.trim()) p.set('q', filters.elements.q.value.trim());
+      if (qRaw) p.set('q', qRaw);
       if (cat) p.set('category', cat);
       if (town) p.set('town', town);
       if (openOnly) p.set('open', '1');
@@ -193,7 +260,7 @@
     fetch('/assets/data/listings.json')
       .then((r) => r.json())
       .then((data) => { index = data; apply(); })
-      .catch(() => { index = cards.map((c) => ({ slug: c.getAttribute('href').split('/')[2], text: c.textContent.toLowerCase(), category: '', town: '' })); apply(); });
+      .catch(() => { index = cards.map((c) => ({ slug: cardSlug(c), text: c.textContent.toLowerCase(), category: '', town: '' })); apply(); });
 
     filters.addEventListener('input', apply);
     filters.addEventListener('change', apply);

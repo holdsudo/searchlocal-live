@@ -234,21 +234,52 @@ function footer() {
 }
 
 // ---------- components ----------
+function yelpHref(l) {
+  if (l.yelp?.url) return l.yelp.url;
+  if (l.sample) return '';
+  const loc = `${l.townObj.name}, ${l.townObj.state}`;
+  return `https://www.yelp.com/search?find_desc=${encodeURIComponent(l.name)}&find_loc=${encodeURIComponent(loc)}`;
+}
+
+function starRow(rating) {
+  const r = Math.round(Number(rating) * 2) / 2;
+  let html = '<span class="card-stars" aria-hidden="true">';
+  for (let i = 1; i <= 5; i++) {
+    const diff = r - (i - 1);
+    const cls = diff >= 0.75 ? 'is-full' : diff >= 0.25 ? 'is-half' : 'is-empty';
+    html += `<span class="card-star ${cls}">${icon('star')}</span>`;
+  }
+  return `${html}</span>`;
+}
+
 function card(l) {
-  return `<a class="card" href="/business/${l.slug}/" data-reveal>
+  const href = `/business/${l.slug}/`;
+  const yUrl = yelpHref(l);
+  const rating = l.yelp?.rating;
+  const count = l.yelp?.reviewCount;
+  const ratingBlock = rating != null
+    ? `<div class="card-rating">${starRow(rating)}<span class="card-rating-score">${Number(rating).toFixed(1)}</span>${count != null ? `<span class="card-rating-count">(${count.toLocaleString('en-US')})</span>` : ''}<span class="card-rating-src">Yelp</span></div>`
+    : '';
+  const yelpBtn = yUrl
+    ? `<a class="card-yelp" href="${e(yUrl)}" target="_blank" rel="noopener noreferrer" aria-label="View ${e(l.name)} on Yelp">Yelp</a>`
+    : '';
+  return `<article class="card" data-slug="${e(l.slug)}" href="${href}" data-reveal>
+  <a class="card-hit" href="${href}" tabindex="-1" aria-hidden="true"></a>
   <div class="card-head">
     ${mark(l)}
     <span class="card-cat">${icon(l.cat.icon)}${e(l.cat.name)}</span>
-    ${l.sample ? '<span class="sample-tag" title="Demonstration listing — not a real business">Sample</span>' : l.claimed ? '' : '<span class="sample-tag" title="Compiled from public information. Not yet claimed by the owner.">Unclaimed</span>'}
+    ${l.sample ? '<span class="sample-tag" title="Demonstration listing — not a real business">Sample</span>' : ''}
+    ${yelpBtn}
   </div>
-  <h3 class="card-title">${e(l.name)}</h3>
+  <h3 class="card-title"><a href="${href}">${e(l.name)}</a></h3>
   <p class="card-sum">${e(l.summary)}</p>
+  ${ratingBlock}
   <div class="card-foot">
     <span class="card-loc">${icon('pin')}${e(l.townObj.name)}, ${e(l.townObj.state)}</span>
     ${l.hours ? `<span class="status" data-hours="${e(JSON.stringify(l.hours))}"></span>` : ''}
   </div>
   <span class="card-arrow" aria-hidden="true">${icon('arrowUpRight')}</span>
-</a>`;
+</article>`;
 }
 
 const grid = (list) => `<div class="card-grid">${list.map(card).join('')}</div>`;
@@ -294,25 +325,34 @@ function home() {
   const featured = listings.filter((l) => l.featured).slice(0, 6);
   const catCount = (slug) => listings.filter((l) => l.category === slug).length;
   const townCount = (slug) => listings.filter((l) => l.town === slug).length;
-  const chips = [...categories].sort((a, b) => catCount(b.slug) - catCount(a.slug)).filter((c) => catCount(c.slug)).slice(0, 6).map((c) => `<a class="chip" href="/category/${c.slug}/">${icon(c.icon)}${e(c.name)}</a>`).join('');
-  const marquee = [...categories, ...categories].map((c) => `<span>${e(c.name)}</span><i aria-hidden="true">◆</i>`).join('');
-  const catTiles = categories
+  const filledCats = [...categories].filter((c) => catCount(c.slug)).sort((a, b) => catCount(b.slug) - catCount(a.slug));
+  const filledTowns = towns.filter((t) => townCount(t.slug)).sort((a, b) => townCount(b.slug) - townCount(a.slug));
+  const chips = [
+    `<a class="chip chip-open" href="/browse/?open=1">${icon('clock')}Open now</a>`,
+    ...filledCats.slice(0, 5).map((c) => `<a class="chip" href="/category/${c.slug}/">${icon(c.icon)}${e(c.name)}</a>`),
+  ].join('');
+  const townChips = filledTowns
+    .slice(0, 6)
+    .map((t) => `<a class="chip" href="/town/${t.slug}/">${icon('pin')}${e(t.name)}</a>`)
+    .join('');
+  const marquee = [...filledCats, ...filledCats].map((c) => `<span>${e(c.name)}</span><i aria-hidden="true">◆</i>`).join('');
+  const catTiles = filledCats
     .map(
       (c) => `<a class="cat-tile" href="/category/${c.slug}/" data-reveal>
   <span class="cat-icon">${icon(c.icon)}</span>
   <span class="cat-name">${e(c.name)}</span>
-  <span class="cat-count">${catCount(c.slug) ? plural(catCount(c.slug), 'listing') : 'Be the first to list'}</span>
+  <span class="cat-count">${plural(catCount(c.slug), 'listing')}</span>
   <span class="cat-arrow" aria-hidden="true">${icon('arrow')}</span>
 </a>`
     )
     .join('');
-  const townTiles = towns
+  const townTiles = filledTowns
     .map(
       (t, i) => `<a class="town-row" href="/town/${t.slug}/" data-reveal>
   <span class="town-num">${String(i + 1).padStart(2, '0')}</span>
   <span class="town-name">${e(t.name)}</span>
   <span class="town-county">${e(t.county)}, ${e(t.state)}</span>
-  <span class="town-count">${townCount(t.slug) ? plural(townCount(t.slug), 'business', 'businesses') : 'Coming soon'}</span>
+  <span class="town-count">${plural(townCount(t.slug), 'business', 'businesses')}</span>
   <span class="town-arrow" aria-hidden="true">${icon('arrowUpRight')}</span>
 </a>`
     )
@@ -334,7 +374,7 @@ function home() {
   <div class="wrap hero-inner">
     <p class="eyebrow eyebrow-pill"><span class="dot" aria-hidden="true"></span>${e(site.tagline)} · ${e(site.region)}</p>
     <h1 class="display hero-title">Find the <em>best</em> <span class="nowrap">of local.</span></h1>
-    <p class="lead hero-lead">Every shop, crew and kitchen on Main Street, in one place. Real businesses, real details. No pay-to-rank, no fake reviews.</p>
+    <p class="lead hero-lead">Search by what you need, filter who's open, and call from the listing. Real businesses — no pay-to-rank, no fake reviews.</p>
     <form class="searchbar" action="/browse/" method="get" role="search">
       <label class="sb-field">
         <span class="sb-label">What</span>
@@ -348,26 +388,18 @@ function home() {
       <button class="btn btn-gold sb-btn" type="submit">Search ${icon('arrow')}</button>
       <datalist id="cat-list">${catOptions}</datalist>
     </form>
-    <div class="chips"><span class="chips-label">Popular</span>${chips}</div>
+    <div class="chips"><span class="chips-label">Find</span>${chips}</div>
+    ${townChips ? `<div class="chips chips-towns"><span class="chips-label">Towns</span>${townChips}</div>` : ''}
   </div>
-  <a class="stroll" href="#browse-cats"><span>Scroll to stroll</span><i aria-hidden="true"></i></a>
+  <a class="stroll" href="#browse-cats"><span>Browse categories</span><i aria-hidden="true"></i></a>
 </section>
 
-<div class="marquee" aria-hidden="true"><div class="marquee-track">${marquee}</div></div>
-
-<section class="section stats-band">
-  <div class="wrap stats">
-    <div class="stat" data-reveal><span class="stat-num">${categories.length}</span><span class="stat-label">Categories</span></div>
-    <div class="stat" data-reveal><span class="stat-num">${towns.length}</span><span class="stat-label">Towns covered</span></div>
-    <div class="stat" data-reveal><span class="stat-num">$0</span><span class="stat-label">To list. Forever.</span></div>
-    <div class="stat" data-reveal><span class="stat-num">0</span><span class="stat-label">Paid placements</span></div>
-  </div>
-</section>
+${marquee ? `<div class="marquee" aria-hidden="true"><div class="marquee-track">${marquee}</div></div>` : ''}
 
 <section class="section" id="browse-cats">
   <div class="wrap">
     <div class="section-head">
-      <div><p class="eyebrow">Browse by category</p><h2 class="h2">Everything your town <em>runs on.</em></h2></div>
+      <div><p class="eyebrow">Browse by category</p><h2 class="h2">What do you <em>need?</em></h2></div>
       <a class="link-arrow" href="/categories/">All categories ${icon('arrow')}</a>
     </div>
     <div class="cat-grid">${catTiles}</div>
@@ -377,10 +409,14 @@ function home() {
 <section class="section section-alt">
   <div class="wrap">
     <div class="section-head">
-      <div><p class="eyebrow">Featured</p><h2 class="h2">Local, <em>handpicked.</em></h2></div>
-      <a class="link-arrow" href="/browse/">Browse every listing ${icon('arrow')}</a>
+      <div><p class="eyebrow">Start here</p><h2 class="h2">Local, <em>handpicked.</em></h2></div>
+      <a class="link-arrow" href="/browse/?open=1">Who's open now ${icon('arrow')}</a>
     </div>
     ${grid(featured)}
+    <div class="cta-actions" style="margin-top:28px">
+      <a class="btn btn-gold" href="/browse/">Browse every listing ${icon('arrow')}</a>
+      <a class="btn btn-ghost" href="/browse/?open=1">${icon('clock')}Open now</a>
+    </div>
   </div>
   ${sampleNotice()}
 </section>
@@ -390,10 +426,19 @@ function home() {
     <div class="towns-intro" data-reveal>
       <p class="eyebrow">Towns</p>
       <h2 class="h2">Close to <em>home.</em></h2>
-      <p class="muted">We start where we live and grow town by town — only adding a place once it has enough real businesses to be genuinely useful.</p>
+      <p class="muted">Pick a town with real listings — we only surface places that already have businesses you can call.</p>
       <a class="btn btn-ghost" href="/towns/">See all towns ${icon('arrow')}</a>
     </div>
     <div class="town-list">${townTiles}</div>
+  </div>
+</section>
+
+<section class="section stats-band">
+  <div class="wrap stats">
+    <div class="stat" data-reveal><span class="stat-num">${filledCats.length}</span><span class="stat-label">Active categories</span></div>
+    <div class="stat" data-reveal><span class="stat-num">${filledTowns.length}</span><span class="stat-label">Towns with listings</span></div>
+    <div class="stat" data-reveal><span class="stat-num">$0</span><span class="stat-label">To list. Forever.</span></div>
+    <div class="stat" data-reveal><span class="stat-num">0</span><span class="stat-label">Paid placements</span></div>
   </div>
 </section>
 
@@ -459,8 +504,28 @@ function home() {
 function browse() {
   const townOptions = towns.map((t) => `<option value="${t.slug}">${e(t.name)}</option>`).join('');
   const catOptions = categories.map((c) => `<option value="${c.slug}">${e(c.name)}</option>`).join('');
+  const filledCats = categories.filter((c) => listings.some((l) => l.category === c.slug));
+  const quickChips = [
+    `<a class="chip chip-open" href="/browse/?open=1">${icon('clock')}Open now</a>`,
+    ...filledCats.slice(0, 5).map((c) => `<a class="chip" href="/browse/?category=${c.slug}">${icon(c.icon)}${e(c.name)}</a>`),
+  ].join('');
+  const catHints = categories.map((c) => ({
+    slug: c.slug,
+    name: c.name,
+    query: c.query || c.name,
+    n: listings.filter((l) => l.category === c.slug).length,
+  }));
+  const suggestChips = filledCats
+    .slice(0, 4)
+    .map((c) => `<a class="chip" href="/browse/?category=${c.slug}">${icon(c.icon)}${e(c.name)}</a>`)
+    .join('');
   const body = `
-${pageHero({ eyebrow: 'The directory', title: 'Browse <em>everything.</em>', lead: `Every business in ${e(site.region)}, in one place. Filter by what you need, where you are, and who's open right now.` })}
+${pageHero({
+    eyebrow: 'The directory',
+    title: 'Browse <em>everything.</em>',
+    lead: `Every business in ${e(site.region)}, in one place. Filter by what you need, where you are, and who's open right now.`,
+    extra: `<div class="chips">${quickChips}</div>`,
+  })}
 <section class="section section-tight">
   <div class="wrap">
     <form class="filters" data-filters onsubmit="return false">
@@ -472,10 +537,11 @@ ${pageHero({ eyebrow: 'The directory', title: 'Browse <em>everything.</em>', lea
     <p class="results-count" aria-live="polite" data-count>${plural(listings.length, 'business', 'businesses')}</p>
     <h2 class="sr-only">Listings</h2>
     <div class="card-grid" data-results>${listings.map(card).join('')}</div>
-    <div class="empty" data-empty hidden>
+    <div class="empty" data-empty hidden data-cat-hints='${e(JSON.stringify(catHints))}'>
       <span class="empty-icon">${icon('search')}</span>
-      <h3>Nothing matches — yet.</h3>
-      <p>Try a broader search, or know a great business that belongs here?</p>
+      <h3 data-empty-title>Nothing matches — yet.</h3>
+      <p data-empty-lead>Try a broader search, or know a great business that belongs here?</p>
+      <div class="chips empty-suggest" data-empty-suggest>${suggestChips}</div>
       <div class="cta-actions"><button class="btn btn-ghost" type="button" data-reset>Clear filters</button><a class="btn btn-gold" href="/add-your-business/">Suggest a business</a></div>
     </div>
   </div>
@@ -485,20 +551,22 @@ ${pageHero({ eyebrow: 'The directory', title: 'Browse <em>everything.</em>', lea
 }
 
 function categoriesIndex() {
-  const tiles = categories
-    .map((c) => {
-      const n = listings.filter((l) => l.category === c.slug).length;
-      return `<a class="cat-tile cat-tile-lg" href="/category/${c.slug}/" data-reveal>
+  const withListings = [];
+  const empty = [];
+  for (const c of categories) {
+    const n = listings.filter((l) => l.category === c.slug).length;
+    (n ? withListings : empty).push({ c, n });
+  }
+  const tile = ({ c, n }) => `<a class="cat-tile cat-tile-lg${n ? '' : ' is-empty'}" href="/category/${c.slug}/" data-reveal>
   <span class="cat-icon">${icon(c.icon)}</span>
   <span class="cat-name">${e(c.name)}</span>
   <span class="cat-blurb">${e(c.blurb)}</span>
-  <span class="cat-count">${n ? plural(n, 'listing') : 'Be the first to list'}</span>
+  <span class="cat-count">${n ? plural(n, 'listing') : 'Coming soon'}</span>
   <span class="cat-arrow" aria-hidden="true">${icon('arrow')}</span>
 </a>`;
-    })
-    .join('');
+  const tiles = [...withListings, ...empty].map(tile).join('');
   const c = crumbs([['/', 'Home'], ['/categories/', 'Categories']]);
-  const body = `${pageHero({ crumbHtml: c.html, eyebrow: 'Categories', title: 'What do you <em>need?</em>', lead: `${categories.length} categories, from dinner tonight to the pipe that burst this morning.` })}
+  const body = `${pageHero({ crumbHtml: c.html, eyebrow: 'Categories', title: 'What do you <em>need?</em>', lead: `${withListings.length} categories with live listings — plus more we're filling town by town.` })}
 <section class="section section-tight"><div class="wrap"><div class="cat-grid cat-grid-lg">${tiles}</div></div></section>`;
   addPage('/categories/', layout({ title: 'All categories', description: `Browse local businesses in ${site.region} by category.`, pathname: '/categories/', body, jsonld: [c.ld] }));
 }
@@ -529,7 +597,7 @@ function categoryPages() {
     const filterChips = townsHere.length > 1 ? `<div class="chips chips-filter" data-chip-filter><button class="chip is-active" type="button" data-town="">All towns</button>${townsHere.map((t) => `<button class="chip" type="button" data-town="${t.slug}">${e(t.name)}</button>`).join('')}</div>` : '';
     const others = categories.filter((o) => o.slug !== c.slug).slice(0, 8).map((o) => `<a class="chip" href="/category/${o.slug}/">${icon(o.icon)}${e(o.name)}</a>`).join('');
     const cr = crumbs([['/', 'Home'], ['/categories/', 'Categories'], [`/category/${c.slug}/`, c.name]]);
-    const cards = list.map((l) => card(l).replace('<a class="card"', `<a class="card" data-town="${l.town}"`)).join('');
+    const cards = list.map((l) => card(l).replace('<article class="card"', `<article class="card" data-town="${l.town}"`)).join('');
     // Real links to each town's page (the filter chips above are buttons, which crawlers don't follow).
     const townCount = (t) => real(list).filter((l) => l.town === t.slug).length;
     const byTown = townsHere.filter(townCount).map((t) => `<a class="chip" href="/category/${c.slug}/${t.slug}/">${icon('pin')}${e(t.name)} <span class="muted">(${townCount(t)})</span></a>`).join('');
@@ -578,7 +646,7 @@ function placePages() {
   }
 }
 
-const emptyCategory = (name) => `<div class="empty"><span class="empty-icon">${icon('sparkles')}</span><h3>No ${e(name.toLowerCase())} listed yet.</h3><p>Be the first — listings are free.</p><div class="cta-actions"><a class="btn btn-gold" href="/add-your-business/">Add a business</a></div></div>`;
+const emptyCategory = (name) => `<div class="empty"><span class="empty-icon">${icon('sparkles')}</span><h3>No ${e(name.toLowerCase())} listed yet.</h3><p>This category is coming soon — listings are free if you know a great local fit.</p><div class="cta-actions"><a class="btn btn-gold" href="/add-your-business/">Add a business</a><a class="btn btn-ghost" href="/browse/">Browse what's live</a></div></div>`;
 
 function townPages() {
   for (const t of towns) {
@@ -586,7 +654,7 @@ function townPages() {
     const catsHere = categories.filter((c) => list.some((l) => l.category === c.slug));
     const filterChips = catsHere.length > 1 ? `<div class="chips chips-filter" data-chip-filter><button class="chip is-active" type="button" data-cat="">Everything</button>${catsHere.map((c) => `<button class="chip" type="button" data-cat="${c.slug}">${icon(c.icon)}${e(c.name)}</button>`).join('')}</div>` : '';
     const cr = crumbs([['/', 'Home'], ['/towns/', 'Towns'], [`/town/${t.slug}/`, t.name]]);
-    const cards = list.map((l) => card(l).replace('<a class="card"', `<a class="card" data-cat="${l.category}"`)).join('');
+    const cards = list.map((l) => card(l).replace('<article class="card"', `<article class="card" data-cat="${l.category}"`)).join('');
     const nearby = towns.filter((o) => o.slug !== t.slug).map((o) => `<a class="chip" href="/town/${o.slug}/">${icon('pin')}${e(o.name)}</a>`).join('');
     // Real links to each category's page (the filter chips above are buttons, which crawlers don't follow).
     const catCount = (c) => real(list).filter((l) => l.category === c.slug).length;
@@ -636,8 +704,22 @@ function businessPages() {
       : l.sample
       ? `<div class="map map-placeholder"><div class="map-grid" aria-hidden="true"></div><span class="map-pin">${icon('pin')}</span><p>Map appears on verified listings</p></div>`
       : `<div class="map"><iframe title="Map of ${e(l.name)}" src="https://maps.google.com/maps?q=${mapsQ}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>`;
+    const telHref = `tel:${l.phone.replace(/[^\d+]/g, '')}`;
     const website = l.website ? `<a class="btn btn-ghost btn-block" href="${e(l.website)}" target="_blank" rel="noopener">${icon('globe')}Visit website</a>` : '';
     const directions = l.sample || !l.address ? '' : `<a class="btn btn-ghost btn-block" href="https://www.google.com/maps/search/?api=1&query=${mapsQ}" target="_blank" rel="noopener">${icon('navigation')}Get directions</a>`;
+    const dockWebsite = l.website
+      ? `<a class="biz-dock-btn" href="${e(l.website)}" target="_blank" rel="noopener">${icon('globe')}<span>Website</span></a>`
+      : '';
+    const dockDirections = l.sample || !l.address
+      ? ''
+      : `<a class="biz-dock-btn" href="https://www.google.com/maps/search/?api=1&query=${mapsQ}" target="_blank" rel="noopener">${icon('navigation')}<span>Directions</span></a>`;
+    const dock = l.sample
+      ? ''
+      : `<nav class="biz-dock" aria-label="Quick actions">
+  <a class="biz-dock-btn biz-dock-call" href="${telHref}">${icon('phone')}<span>Call</span></a>
+  ${dockWebsite}
+  ${dockDirections}
+</nav>`;
 
     const body = `
 <section class="biz-hero">
@@ -684,7 +766,7 @@ function businessPages() {
     </div>
     <aside class="biz-side">
       <div class="panel panel-sticky" data-reveal>
-        <a class="btn btn-gold btn-block btn-lg" href="tel:${l.phone.replace(/[^\d+]/g, '')}">${icon('phone')}${e(l.phone)}</a>
+        <a class="btn btn-gold btn-block btn-lg" href="${telHref}">${icon('phone')}${e(l.phone)}</a>
         ${website}
         ${directions}
         <div class="hours" data-hours-table>
@@ -700,7 +782,8 @@ function businessPages() {
   </div>
   ${l.sample ? `<div class="wrap"><p class="sample-notice">${icon('info')}<span><strong>This is a sample listing.</strong> ${e(l.name)} is a demonstration business, not a real company. Its phone number is in the fictional 555-01xx range.</span></p></div>` : ''}
 </section>
-${similar.length ? `<section class="section section-alt"><div class="wrap"><div class="section-head"><div><p class="eyebrow">Keep exploring</p><h2 class="h2">You might <em>also like.</em></h2></div></div>${grid(similar)}</div></section>` : ''}`;
+${similar.length ? `<section class="section section-alt"><div class="wrap"><div class="section-head"><div><p class="eyebrow">Keep exploring</p><h2 class="h2">You might <em>also like.</em></h2></div></div>${grid(similar)}</div></section>` : ''}
+${dock}`;
 
     const jsonld = [cr.ld];
     if (!l.sample) {
@@ -716,7 +799,17 @@ ${similar.length ? `<section class="section section-alt"><div class="wrap"><div 
         telephone: l.phone,
         email: l.email || undefined,
         url: l.website || undefined,
-        sameAs: l.website ? [l.website] : undefined,
+        sameAs: (() => {
+          const urls = [...(l.website ? [l.website] : []), ...(l.yelp?.url ? [l.yelp.url] : [])];
+          return urls.length ? urls : undefined;
+        })(),
+        aggregateRating: l.yelp?.rating != null ? {
+          '@type': 'AggregateRating',
+          ratingValue: l.yelp.rating,
+          reviewCount: l.yelp.reviewCount || undefined,
+          bestRating: 5,
+          worstRating: 1,
+        } : undefined,
         foundingDate: l.since ? String(l.since) : undefined,
         hasMap: l.address ? `https://www.google.com/maps/search/?api=1&query=${mapsQ}` : undefined,
         address: { '@type': 'PostalAddress', streetAddress: l.address || undefined, addressLocality: t.name, addressRegion: t.state, postalCode: l.zip || undefined, addressCountry: 'US' },
@@ -732,7 +825,7 @@ ${similar.length ? `<section class="section section-alt"><div class="wrap"><div 
       ['business:contact_data:street_address', l.address], ['business:contact_data:locality', t.name], ['business:contact_data:region', t.state],
       ['business:contact_data:postal_code', l.zip], ['business:contact_data:country_name', 'United States'], ['business:contact_data:phone_number', l.phone], ['business:contact_data:email', l.email], ['business:contact_data:website', l.website],
     ].filter(([, v]) => v).map(([k, v]) => `<meta property="${k}" content="${e(v)}">`).join('\n');
-    addPage(`/business/${l.slug}/`, layout({ title: `${l.name} — ${l.cat.name} in ${t.name}, ${t.state}`, description: `${l.name} in ${t.name}, ${t.state}. ${l.summary}`, pathname: `/business/${l.slug}/`, body, jsonld, ogType: l.sample ? 'website' : 'business.business', extraHead: contact }), { noindex: l.sample });
+    addPage(`/business/${l.slug}/`, layout({ title: `${l.name} — ${l.cat.name} in ${t.name}, ${t.state}`, description: `${l.name} in ${t.name}, ${t.state}. ${l.summary}`, pathname: `/business/${l.slug}/`, body, jsonld, ogType: l.sample ? 'website' : 'business.business', extraHead: contact, bodyClass: l.sample ? 'page-inner' : 'page-inner page-business' }), { noindex: l.sample });
   }
 }
 
