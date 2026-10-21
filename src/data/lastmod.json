@@ -1,18 +1,18 @@
 {
  "/": {
-  "h": "3d347cb3afe321aa",
+  "h": "caafe9598a962f49",
   "d": "2026-10-21"
  },
  "/browse/": {
-  "h": "f880ed1efca1a20c",
+  "h": "7c445a28523742e4",
   "d": "2026-10-21"
  },
  "/categories/": {
-  "h": "60d491ff300151ab",
+  "h": "6ce336331541c6a0",
   "d": "2026-10-21"
  },
  "/towns/": {
-  "h": "ea5b04a28615dbed",
+  "h": "a75e38187c30b042",
   "d": "2026-10-21"
  },
  "/category/restaurants/": {
@@ -24,15 +24,15 @@
   "d": "2026-10-21"
  },
  "/town/lakewood/": {
-  "h": "9e2b5730a7e6631a",
+  "h": "75b996c491d30897",
   "d": "2026-10-21"
  },
  "/town/toms-river/": {
-  "h": "971c2185eb6a3dbb",
+  "h": "3d3deaf3dfc9c007",
   "d": "2026-10-21"
  },
  "/town/brick/": {
-  "h": "5d4cedbba8335cec",
+  "h": "e6ecaeb81f0f50ed",
   "d": "2026-10-21"
  },
  "/business/spa-virtue/": {
@@ -56,7 +56,7 @@
   "d": "2026-10-21"
  },
  "/business/ob-cos-donuts/": {
-  "h": "0d9170ccb2d034e0",
+  "h": "602984d2317e95bb",
   "d": "2026-10-21"
  },
  "/business/coastal-dental-group/": {
@@ -116,7 +116,7 @@
   "d": "2026-10-21"
  },
  "/add-your-business/": {
-  "h": "8a1f001190063f5d",
+  "h": "57e83cac415847a9",
   "d": "2026-10-21"
  },
  "/about/": {
@@ -160,7 +160,7 @@
   "d": "2026-10-21"
  },
  "/business/boba-8tea8/": {
-  "h": "978128789d9148aa",
+  "h": "ef0c21fb44ff7444",
   "d": "2026-10-21"
  },
  "/business/sand-dollar-real-estate/": {
@@ -192,7 +192,7 @@
   "d": "2026-10-21"
  },
  "/category/cafes-bakeries/": {
-  "h": "640ffb38e8d1305c",
+  "h": "0ff38a3c03d48916",
   "d": "2026-10-21"
  },
  "/category/auto-repair/": {
@@ -232,27 +232,27 @@
   "d": "2026-10-21"
  },
  "/town/jackson/": {
-  "h": "65ae4e786d867e3b",
+  "h": "b5139d4a6ec4e558",
   "d": "2026-10-21"
  },
  "/town/point-pleasant-beach/": {
-  "h": "8aaa16b57f4490f9",
+  "h": "6e08b5ae86bca3ab",
   "d": "2026-10-21"
  },
  "/town/point-pleasant/": {
-  "h": "66ed513eaa2c91bb",
+  "h": "5902f1d15668cd22",
   "d": "2026-10-21"
  },
  "/town/lanoka-harbor/": {
-  "h": "60500729ded7d03a",
+  "h": "bc5e272d50135c7e",
   "d": "2026-10-21"
  },
  "/town/whiting/": {
-  "h": "b2470fd26e5028ff",
+  "h": "be91b32b33822f34",
   "d": "2026-10-21"
  },
  "/town/surf-city/": {
-  "h": "574fb24fbcd57820",
+  "h": "103cc96d2d0e1bc8",
   "d": "2026-10-21"
  },
  "/category/restaurants/lakewood/": {
@@ -340,7 +340,7 @@
   "d": "2026-10-21"
  },
  "/town/beach-haven/": {
-  "h": "7eb7a5645e5976e3",
+  "h": "4554807cb2178a3e",
   "d": "2026-10-21"
  },
  "/category/salons-barbers/beach-haven/": {
@@ -357,6 +357,18 @@
  },
  "/business/garabedian-realty-group/": {
   "h": "6d32f1cfc9c22880",
+  "d": "2026-10-21"
+ },
+ "/town/bayville/": {
+  "h": "9fcd75cbd84d5c55",
+  "d": "2026-10-21"
+ },
+ "/category/cafes-bakeries/bayville/": {
+  "h": "5e4c2105b8cce5c4",
+  "d": "2026-10-21"
+ },
+ "/business/miss-mindys-homemade-ice-cream/": {
+  "h": "9f5c326e11345229",
   "d": "2026-10-21"
  }
 }

@@ -76,5 +76,11 @@
     "name": "Beach Haven",
     "county": "Ocean County",
     "state": "NJ"
+  },
+  {
+    "slug": "bayville",
+    "name": "Bayville",
+    "county": "Ocean County",
+    "state": "NJ"
   }
 ]

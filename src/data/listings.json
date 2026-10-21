@@ -1146,5 +1146,38 @@
       "Construction management",
       "Custom home building"
     ]
+  },
+  {
+    "slug": "miss-mindys-homemade-ice-cream",
+    "name": "Miss Mindy's Homemade Ice Cream",
+    "category": "cafes-bakeries",
+    "town": "bayville",
+    "address": "155 Atlantic City Boulevard, Unit 6",
+    "zip": "08721",
+    "phone": "(732) 831-4563",
+    "website": "https://www.missmindysicecream.com",
+    "hours": {
+      "mon": "12:00-21:00",
+      "tue": "12:00-21:00",
+      "wed": "12:00-21:00",
+      "thu": "12:00-21:00",
+      "fri": "12:00-22:00",
+      "sat": "12:00-22:00",
+      "sun": "12:00-21:00"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-21",
+    "summary": "Ice cream shop in Bayville serving homemade ice cream along with dairy-free and no-sugar-added options.",
+    "description": "Miss Mindy's is an ice cream shop on Atlantic City Boulevard in Bayville. The menu includes homemade ice cream in everyday and rotating flavors, plus dairy-free and no-sugar-added choices. A six-flavor sampler is available, and the shop also takes inquiries about party packages.",
+    "services": [
+      "Homemade ice cream",
+      "Dairy-free frozen dessert",
+      "No-sugar-added ice cream",
+      "To-go treats",
+      "Party packages"
+    ]
   }
 ]
