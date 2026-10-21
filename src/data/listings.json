@@ -1179,5 +1179,38 @@
       "To-go treats",
       "Party packages"
     ]
+  },
+  {
+    "slug": "the-godek-center-for-personal-enhancement",
+    "name": "The Godek Center For Personal Enhancement",
+    "category": "health-dental",
+    "town": "toms-river",
+    "address": "1430 Hooper Avenue, Suite 200A",
+    "zip": "08753",
+    "phone": "(732) 281-1988",
+    "website": "https://www.godekcenter.com",
+    "hours": {
+      "mon": "08:00-17:00",
+      "tue": "09:00-18:30",
+      "wed": "09:00-16:30",
+      "thu": "08:30-17:00",
+      "fri": "09:00-14:30",
+      "sat": null,
+      "sun": null
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-21",
+    "summary": "Cosmetic plastic surgery practice in Toms River offering facial, breast and body procedures plus non-surgical treatments.",
+    "description": "The Godek Center for Personal Enhancement is a plastic surgery practice with offices in Toms River and Wall. It provides surgical procedures for the face, breast and body, along with non-surgical options such as injectables, skin treatments and laser services. Appointments can be booked through the practice's website.",
+    "services": [
+      "Facial plastic surgery",
+      "Breast surgery",
+      "Body contouring",
+      "Injectables",
+      "Skin and laser treatments"
+    ]
   }
 ]

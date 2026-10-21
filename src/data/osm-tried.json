@@ -332,5 +332,28 @@
     "name": "Miss Mindy's Homemade Ice Cream",
     "result": "listed",
     "date": "2026-10-21"
+  },
+  "node/4677801347": {
+    "name": "Virtual Endeavors, LLC",
+    "result": "rejected",
+    "reason": "Website domain does not resolve",
+    "date": "2026-10-21"
+  },
+  "node/14183746693": {
+    "name": "Amour Nails",
+    "result": "rejected",
+    "reason": "Website returned 403; could not confirm details",
+    "date": "2026-10-21"
+  },
+  "node/14024677092": {
+    "name": "Ocean County Retina",
+    "result": "rejected",
+    "reason": "Five locations; hours not listed",
+    "date": "2026-10-21"
+  },
+  "node/11786304263": {
+    "name": "The Godek Center For Personal Enhancement",
+    "result": "listed",
+    "date": "2026-10-21"
   }
 }
