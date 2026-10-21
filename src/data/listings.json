@@ -1121,5 +1121,30 @@
       "Bridal services",
       "Makeup"
     ]
+  },
+  {
+    "slug": "garabedian-realty-group",
+    "name": "Garabedian Realty Group",
+    "category": "real-estate",
+    "town": "surf-city",
+    "address": "103 N 12th Street",
+    "zip": "08008",
+    "phone": "(609) 494-8400",
+    "website": "https://www.garabedianrealtygroup.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-21",
+    "summary": "Real estate brokerage in Surf City on Long Beach Island, handling home sales, purchases and custom home building.",
+    "description": "Garabedian Realty Group operates from a single office in Surf City on Long Beach Island. The firm represents buyers and sellers in residential sales and investment purchases. It also offers construction management and custom home design and building.",
+    "services": [
+      "Home sales",
+      "Buyer representation",
+      "Investment property",
+      "Construction management",
+      "Custom home building"
+    ]
   }
 ]
