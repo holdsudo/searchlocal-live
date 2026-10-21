@@ -70,5 +70,11 @@
     "name": "Surf City",
     "county": "Ocean County",
     "state": "NJ"
+  },
+  {
+    "slug": "beach-haven",
+    "name": "Beach Haven",
+    "county": "Ocean County",
+    "state": "NJ"
   }
 ]

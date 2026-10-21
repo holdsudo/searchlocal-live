@@ -1096,5 +1096,30 @@
       "reviewCount": 177,
       "asOf": "2026-10-20"
     }
+  },
+  {
+    "slug": "lavish-salon",
+    "name": "Lavish Salon",
+    "category": "salons-barbers",
+    "town": "beach-haven",
+    "address": "115 South Bay Avenue",
+    "zip": "08008",
+    "phone": "(609) 492-9955",
+    "website": "https://www.lavishlbi.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-21",
+    "summary": "Hair salon on Long Beach Island offering styling, color and bridal services by appointment.",
+    "description": "Lavish Salon is a hair salon located on South Bay Avenue in Beach Haven. Its services include hair styling, color, formal styling and makeup, along with services for brides and their wedding parties. The salon says it is open year round and asks clients to call to schedule an appointment.",
+    "services": [
+      "Hair styling",
+      "Hair color",
+      "Formal styling",
+      "Bridal services",
+      "Makeup"
+    ]
   }
 ]

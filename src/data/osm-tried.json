@@ -317,5 +317,10 @@
     "result": "rejected",
     "reason": "Website redirects to unrelated gambling site; unconfirmable",
     "date": "2026-10-20"
+  },
+  "way/700407041": {
+    "name": "Lavish Salon",
+    "result": "listed",
+    "date": "2026-10-21"
   }
 }
