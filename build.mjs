@@ -22,6 +22,11 @@ const ADS_SLOTS = ADS_ON ? (ADS.slots || {}) : {};
 function adUnit(where, slot, w, h) {
   return `<aside class="ad ad-${where}" aria-label="Advertisement"><ins class="adsbygoogle" style="display:inline-block;width:${w}px;height:${h}px" data-ad-client="${ADS.client}" data-ad-slot="${slot}"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></aside>`;
 }
+function adInline() {
+  if (!ADS_ON || !ADS_SLOTS.inline) return '';
+  return `<aside class="ad ad-inline" aria-label="Advertisement"><span class="ad-label">Advertisement</span><ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${ADS_SLOTS.inline}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></aside>`;
+}
+const adSection = () => { const a = adInline(); return a ? `<section class="section section-tight ad-section"><div class="wrap">${a}</div></section>` : ''; };
 function adBars() {
   if (!ADS_ON) return '';
   return [
@@ -683,6 +688,7 @@ function categoryPages() {
 <section class="section section-tight"><div class="wrap">
   ${list.length ? `${mapPanel(list, { cards: '[data-chip-results]', label: `Map of ${e(c.name.toLowerCase())} in ${e(site.region)}`, size: 'sm' })}<h2 class="sr-only">${e(c.name)} listings</h2><div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(c.name)}
 </div>${list.length ? sampleNotice() : ''}</section>
+${adSection()}
 ${byTown ? `<section class="section section-tight related"><div class="wrap"><h2 class="h3">${e(c.name)} by town</h2><div class="chips">${byTown}</div></div></section>` : ''}
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Other categories</h2><div class="chips">${others}</div></div></section>`;
     const phrase = searchPhrase(c);
@@ -710,6 +716,7 @@ function placePages() {
   <h2 class="sr-only">${e(keyword)}</h2>
   <div class="card-grid" data-place-results>${cards}</div>
 </div>${sampleNotice()}</section>
+${adSection()}
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Keep looking</h2><div class="chips">
   <a class="chip" href="/category/${c.slug}/">${icon(c.icon)}All ${e(c.name.toLowerCase())}</a>
   <a class="chip" href="/town/${t.slug}/">${icon('pin')}All of ${e(t.name)}</a>
@@ -742,6 +749,7 @@ function townPages() {
 <section class="section section-tight"><div class="wrap">
   ${list.length ? `${mapPanel(list, { cards: '[data-chip-results]', label: `Map of businesses in ${e(t.name)}`, size: 'sm' })}<h2 class="sr-only">Businesses in ${e(t.name)}</h2><div class="card-grid" data-chip-results>${cards}</div>` : emptyCategory(`businesses in ${t.name}`)}
 </div>${list.length ? sampleNotice() : ''}</section>
+${adSection()}
 ${byCat ? `<section class="section section-tight related"><div class="wrap"><h2 class="h3">Categories in ${e(t.name)}</h2><div class="chips">${byCat}</div></div></section>` : ''}
 <section class="section section-tight related"><div class="wrap"><h2 class="h3">Nearby towns</h2><div class="chips">${nearby}</div></div></section>`;
     const place = { '@context': 'https://schema.org', '@type': 'City', name: t.name, containedInPlace: { '@type': 'AdministrativeArea', name: `${t.county}, ${t.state}` } };
@@ -953,6 +961,7 @@ ${l.services.length ? `<li><span class="glance-num" data-countup="${l.services.l
         <p class="biz-address">${icon('pin')}${e(addr)}${!l.address && l.serviceArea ? ` · ${e(l.serviceArea)}` : ''}</p>
         ${l.source === 'osm' ? `<p class="biz-source">Details checked against the business's own website. Base data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, ODbL.</p>` : ''}
       </article>
+      ${adInline()}
       ${reviewsPanel(l)}
       ${mentions.length ? `<article class="panel" data-reveal>
         <h2 class="panel-title">On the blog</h2>
@@ -1063,9 +1072,12 @@ function blogPages() {
       if (!l) throw new Error(`posts/${p.slug}: unknown card "${a || b}"`);
       return `<div class="card-grid post-embed">${card(l)}</div>`;
     });
+    const parts = html.split('</p>');
+    const midAd = adInline();
+    const articleHtml = midAd && parts.length >= 8 ? parts.slice(0, Math.floor(parts.length / 2)).join('</p>') + '</p>' + midAd + parts.slice(Math.floor(parts.length / 2)).join('</p>') : html;
     const more = posts.filter((o) => o.slug !== p.slug).slice(0, 3);
     const body = `${pageHero({ crumbHtml: cr.html, eyebrow: `<time datetime="${p.date}">${fmtDate(p.date)}</time> · ${readMins(p.html)} min read`, title: p.h1 || e(p.title), lead: e(p.lead) })}
-<section class="section section-tight"><article class="wrap prose post-body">${html}</article></section>
+<section class="section section-tight"><article class="wrap prose post-body">${articleHtml}</article></section>
 ${more.length ? `<section class="section section-alt"><div class="wrap"><div class="section-head"><div><p class="eyebrow">Keep reading</p><h2 class="h2">More from <em>the blog.</em></h2></div><a class="link-arrow" href="/blog/">All articles ${icon('arrow')}</a></div><div class="card-grid">${more.map(postCard).join('')}</div></div></section>` : ''}`;
     const jsonld = [cr.ld, {
       '@context': 'https://schema.org',
@@ -1231,13 +1243,16 @@ function staticPages() {
     description: `How ${site.name} handles information.`,
     eyebrow: 'Privacy',
     title: 'Plain-language <em>privacy.</em>',
-    lead: 'Short version: we collect very little, and we sell none of it.',
+    lead: 'Short version: we collect very little, and we never sell what you submit.',
     html: `<h2>What's public</h2>
 <p>Business details you submit for a listing — name, address, phone, website, hours, description and services — are published on the listing page. That's the point of a directory.</p>
 <h2>What stays private</h2>
 <p>Your personal name and email from the submission form are used only to verify the listing and contact you about it. We don't publish them, sell them or add you to marketing lists.</p>
-<h2>Browsing</h2>
-<p>We don't run advertising trackers. Maps on verified listing pages are provided by Google Maps and load only on those pages.</p>
+<h2>Advertising</h2>
+<p>This site shows ads served by Google AdSense. Google and its advertising partners may use cookies and similar technologies to show and measure ads, which can include ads based on your earlier visits to this and other sites. We don't receive your personal information from this, and we don't sell what you submit.</p>
+<p>You can control ad personalization at <a href="https://adssettings.google.com" rel="noopener">adssettings.google.com</a> and learn how Google uses information from sites that use its services at <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">policies.google.com/technologies/partner-sites</a>. Where the law requires it, visitors in the European Economic Area, the United Kingdom and Switzerland are asked for consent before personalized ads are shown.</p>
+<h2>Maps</h2>
+<p>Maps on verified listing pages are provided by Google Maps and load only on those pages. The interactive maps elsewhere load map tiles from OpenStreetMap, which sees your IP address as any website you load content from does. The "Near me" button uses your browser's location only if you press it, and the location stays in your browser.</p>
 <h2>Contact</h2>
 <p>To correct or remove anything, email <a href="mailto:${e(site.email)}">${e(site.email)}</a>.</p>`,
   });
