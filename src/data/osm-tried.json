@@ -355,5 +355,41 @@
     "name": "The Godek Center For Personal Enhancement",
     "result": "listed",
     "date": "2026-10-21"
+  },
+  "way/700227462": {
+    "name": "Bagel Shack",
+    "result": "rejected",
+    "reason": "Only a Facebook page listed; no own website",
+    "date": "2026-10-22"
+  },
+  "node/5633506346": {
+    "name": "Image Sun Tanning Salon",
+    "result": "rejected",
+    "reason": "Tanning is not a clear category fit; hours seasonal; possible multiple locations unconfirmed",
+    "date": "2026-10-22"
+  },
+  "node/4313831605": {
+    "name": "New Wave Barber Shop",
+    "result": "rejected",
+    "reason": "Website domain does not resolve",
+    "date": "2026-10-22"
+  },
+  "way/780376919": {
+    "name": "The Inlet Deli",
+    "result": "rejected",
+    "reason": "Site shows only cross streets, no street address; hours unclear",
+    "date": "2026-10-22"
+  },
+  "node/6653991103": {
+    "name": "Coastal Coffee Company",
+    "result": "rejected",
+    "reason": "Website returns 404",
+    "date": "2026-10-22"
+  },
+  "node/12828522336": {
+    "name": "Dolce Bagel & Cafe",
+    "result": "rejected",
+    "reason": "Website returned 403; unconfirmable",
+    "date": "2026-10-22"
   }
 }
