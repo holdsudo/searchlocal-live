@@ -82,5 +82,11 @@
     "name": "Bayville",
     "county": "Ocean County",
     "state": "NJ"
+  },
+  {
+    "slug": "manahawkin",
+    "name": "Manahawkin",
+    "county": "Ocean County",
+    "state": "NJ"
   }
 ]

@@ -1,19 +1,19 @@
 {
  "/": {
-  "h": "1e3ca7383285b526",
-  "d": "2026-10-21"
+  "h": "5ad2634fba996242",
+  "d": "2026-10-23"
  },
  "/browse/": {
-  "h": "9d35f9de889add6d",
-  "d": "2026-10-21"
+  "h": "aa619e5f59ecf355",
+  "d": "2026-10-23"
  },
  "/categories/": {
-  "h": "891c973cc414ea65",
-  "d": "2026-10-21"
+  "h": "e06cd4ed3cef9c10",
+  "d": "2026-10-23"
  },
  "/towns/": {
-  "h": "e8c3f69b943ae1c1",
-  "d": "2026-10-21"
+  "h": "ba27094ba9af36d3",
+  "d": "2026-10-23"
  },
  "/category/restaurants/": {
   "h": "72801180d46fad98",
@@ -24,16 +24,16 @@
   "d": "2026-10-21"
  },
  "/town/lakewood/": {
-  "h": "75b996c491d30897",
-  "d": "2026-10-21"
+  "h": "239f4f8a6fb01400",
+  "d": "2026-10-23"
  },
  "/town/toms-river/": {
-  "h": "201c2bc2847df777",
-  "d": "2026-10-21"
+  "h": "0f7034522c1bc1c7",
+  "d": "2026-10-23"
  },
  "/town/brick/": {
-  "h": "e6ecaeb81f0f50ed",
-  "d": "2026-10-21"
+  "h": "0660f81e8a7beb32",
+  "d": "2026-10-23"
  },
  "/business/spa-virtue/": {
   "h": "45481a6c66ff9be1",
@@ -56,8 +56,8 @@
   "d": "2026-10-21"
  },
  "/business/ob-cos-donuts/": {
-  "h": "602984d2317e95bb",
-  "d": "2026-10-21"
+  "h": "bbae7ca2421cba48",
+  "d": "2026-10-23"
  },
  "/business/coastal-dental-group/": {
   "h": "f174e29459facb7c",
@@ -116,8 +116,8 @@
   "d": "2026-10-21"
  },
  "/add-your-business/": {
-  "h": "57e83cac415847a9",
-  "d": "2026-10-21"
+  "h": "9cd596a7bd52310f",
+  "d": "2026-10-23"
  },
  "/about/": {
   "h": "539840951bc669fa",
@@ -160,8 +160,8 @@
   "d": "2026-10-21"
  },
  "/business/boba-8tea8/": {
-  "h": "ef0c21fb44ff7444",
-  "d": "2026-10-21"
+  "h": "8d3bde719e05cf5f",
+  "d": "2026-10-23"
  },
  "/business/sand-dollar-real-estate/": {
   "h": "25bf713593e41d4f",
@@ -192,8 +192,8 @@
   "d": "2026-10-21"
  },
  "/category/cafes-bakeries/": {
-  "h": "0ff38a3c03d48916",
-  "d": "2026-10-21"
+  "h": "387a5a722015056d",
+  "d": "2026-10-23"
  },
  "/category/auto-repair/": {
   "h": "fc1c0f77c49dd5c8",
@@ -232,28 +232,28 @@
   "d": "2026-10-21"
  },
  "/town/jackson/": {
-  "h": "b5139d4a6ec4e558",
-  "d": "2026-10-21"
+  "h": "7d9eb322c64365c0",
+  "d": "2026-10-23"
  },
  "/town/point-pleasant-beach/": {
-  "h": "6e08b5ae86bca3ab",
-  "d": "2026-10-21"
+  "h": "bd2acb92773c582a",
+  "d": "2026-10-23"
  },
  "/town/point-pleasant/": {
-  "h": "5902f1d15668cd22",
-  "d": "2026-10-21"
+  "h": "b55e1ef941113338",
+  "d": "2026-10-23"
  },
  "/town/lanoka-harbor/": {
-  "h": "bc5e272d50135c7e",
-  "d": "2026-10-21"
+  "h": "14379e8790f25cc0",
+  "d": "2026-10-23"
  },
  "/town/whiting/": {
-  "h": "be91b32b33822f34",
-  "d": "2026-10-21"
+  "h": "7ed21983bf7b1ef2",
+  "d": "2026-10-23"
  },
  "/town/surf-city/": {
-  "h": "103cc96d2d0e1bc8",
-  "d": "2026-10-21"
+  "h": "0454e062e3f0abb2",
+  "d": "2026-10-23"
  },
  "/category/restaurants/lakewood/": {
   "h": "dd7ab653436d8f84",
@@ -340,8 +340,8 @@
   "d": "2026-10-21"
  },
  "/town/beach-haven/": {
-  "h": "4554807cb2178a3e",
-  "d": "2026-10-21"
+  "h": "a72200ac9912ca70",
+  "d": "2026-10-23"
  },
  "/category/salons-barbers/beach-haven/": {
   "h": "c3c04b20a13ddcb5",
@@ -360,16 +360,16 @@
   "d": "2026-10-21"
  },
  "/town/bayville/": {
-  "h": "9fcd75cbd84d5c55",
-  "d": "2026-10-21"
+  "h": "b718083a02ac5c3d",
+  "d": "2026-10-23"
  },
  "/category/cafes-bakeries/bayville/": {
   "h": "5e4c2105b8cce5c4",
   "d": "2026-10-21"
  },
  "/business/miss-mindys-homemade-ice-cream/": {
-  "h": "9f5c326e11345229",
-  "d": "2026-10-21"
+  "h": "901d2004ae73b573",
+  "d": "2026-10-23"
  },
  "/business/the-godek-center-for-personal-enhancement/": {
   "h": "01c75479b44d4499",
@@ -378,5 +378,17 @@
  "/blog/open-on-monday-ocean-county-businesses/": {
   "h": "4f6c4841a20e7b19",
   "d": "2026-10-21"
+ },
+ "/town/manahawkin/": {
+  "h": "65c9d1efb7b306a3",
+  "d": "2026-10-23"
+ },
+ "/category/cafes-bakeries/manahawkin/": {
+  "h": "ac40aa87ece0ea5d",
+  "d": "2026-10-23"
+ },
+ "/business/anna-bananas-bakery-and-candy/": {
+  "h": "a7955f9b81c055d0",
+  "d": "2026-10-23"
  }
 }

@@ -391,5 +391,28 @@
     "result": "rejected",
     "reason": "Website returned 403; unconfirmable",
     "date": "2026-10-22"
+  },
+  "way/780376731": {
+    "name": "Mustache Bill's Diner",
+    "result": "rejected",
+    "reason": "Street address not shown on own site; property noted as for sale or lease",
+    "date": "2026-10-23"
+  },
+  "node/8777809562": {
+    "name": "Crossroads Realty, Inc.",
+    "result": "rejected",
+    "reason": "Multiple offices, 250+ agents; site phone and address differ from OSM",
+    "date": "2026-10-23"
+  },
+  "way/1159762691": {
+    "name": "How You Brewin Coffee Company",
+    "result": "rejected",
+    "reason": "Website unreachable (HTTP 429) on repeated attempts; unconfirmable",
+    "date": "2026-10-23"
+  },
+  "node/10646151586": {
+    "name": "Anna Bananas Bakery & Candy",
+    "result": "listed",
+    "date": "2026-10-23"
   }
 }

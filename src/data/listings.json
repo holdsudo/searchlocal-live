@@ -1212,5 +1212,30 @@
       "Injectables",
       "Skin and laser treatments"
     ]
+  },
+  {
+    "slug": "anna-bananas-bakery-and-candy",
+    "name": "Anna Bananas Bakery & Candy",
+    "category": "cafes-bakeries",
+    "town": "manahawkin",
+    "address": "657 East Bay Avenue",
+    "zip": "08050",
+    "phone": "(609) 488-2323",
+    "website": "https://Annabananasbakerynj.com",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-23",
+    "summary": "Storefront bakery and candy shop in Manahawkin making custom cakes, cupcakes, cookies, pies and party platters.",
+    "description": "Anna Bananas Bakery & Candy is a local storefront on East Bay Avenue in Manahawkin. It prepares cakes, cupcakes, cookies, pies and galettes, and also runs a candy store. Custom cake and cookie orders can be placed by phone or email, with advance notice requested.",
+    "services": [
+      "Custom and wedding cakes",
+      "Cupcakes and cookies",
+      "Pies and galettes",
+      "Party platters",
+      "Candy store"
+    ]
   }
 ]
