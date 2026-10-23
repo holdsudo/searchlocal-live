@@ -414,5 +414,34 @@
     "name": "Anna Bananas Bakery & Candy",
     "result": "listed",
     "date": "2026-10-23"
+  },
+  "node/12207679931": {
+    "name": "Beach Bum Tanning",
+    "result": "rejected",
+    "reason": "Chain with dozens of locations",
+    "date": "2026-10-23"
+  },
+  "way/954118341": {
+    "name": "Exit 77 Self Storage",
+    "result": "rejected",
+    "reason": "Website returned 404; unconfirmable",
+    "date": "2026-10-23"
+  },
+  "way/784357379": {
+    "name": "Coco Kimono",
+    "result": "rejected",
+    "reason": "Website returned 429 repeatedly; could not confirm",
+    "date": "2026-10-23"
+  },
+  "node/13690064988": {
+    "name": "Lavallette Liquors",
+    "result": "rejected",
+    "reason": "Sells cigars/tobacco; sensitive",
+    "date": "2026-10-23"
+  },
+  "node/7886875115": {
+    "name": "Party Fair",
+    "result": "listed",
+    "date": "2026-10-23"
   }
 }

@@ -1237,5 +1237,38 @@
       "Party platters",
       "Candy store"
     ]
+  },
+  {
+    "slug": "party-fair",
+    "name": "Party Fair",
+    "category": "shopping",
+    "town": "toms-river",
+    "address": "2 Route 37 West",
+    "zip": "08753",
+    "phone": "(732) 286-2727",
+    "website": "https://partyfairtomsriver.com/",
+    "hours": {
+      "mon": "09:00-19:00",
+      "tue": "09:00-19:00",
+      "wed": "09:00-19:00",
+      "thu": "09:00-19:00",
+      "fri": "09:00-19:00",
+      "sat": "09:00-19:00",
+      "sun": "09:00-16:00"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-23",
+    "summary": "Party supply store on Route 37 West in Toms River selling balloons, costumes and decorations for holidays and celebrations.",
+    "description": "Party Fair is a party supply store located on Route 37 West in Toms River. The shop carries items for birthdays, weddings, showers, holidays and themed events, along with balloons and Halloween costumes. It operates under one name with two other New Jersey stores.",
+    "services": [
+      "Party supplies",
+      "Balloons",
+      "Halloween costumes",
+      "Birthday supplies",
+      "Wedding and shower supplies"
+    ]
   }
 ]
