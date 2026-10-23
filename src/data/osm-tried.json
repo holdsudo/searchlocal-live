@@ -443,5 +443,41 @@
     "name": "Party Fair",
     "result": "listed",
     "date": "2026-10-23"
+  },
+  "way/786309378": {
+    "name": "White's Market",
+    "result": "rejected",
+    "reason": "Website domain expired and redirects to a domain-sales page",
+    "date": "2026-10-23"
+  },
+  "node/14129491522": {
+    "name": "TMT Cash for Gold",
+    "result": "rejected",
+    "reason": "Cash-for-gold business (excluded category)",
+    "date": "2026-10-23"
+  },
+  "node/14129491527": {
+    "name": "TMT Cash for Gold",
+    "result": "rejected",
+    "reason": "Cash-for-gold business (excluded category)",
+    "date": "2026-10-23"
+  },
+  "way/1559394088": {
+    "name": "Buy Rite Liquor",
+    "result": "rejected",
+    "reason": "Site shows a different address, no phone or hours; independence unconfirmable",
+    "date": "2026-10-23"
+  },
+  "node/13985508181": {
+    "name": "DaVita Dialysis",
+    "result": "rejected",
+    "reason": "National chain",
+    "date": "2026-10-23"
+  },
+  "node/11778311067": {
+    "name": "Fortified Roofing",
+    "result": "rejected",
+    "reason": "Roofing fits no allowed category; multiple locations and inconsistent phone numbers",
+    "date": "2026-10-23"
   }
 }
