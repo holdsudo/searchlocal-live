@@ -479,5 +479,34 @@
     "result": "rejected",
     "reason": "Roofing fits no allowed category; multiple locations and inconsistent phone numbers",
     "date": "2026-10-23"
+  },
+  "node/13004665733": {
+    "name": "Freedom Towing",
+    "result": "rejected",
+    "reason": "Towing business; no fitting category",
+    "date": "2026-10-24"
+  },
+  "way/704155314": {
+    "name": "B&B Beach Haven",
+    "result": "rejected",
+    "reason": "Website unusable (spam content), cannot confirm",
+    "date": "2026-10-24"
+  },
+  "node/8721913073": {
+    "name": "Grumpys tackle",
+    "result": "rejected",
+    "reason": "Website domain does not resolve",
+    "date": "2026-10-24"
+  },
+  "way/634251478": {
+    "name": "Laurita Winery",
+    "result": "rejected",
+    "reason": "Site shows no address or phone; no fitting category",
+    "date": "2026-10-24"
+  },
+  "node/14196939093": {
+    "name": "A & F Italian Specialties Market",
+    "result": "listed",
+    "date": "2026-10-24"
   }
 }

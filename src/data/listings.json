@@ -1270,5 +1270,38 @@
       "Birthday supplies",
       "Wedding and shower supplies"
     ]
+  },
+  {
+    "slug": "a-and-f-italian-specialties-market",
+    "name": "A & F Italian Specialties Market",
+    "category": "restaurants",
+    "town": "forked-river",
+    "address": "231 North Main Street",
+    "zip": "08731",
+    "phone": "(609) 242-5183",
+    "website": "https://www.afitalianmarket.com",
+    "hours": {
+      "mon": "08:00-18:00",
+      "tue": "08:00-18:00",
+      "wed": "08:00-18:00",
+      "thu": "08:00-18:00",
+      "fri": "08:00-18:00",
+      "sat": "08:00-17:00",
+      "sun": "08:00-16:00"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-24",
+    "summary": "Family-owned Italian market and deli in Forked River serving breakfast, lunch, prepared foods and catering.",
+    "description": "A & F Italian Specialties Market is a family-owned market on North Main Street in Forked River. It offers a deli counter, house-made sausage and butcher cuts, daily baked bread and prepared foods, with dine-in and takeout available. The market also provides catering for offices and events.",
+    "services": [
+      "Breakfast and lunch",
+      "Deli counter",
+      "House-made sausage and butchery",
+      "Daily baked bread",
+      "Catering"
+    ]
   }
 ]

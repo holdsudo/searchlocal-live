@@ -88,5 +88,11 @@
     "name": "Manahawkin",
     "county": "Ocean County",
     "state": "NJ"
+  },
+  {
+    "slug": "forked-river",
+    "name": "Forked River",
+    "county": "Ocean County",
+    "state": "NJ"
   }
 ]
