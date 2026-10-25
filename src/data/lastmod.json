@@ -1,23 +1,23 @@
 {
  "/": {
-  "h": "699f9c448913f708",
-  "d": "2026-10-24"
+  "h": "a331f20e7d22daec",
+  "d": "2026-10-25"
  },
  "/browse/": {
-  "h": "885acddf67d0527a",
-  "d": "2026-10-24"
+  "h": "1a001f40e8bc3fa6",
+  "d": "2026-10-25"
  },
  "/categories/": {
-  "h": "7ec9d7a69b304dbd",
-  "d": "2026-10-24"
+  "h": "ca17be0fc511dc25",
+  "d": "2026-10-25"
  },
  "/towns/": {
-  "h": "145fac8749e8d873",
-  "d": "2026-10-24"
+  "h": "39aaf125a793c320",
+  "d": "2026-10-25"
  },
  "/category/restaurants/": {
-  "h": "bb20223ada8ec734",
-  "d": "2026-10-24"
+  "h": "c194141e22fc0f70",
+  "d": "2026-10-25"
  },
  "/category/health-dental/": {
   "h": "fd1fab25904e276e",
@@ -410,5 +410,17 @@
  "/business/a-and-f-italian-specialties-market/": {
   "h": "8300b6e32cc90cd1",
   "d": "2026-10-24"
+ },
+ "/town/manchester/": {
+  "h": "242876ba52da99e4",
+  "d": "2026-10-25"
+ },
+ "/category/restaurants/manchester/": {
+  "h": "0e8d572a4ac36b40",
+  "d": "2026-10-25"
+ },
+ "/business/gregorys-seafood-market-and-restaurant/": {
+  "h": "163f1a2e105a95a6",
+  "d": "2026-10-25"
  }
 }

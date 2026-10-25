@@ -1303,5 +1303,29 @@
       "Daily baked bread",
       "Catering"
     ]
+  },
+  {
+    "slug": "gregorys-seafood-market-and-restaurant",
+    "name": "Gregory's Seafood Market & Restaurant",
+    "category": "restaurants",
+    "town": "manchester",
+    "address": "2064 Route 37",
+    "zip": "08759",
+    "phone": "(732) 323-9105",
+    "website": "https://www.gregorys-seafood.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-25",
+    "summary": "Seafood market and dine-in restaurant on Route 37 in Manchester, open daily.",
+    "description": "Gregory's combines a retail fish market with a dine-in restaurant at one Route 37 location in Manchester. The kitchen prepares dishes to order, and the market posts daily and weekend specials. Seating includes a patio during the summer months.",
+    "services": [
+      "Retail fish market",
+      "Dine-in restaurant",
+      "Summer patio seating",
+      "Gift certificates and gift cards"
+    ]
   }
 ]
