@@ -570,5 +570,41 @@
     "name": "Twig Nest and Bloom",
     "result": "listed",
     "date": "2026-10-26"
+  },
+  "node/6653991106": {
+    "name": "a lovely universe",
+    "result": "rejected",
+    "reason": "Site shows Red Bank event planner, no address/phone; not a Beach Haven shop",
+    "date": "2026-10-26"
+  },
+  "way/784274798": {
+    "name": "D Finelli Construction",
+    "result": "rejected",
+    "reason": "Home builder; no matching category",
+    "date": "2026-10-26"
+  },
+  "way/780376813": {
+    "name": "The Keepers Liquor Store",
+    "result": "rejected",
+    "reason": "Site shows two conflicting phone numbers; hours unreadable",
+    "date": "2026-10-26"
+  },
+  "node/14163073369": {
+    "name": "Digital Doctor",
+    "result": "rejected",
+    "reason": "Electronics repair; no matching category",
+    "date": "2026-10-26"
+  },
+  "node/6049037386": {
+    "name": "AllWays Paving LLC",
+    "result": "rejected",
+    "reason": "Site returned no content; unconfirmable; no matching category",
+    "date": "2026-10-26"
+  },
+  "way/780389313": {
+    "name": "Yaatree Bazaar",
+    "result": "rejected",
+    "reason": "Site unreachable (HTTP 429); unconfirmable",
+    "date": "2026-10-26"
   }
 }
