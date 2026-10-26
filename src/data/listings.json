@@ -1442,5 +1442,30 @@
       "Buying music collections",
       "Gift cards"
     ]
+  },
+  {
+    "slug": "chef-justins-sunset-keys",
+    "name": "Chef Justin's Sunset Keys",
+    "category": "restaurants",
+    "town": "lavallette",
+    "address": "607 Bay Boulevard",
+    "zip": "08735",
+    "phone": "(732) 820-6800",
+    "website": "https://www.sunsetkeyslavallette.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-26",
+    "summary": "Bayfront restaurant in Lavallette serving coastal dishes, seafood and steaks for dinner and brunch.",
+    "description": "Chef Justin's Sunset Keys is a restaurant at 607 Bay Boulevard in Lavallette. The menu centers on coastal cooking, including local seafood, a daily fish selection and steaks, with brunch also described. The restaurant is BYOB and takes reservations, with pick-up and delivery available.",
+    "services": [
+      "Dinner",
+      "Brunch",
+      "Reservations",
+      "Pick-up and delivery",
+      "BYOB dining"
+    ]
   }
 ]

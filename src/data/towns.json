@@ -100,5 +100,11 @@
     "name": "Barnegat Light",
     "county": "Ocean County",
     "state": "NJ"
+  },
+  {
+    "slug": "lavallette",
+    "name": "Lavallette",
+    "county": "Ocean County",
+    "state": "NJ"
   }
 ]

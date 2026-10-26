@@ -659,5 +659,22 @@
     "name": "Yearbook Records",
     "result": "listed",
     "date": "2026-10-26"
+  },
+  "node/8931445446": {
+    "name": "Immediate Care",
+    "result": "rejected",
+    "reason": "Website page returned 404; multi-location urgent care group",
+    "date": "2026-10-26"
+  },
+  "node/7461102674": {
+    "name": "Immediate Care Medical Walk-In of Brick",
+    "result": "rejected",
+    "reason": "Part of Atlantic Health System, not an independent business",
+    "date": "2026-10-26"
+  },
+  "node/13540759947": {
+    "name": "Chef Justin's Sunset Keys",
+    "result": "listed",
+    "date": "2026-10-26"
   }
 }
