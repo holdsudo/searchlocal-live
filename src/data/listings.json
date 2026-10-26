@@ -1467,5 +1467,30 @@
       "Pick-up and delivery",
       "BYOB dining"
     ]
+  },
+  {
+    "slug": "the-seawife",
+    "name": "The Seawife",
+    "category": "shopping",
+    "town": "barnegat-light",
+    "address": "1901 Bayview Avenue",
+    "zip": "08006",
+    "phone": "(609) 361-8039",
+    "website": "https://www.theseawife.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-26",
+    "summary": "Shop at Viking Village in Barnegat Light selling handcrafted folk art, nautical salvage, antiques and garden pieces.",
+    "description": "The Seawife is a shop at Viking Village in Barnegat Light that sells decorative pieces with a sense of history. Its stock includes American-made folk art, older collectibles, nautical salvage and antique quilts, along with garden items such as birdhouses, urns and iron gates. Visitors can also walk through the gardens on the grounds.",
+    "services": [
+      "Handcrafted folk art",
+      "Nautical salvage",
+      "Antique garden pieces",
+      "Vintage quilts",
+      "Collectibles"
+    ]
   }
 ]

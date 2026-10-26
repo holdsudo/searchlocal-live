@@ -676,5 +676,22 @@
     "name": "Chef Justin's Sunset Keys",
     "result": "listed",
     "date": "2026-10-26"
+  },
+  "way/1189462452": {
+    "name": "Bugaboo Pest Control",
+    "result": "rejected",
+    "reason": "pest control does not fit an allowed category",
+    "date": "2026-10-26"
+  },
+  "node/14183813101": {
+    "name": "Integrity Pool and Spa",
+    "result": "rejected",
+    "reason": "mainly pool installer; unclear related business on site; poor category fit",
+    "date": "2026-10-26"
+  },
+  "way/786293374": {
+    "name": "The Seawife",
+    "result": "listed",
+    "date": "2026-10-26"
   }
 }
