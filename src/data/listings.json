@@ -1550,5 +1550,30 @@
       "Private parties",
       "Gift cards"
     ]
+  },
+  {
+    "slug": "stone-fire-grille",
+    "name": "Stone Fire Grille",
+    "category": "restaurants",
+    "town": "beachwood",
+    "address": "226 Atlantic City Boulevard",
+    "zip": "08722",
+    "phone": "(732) 341-1055",
+    "website": "https://www.stonefiregrille.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-26",
+    "summary": "Beachwood restaurant serving American-style dishes including tapas, pizzas, burgers and wings, with catering and private events.",
+    "description": "Stone Fire Grille is a restaurant on Atlantic City Boulevard in Beachwood. Its menu centers on American-style dishes such as tapas, pizzas, burgers and wings. The restaurant also lists daily happy hour specials, live entertainment, online ordering, catering and private event bookings.",
+    "services": [
+      "Dine-in",
+      "Online ordering",
+      "Catering",
+      "Private events",
+      "Live entertainment"
+    ]
   }
 ]

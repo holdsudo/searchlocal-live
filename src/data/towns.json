@@ -106,5 +106,11 @@
     "name": "Lavallette",
     "county": "Ocean County",
     "state": "NJ"
+  },
+  {
+    "slug": "beachwood",
+    "name": "Beachwood",
+    "county": "Ocean County",
+    "state": "NJ"
   }
 ]
