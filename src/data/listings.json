@@ -1327,5 +1327,38 @@
       "Summer patio seating",
       "Gift certificates and gift cards"
     ]
+  },
+  {
+    "slug": "surf-buggy-bike-shop",
+    "name": "Surf Buggy Bike Shop",
+    "category": "shopping",
+    "town": "surf-city",
+    "address": "1414 North Long Beach Boulevard",
+    "zip": "08008",
+    "phone": "(609) 361-3611",
+    "website": "https://www.surfbuggylbi.com/",
+    "hours": {
+      "mon": "10:00-17:00",
+      "tue": null,
+      "wed": null,
+      "thu": "10:00-17:00",
+      "fri": "10:00-17:00",
+      "sat": "10:00-17:00",
+      "sun": "10:00-16:00"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-26",
+    "summary": "Bicycle shop on Long Beach Island offering bike sales, rentals, repairs and cycling accessories.",
+    "description": "Surf Buggy Bike Shop is a bicycle store on North Long Beach Boulevard in Surf City. The shop sells bikes, including e-bikes, and rents them with advance reservations available. It also handles bike service and repair and carries cycling apparel and accessories.",
+    "services": [
+      "Bike rentals",
+      "Bike service and repair",
+      "Bicycle sales including e-bikes",
+      "Cycling apparel and accessories",
+      "Local delivery"
+    ]
   }
 ]

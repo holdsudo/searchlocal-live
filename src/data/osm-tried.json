@@ -513,5 +513,22 @@
     "name": "Gregory's Seafood Market & Restaurant",
     "result": "listed",
     "date": "2026-10-25"
+  },
+  "way/783916459": {
+    "name": "Surf City 5 & 10",
+    "result": "rejected",
+    "reason": "Site lists no products or services to describe",
+    "date": "2026-10-26"
+  },
+  "way/784322750": {
+    "name": "Lighthouse Deli LBI",
+    "result": "rejected",
+    "reason": "Website unreachable (socket closed on repeated attempts); unconfirmable",
+    "date": "2026-10-26"
+  },
+  "way/784287781": {
+    "name": "Surf Buggy Bike Shop",
+    "result": "listed",
+    "date": "2026-10-26"
   }
 }
