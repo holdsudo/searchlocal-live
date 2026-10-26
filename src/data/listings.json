@@ -1385,5 +1385,29 @@
       "Surfboard and paddleboard sales",
       "Ding repair"
     ]
+  },
+  {
+    "slug": "twig-nest-and-bloom",
+    "name": "Twig Nest and Bloom",
+    "category": "shopping",
+    "town": "barnegat-light",
+    "address": "35 West 4th Street",
+    "zip": "08006",
+    "phone": "(917) 838-6539",
+    "website": "https://twignestandbloom.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-26",
+    "summary": "Barnegat Light shop selling gallery pieces, accessories and home decor, with commission inquiries accepted.",
+    "description": "Twig Nest and Bloom is a small shop at 35 West 4th Street in Barnegat Light. Its collected goods are arranged in three groups: gallery items, accessories and home decor. The shop also takes commission inquiries, and its hours vary by season and holiday.",
+    "services": [
+      "Gallery pieces",
+      "Accessories",
+      "Home decor",
+      "Commission inquiries"
+    ]
   }
 ]

@@ -541,5 +541,34 @@
     "name": "South End Surf 'N Paddle",
     "result": "listed",
     "date": "2026-10-26"
+  },
+  "node/8363080157": {
+    "name": "Buy Rite",
+    "result": "rejected",
+    "reason": "Website page returns 404; unconfirmable",
+    "date": "2026-10-26"
+  },
+  "node/13048172183": {
+    "name": "Clearsolutions Dermatology Group",
+    "result": "rejected",
+    "reason": "5-6 locations; no phone number on site",
+    "date": "2026-10-26"
+  },
+  "way/784450640": {
+    "name": "Okie's Butcher Shop",
+    "result": "rejected",
+    "reason": "Site says closed for the season until March 2027",
+    "date": "2026-10-26"
+  },
+  "way/784450642": {
+    "name": "Society Beach",
+    "result": "rejected",
+    "reason": "Site could not be fetched (HTTP 429); unconfirmable",
+    "date": "2026-10-26"
+  },
+  "way/780376916": {
+    "name": "Twig Nest and Bloom",
+    "result": "listed",
+    "date": "2026-10-26"
   }
 }

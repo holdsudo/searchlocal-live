@@ -94,5 +94,11 @@
     "name": "Forked River",
     "county": "Ocean County",
     "state": "NJ"
+  },
+  {
+    "slug": "barnegat-light",
+    "name": "Barnegat Light",
+    "county": "Ocean County",
+    "state": "NJ"
   }
 ]
