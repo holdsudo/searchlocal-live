@@ -530,5 +530,16 @@
     "name": "Surf Buggy Bike Shop",
     "result": "listed",
     "date": "2026-10-26"
+  },
+  "node/14011135081": {
+    "name": "Bl_ank",
+    "result": "rejected",
+    "reason": "Website returned HTTP 429 twice; could not confirm address, phone or independence",
+    "date": "2026-10-26"
+  },
+  "way/700407037": {
+    "name": "South End Surf 'N Paddle",
+    "result": "listed",
+    "date": "2026-10-26"
   }
 }

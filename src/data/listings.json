@@ -1360,5 +1360,30 @@
       "Cycling apparel and accessories",
       "Local delivery"
     ]
+  },
+  {
+    "slug": "south-end-surf-n-paddle",
+    "name": "South End Surf 'N Paddle",
+    "category": "shopping",
+    "town": "beach-haven",
+    "address": "220 South Bay Avenue",
+    "zip": "08008",
+    "phone": "(609) 492-8823",
+    "website": "https://southendsurfnpaddle.com/",
+    "hours": null,
+    "since": 2010,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-26",
+    "summary": "Family-owned surf shop in Beach Haven selling and renting surf and paddle gear, with lessons and tours.",
+    "description": "South End Surf 'N Paddle is a family-owned surf shop on Long Beach Island. It sells new and used surfboards, paddleboards, wetsuits, skimboards and apparel, and rents boards and kayaks. The shop also runs surf lessons, kids' camps and stand-up paddleboard tours.",
+    "services": [
+      "Surf lessons and camps",
+      "Stand-up paddleboard tours",
+      "Board and kayak rentals",
+      "Surfboard and paddleboard sales",
+      "Ding repair"
+    ]
   }
 ]
