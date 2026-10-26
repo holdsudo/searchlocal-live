@@ -606,5 +606,41 @@
     "result": "rejected",
     "reason": "Site unreachable (HTTP 429); unconfirmable",
     "date": "2026-10-26"
+  },
+  "node/14011093368": {
+    "name": "The Good Feet Store",
+    "result": "rejected",
+    "reason": "national franchise chain",
+    "date": "2026-10-26"
+  },
+  "node/14164670073": {
+    "name": "AtlantiCare Urgent Care",
+    "result": "rejected",
+    "reason": "multi-location health system, not independent",
+    "date": "2026-10-26"
+  },
+  "node/6691697161": {
+    "name": "Island Sun Jewelers",
+    "result": "rejected",
+    "reason": "site shows no street address and a different phone; online-focused",
+    "date": "2026-10-26"
+  },
+  "node/10922909443": {
+    "name": "ManaFirkin Brewing Co.",
+    "result": "rejected",
+    "reason": "site has no street address or hours, stale events and injected spam content; unconfirmable",
+    "date": "2026-10-26"
+  },
+  "way/786298429": {
+    "name": "Agnello Market",
+    "result": "rejected",
+    "reason": "site returned HTTP 429 on repeated tries; unconfirmable",
+    "date": "2026-10-26"
+  },
+  "way/1159762692": {
+    "name": "The Spotted Whale",
+    "result": "rejected",
+    "reason": "site returned HTTP 429; unconfirmable",
+    "date": "2026-10-26"
   }
 }
