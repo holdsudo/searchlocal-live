@@ -642,5 +642,22 @@
     "result": "rejected",
     "reason": "site returned HTTP 429; unconfirmable",
     "date": "2026-10-26"
+  },
+  "way/780376879": {
+    "name": "Wildflowers by the Lighthouse",
+    "result": "rejected",
+    "reason": "Site is an art-to-wear boutique/gallery collective, not a florist; phone differs from OSM; footer dated 2016 so current operation unconfirmable",
+    "date": "2026-10-26"
+  },
+  "node/6582540810": {
+    "name": "The Boardwalk",
+    "result": "rejected",
+    "reason": "Seasonal bike rental/ice cream mix with no clear category fit; site shows conflicting hours and the season may be over",
+    "date": "2026-10-26"
+  },
+  "node/14183746695": {
+    "name": "Yearbook Records",
+    "result": "listed",
+    "date": "2026-10-26"
   }
 }

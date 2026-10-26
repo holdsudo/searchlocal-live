@@ -1409,5 +1409,38 @@
       "Home decor",
       "Commission inquiries"
     ]
+  },
+  {
+    "slug": "yearbook-records",
+    "name": "Yearbook Records",
+    "category": "shopping",
+    "town": "lanoka-harbor",
+    "address": "629 North Main Street, Suite 4",
+    "zip": "08734",
+    "phone": "(609) 622-8406",
+    "website": "https://www.yearbookrecords.com/",
+    "hours": {
+      "mon": "11:00-18:00",
+      "tue": "11:00-18:00",
+      "wed": "11:00-18:00",
+      "thu": "11:00-18:00",
+      "fri": "11:00-18:00",
+      "sat": "11:00-19:00",
+      "sun": "11:00-16:00"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-26",
+    "summary": "Record store in Lanoka Harbor selling new and used vinyl, cassettes, CDs and DVDs, and buying music collections.",
+    "description": "Yearbook Records is a music shop on North Main Street in Lanoka Harbor. The store carries new and used vinyl records, cassette tapes, compact discs and DVD or Blu-ray titles, along with merchandise and gift cards. It also buys collections of vinyl, CDs and cassettes, and asks sellers to get in touch before bringing items in.",
+    "services": [
+      "New and used vinyl",
+      "Cassettes and CDs",
+      "DVD and Blu-ray",
+      "Buying music collections",
+      "Gift cards"
+    ]
   }
 ]
