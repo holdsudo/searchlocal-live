@@ -169,7 +169,15 @@ const logo = `<a class="logo" href="/" aria-label="${e(site.name)} home">
 </a>`;
 
 function layout({ title, description, pathname, body, noindex = false, jsonld = [], bodyClass = '', ogType = 'website', extraHead = '' }) {
-  const fullTitle = pathname === '/' ? `${site.name} — ${site.tagline} for ${site.region}` : `${title} · ${site.name}`;
+  // Keep search-result snippets inside what Google displays: descriptions at most 160 chars (cut at a word), brand suffix only when the title still fits.
+  if (description && description.length > 160) { const cut = description.slice(0, 157); description = cut.slice(0, cut.lastIndexOf(' ')).replace(/[\s,;:.-]+$/, '') + '...'; }
+  // Ads only where there is real content to sit beside: indexable pages with 300+ words of body text,
+  // and never on utility pages (forms, policies, browse/index pages, 404). Thin hub pages stay ad-free.
+  const NO_AD_PATHS = /^\/(browse|add-your-business|privacy|about|guidelines|contact|terms|towns|categories)\/$|^\/404\.html$/;
+  const bodyWords = body.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<aside class="ad[\s\S]*?<\/aside>/g, ' ').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  const adsHere = ADS_ON && !noindex && !NO_AD_PATHS.test(pathname) && bodyWords >= 300;
+  if (!adsHere) body = body.replace(/<section class="section section-tight ad-section">[\s\S]*?<\/section>/g, '').replace(/<aside class="ad [\s\S]*?<\/aside>/g, '');
+  const fullTitle = pathname === '/' ? `${site.name} — ${site.tagline} for ${site.region}` : (`${title} · ${site.name}`.length <= 62 ? `${title} · ${site.name}` : title);
   const canonical = site.url + pathname;
   const ld = jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, '\\u003c')}</script>`).join('\n');
   const nav = NAV.map(([href, label]) => `<a href="${href}"${pathname.startsWith(href) ? ' aria-current="page"' : ''}>${label}</a>`).join('');
@@ -215,7 +223,7 @@ ${ADS_ON ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/a
 <style>${CSS}</style>
 ${ld}
 </head>
-<body class="${bodyClass || 'page-inner'}${ADS_SLOTS.bottom ? ' has-ad-bottom' : ''}">
+<body class="${bodyClass || 'page-inner'}${adsHere && ADS_SLOTS.bottom ? ' has-ad-bottom' : ''}">
 ${scene()}
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header" data-header>
@@ -233,7 +241,7 @@ ${scene()}
 ${body}
 </main>
 ${footer()}
-${adBars()}
+${adsHere ? adBars() : ''}
 <script src="/assets/js/main.js?v=${BUILD_ID}" defer></script>${body.includes('data-map') ? `\n<script src="/assets/js/map.js?v=${BUILD_ID}" defer></script>` : ''}
 </body>
 </html>`;
@@ -277,7 +285,9 @@ function footer() {
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/guidelines/">Listing guidelines</a></li>
         <li><a href="/add-your-business/">Add a business</a></li>
+        <li><a href="/contact/">Contact</a></li>
         <li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/terms/">Terms</a></li>
         <li><a href="mailto:${e(site.email)}">${e(site.email)}</a></li>
       </ul></div>
     </div>
@@ -1240,7 +1250,7 @@ function staticPages() {
   });
   prose('/privacy/', {
     docTitle: 'Privacy',
-    description: `How ${site.name} handles information.`,
+    description: `How ${site.name} handles listing submissions, advertising cookies, maps and location, and how to ask for a correction or removal.`,
     eyebrow: 'Privacy',
     title: 'Plain-language <em>privacy.</em>',
     lead: 'Short version: we collect very little, and we never sell what you submit.',
@@ -1255,6 +1265,47 @@ function staticPages() {
 <p>Maps on verified listing pages are provided by Google Maps and load only on those pages. The interactive maps elsewhere load map tiles from OpenStreetMap, which sees your IP address as any website you load content from does. The "Near me" button uses your browser's location only if you press it, and the location stays in your browser.</p>
 <h2>Contact</h2>
 <p>To correct or remove anything, email <a href="mailto:${e(site.email)}">${e(site.email)}</a>.</p>`,
+  });
+  prose('/contact/', {
+    docTitle: 'Contact',
+    description: `How to reach ${site.name}: corrections, listing removals, business suggestions and general questions.`,
+    eyebrow: 'Contact',
+    title: 'Get in <em>touch.</em>',
+    lead: 'One inbox, read by a person. Here is what to write to us about.',
+    html: `<h2>Email</h2>
+<p><a href="mailto:${e(site.email)}">${e(site.email)}</a></p>
+<h2>What to write to us about</h2>
+<ul>
+<li><strong>A correction.</strong> If a listing or article has a wrong address, phone number, hours or detail, tell us what is wrong and, if you can, link to a page that shows the right answer. We will check it and fix it.</li>
+<li><strong>A removal.</strong> If a business has closed or you want a listing taken down, email us from the business and we will remove it within two business days. Every listing page also has a Remove this listing link.</li>
+<li><strong>A business we are missing.</strong> Use the <a href="/add-your-business/">add a business form</a> so we get the details we need, or email us the name and website.</li>
+<li><strong>Questions about this site.</strong> How we pick and check listings is explained on the <a href="/about/">about page</a> and in the <a href="/guidelines/">listing guidelines</a>.</li>
+</ul>
+<h2>What to expect</h2>
+<p>We read every message. We do not sell listings, rankings or reviews, so a message cannot buy placement. Please do not send us confidential information by email.</p>`,
+  });
+  prose('/terms/', {
+    docTitle: 'Terms of use',
+    description: `The terms for using ${site.name}: what the directory is, accuracy of listings, third-party links and advertising.`,
+    eyebrow: 'Terms',
+    title: 'Terms of <em>use.</em>',
+    lead: 'Plain-language terms for using this website.',
+    html: `<h2>What this site is</h2>
+<p>${e(site.name)} is a free, independent directory of local businesses in ${e(site.region)}. It is provided for general information. Using the site means you accept these terms.</p>
+<h2>Accuracy</h2>
+<p>We check listing details against each business's own website and public information before publishing, but businesses change their hours, menus, prices and services without telling us. Details may be out of date or wrong. Please confirm with the business before you visit or buy. A listing is not an endorsement, a recommendation or a guarantee of quality.</p>
+<h2>Third-party websites</h2>
+<p>Listings and articles link to business websites and other third-party sites. We do not control those sites and are not responsible for their content or practices.</p>
+<h2>Content you submit</h2>
+<p>If you submit a business listing or a correction, you confirm that the information is accurate and that you have the right to submit it, and you allow us to publish and edit it for the directory. We may decline or remove any submission, including ones that break our <a href="/guidelines/">listing guidelines</a>.</p>
+<h2>Our content</h2>
+<p>The articles, layout and original text on this site belong to ${e(site.name)}. You may quote short excerpts with a link back to the page. Please do not copy whole pages or republish the directory. Some listing data comes from OpenStreetMap contributors under the ODbL, as noted in the footer.</p>
+<h2>Advertising</h2>
+<p>This site shows ads served by Google AdSense. Ads are labeled, and advertisers do not influence what we list or write. See the <a href="/privacy/">privacy policy</a> for how advertising cookies work and how to control them.</p>
+<h2>No warranty and limits on liability</h2>
+<p>The site is provided as is, without warranties of any kind. To the extent the law allows, ${e(site.name)} is not liable for losses that result from relying on information on the site.</p>
+<h2>Changes and contact</h2>
+<p>We may update these terms and will change the page when we do. Questions: <a href="mailto:${e(site.email)}">${e(site.email)}</a> or the <a href="/contact/">contact page</a>.</p>`,
   });
   const nf = `${pageHero({ eyebrow: '404', title: 'Off the <em>map.</em>', lead: "This page doesn't exist — or it moved. Let's get you somewhere useful.", extra: `<div class="cta-actions"><a class="btn btn-gold" href="/browse/">Browse businesses ${icon('arrow')}</a><a class="btn btn-ghost" href="/">Home</a></div>` })}`;
   pages.push(['/404.html', layout({ title: 'Page not found', description: 'Page not found.', pathname: '/404.html', body: nf, noindex: true })]);
