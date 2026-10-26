@@ -1575,5 +1575,38 @@
       "Private events",
       "Live entertainment"
     ]
+  },
+  {
+    "slug": "gal-mediterranean-cuisine",
+    "name": "GAL Mediterranean Cuisine",
+    "category": "restaurants",
+    "town": "toms-river",
+    "address": "2 Route 37",
+    "zip": "08753",
+    "phone": "(732) 244-6262",
+    "website": "https://galmediterranean.com/",
+    "hours": {
+      "mon": "10:00-22:00",
+      "tue": "10:00-22:00",
+      "wed": "10:00-22:00",
+      "thu": "10:00-22:00",
+      "fri": "10:00-23:00",
+      "sat": "10:00-23:00",
+      "sun": "10:00-22:00"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-26",
+    "summary": "Mediterranean restaurant in Toms River serving Turkish-style kebabs and grilled meats and seafood.",
+    "description": "GAL Mediterranean Cuisine is a single-location restaurant on Route 37 in Toms River. The menu centers on Turkish-style kebabs and flame-grilled dishes such as mixed grill, lamb shish kebab, branzino and grilled shrimp kebab. Online ordering, reservations and catering are offered.",
+    "services": [
+      "Dine-in",
+      "Online ordering",
+      "Reservations",
+      "Catering",
+      "Loyalty program"
+    ]
   }
 ]
