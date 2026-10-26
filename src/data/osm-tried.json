@@ -734,5 +734,16 @@
     "name": "Blue Claw Seafood Market",
     "result": "listed",
     "date": "2026-10-26"
+  },
+  "node/12511374563": {
+    "name": "Medico-Legal Evaluations, PA",
+    "result": "rejected",
+    "reason": "Six NJ locations; main office is in Morganville, not Lakewood",
+    "date": "2026-10-26"
+  },
+  "way/712360538": {
+    "name": "Tuckers Tavern",
+    "result": "listed",
+    "date": "2026-10-26"
   }
 }

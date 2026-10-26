@@ -1517,5 +1517,38 @@
       "Homemade chowder and crab cakes",
       "Seafood platters"
     ]
+  },
+  {
+    "slug": "tuckers-tavern",
+    "name": "Tuckers Tavern",
+    "category": "restaurants",
+    "town": "beach-haven",
+    "address": "101 South West Avenue",
+    "zip": "08008",
+    "phone": "(609) 492-2300",
+    "website": "https://tuckerstavern-lbi.com/",
+    "hours": {
+      "mon": "11:30-21:00",
+      "tue": "11:30-21:00",
+      "wed": "11:30-21:00",
+      "thu": "11:30-21:00",
+      "fri": "11:30-22:00",
+      "sat": "10:30-22:00",
+      "sun": "10:30-21:00"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-26",
+    "summary": "Coastal gastropub in Beach Haven serving American fare, a raw bar, craft beer and cocktails, with indoor and outdoor seating.",
+    "description": "Tuckers Tavern is a gastropub on South West Avenue in Beach Haven on Long Beach Island. The menu centers on American coastal dishes and a raw bar, alongside rotating craft beers and cocktails. The restaurant offers indoor and outdoor seating, takeout, gift cards and private parties.",
+    "services": [
+      "Dine-in and outdoor seating",
+      "Raw bar",
+      "Takeout",
+      "Private parties",
+      "Gift cards"
+    ]
   }
 ]
