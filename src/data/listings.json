@@ -1492,5 +1492,30 @@
       "Vintage quilts",
       "Collectibles"
     ]
+  },
+  {
+    "slug": "blue-claw-seafood-market",
+    "name": "Blue Claw Seafood Market",
+    "category": "shopping",
+    "town": "surf-city",
+    "address": "1103 Long Beach Boulevard",
+    "zip": "08008",
+    "phone": "(609) 361-0050",
+    "website": "https://www.blueclawlbi.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-26",
+    "summary": "Seafood market on Long Beach Island selling fresh fish, shellfish and homemade prepared items.",
+    "description": "Blue Claw Seafood Market is a retail seafood shop on Long Beach Boulevard in Surf City. It sells fresh local fish, shrimp, scallops, clams and live or cooked crabs and lobster. The market also offers homemade chowder, crab cakes and salads.",
+    "services": [
+      "Fresh fish and shellfish",
+      "Live and cooked crabs",
+      "Live lobster",
+      "Homemade chowder and crab cakes",
+      "Seafood platters"
+    ]
   }
 ]

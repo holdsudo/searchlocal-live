@@ -729,5 +729,10 @@
     "result": "rejected",
     "reason": "national franchise chain with many locations",
     "date": "2026-10-26"
+  },
+  "way/784216696": {
+    "name": "Blue Claw Seafood Market",
+    "result": "listed",
+    "date": "2026-10-26"
   }
 }
