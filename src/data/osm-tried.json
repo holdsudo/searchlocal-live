@@ -693,5 +693,41 @@
     "name": "The Seawife",
     "result": "listed",
     "date": "2026-10-26"
+  },
+  "way/700215786": {
+    "name": "Wyndecrest Home",
+    "result": "rejected",
+    "reason": "website unreachable (domain does not resolve)",
+    "date": "2026-10-26"
+  },
+  "way/783881029": {
+    "name": "Surf City Bait & Tackle",
+    "result": "rejected",
+    "reason": "closed for season, changed ownership, no confirmation it is currently operating",
+    "date": "2026-10-26"
+  },
+  "node/6924347565": {
+    "name": "Keco Engineered Controls",
+    "result": "rejected",
+    "reason": "B2B industrial instrumentation supplier; no fitting category",
+    "date": "2026-10-26"
+  },
+  "node/12467515762": {
+    "name": "Home Town Market",
+    "result": "rejected",
+    "reason": "site shows no street address and cannot confirm operating",
+    "date": "2026-10-26"
+  },
+  "way/891291551": {
+    "name": "Athwal Eye Associates",
+    "result": "rejected",
+    "reason": "website unreachable, could not verify",
+    "date": "2026-10-26"
+  },
+  "node/9054605355": {
+    "name": "AFC Urgent Care",
+    "result": "rejected",
+    "reason": "national franchise chain with many locations",
+    "date": "2026-10-26"
   }
 }
