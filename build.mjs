@@ -173,9 +173,10 @@ function layout({ title, description, pathname, body, noindex = false, jsonld = 
   if (description && description.length > 160) { const cut = description.slice(0, 157); description = cut.slice(0, cut.lastIndexOf(' ')).replace(/[\s,;:.-]+$/, '') + '...'; }
   // Ads only where there is real content to sit beside: indexable pages with 300+ words of body text,
   // and never on utility pages (forms, policies, browse/index pages, 404). Thin hub pages stay ad-free.
-  const NO_AD_PATHS = /^\/(browse|add-your-business|privacy|about|guidelines|contact|terms|towns|categories)\/$|^\/404\.html$/;
+  const NO_AD_PATHS = /^\/(browse|add-your-business|privacy|about|guidelines|contact|terms|towns|categories|blog)\/$|^\/404\.html$/;
   const bodyWords = body.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<aside class="ad[\s\S]*?<\/aside>/g, ' ').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
   const adsHere = ADS_ON && !noindex && !NO_AD_PATHS.test(pathname) && bodyWords >= 300;
+  const bottomAd = adsHere && bodyWords >= 600; // the bottom bar only on long pages, so short pages are not ad-heavy
   if (!adsHere) body = body.replace(/<section class="section section-tight ad-section">[\s\S]*?<\/section>/g, '').replace(/<aside class="ad [\s\S]*?<\/aside>/g, '');
   const fullTitle = pathname === '/' ? `${site.name} — ${site.tagline} for ${site.region}` : (`${title} · ${site.name}`.length <= 62 ? `${title} · ${site.name}` : title);
   const canonical = site.url + pathname;
@@ -223,7 +224,7 @@ ${ADS_ON ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/a
 <style>${CSS}</style>
 ${ld}
 </head>
-<body class="${bodyClass || 'page-inner'}${adsHere && ADS_SLOTS.bottom ? ' has-ad-bottom' : ''}">
+<body class="${bodyClass || 'page-inner'}${bottomAd && ADS_SLOTS.bottom ? ' has-ad-bottom' : ''}">
 ${scene()}
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header" data-header>
@@ -241,7 +242,7 @@ ${scene()}
 ${body}
 </main>
 ${footer()}
-${adsHere ? adBars() : ''}
+${adsHere ? adBars().replace(bottomAd ? /$^/ : /<aside class="ad ad-bottom"[\s\S]*?<\/aside>/, '') : ''}
 <script src="/assets/js/main.js?v=${BUILD_ID}" defer></script>${body.includes('data-map') ? `\n<script src="/assets/js/map.js?v=${BUILD_ID}" defer></script>` : ''}
 </body>
 </html>`;
