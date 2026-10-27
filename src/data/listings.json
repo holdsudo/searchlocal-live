@@ -1641,5 +1641,40 @@
       "Online ordering",
       "Catering"
     ]
+  },
+  {
+    "slug": "worldwide-auto-leasing",
+    "name": "Worldwide Auto Leasing",
+    "category": "finance-insurance",
+    "town": "lakewood",
+    "address": null,
+    "zip": null,
+    "phone": "(732) 534-4430",
+    "website": "https://worldwideautoleasing.com/",
+    "hours": {
+      "mon": "09:00-17:00",
+      "tue": "09:00-17:00",
+      "wed": "09:00-17:00",
+      "thu": "09:00-17:00",
+      "fri": "09:00-17:00",
+      "sat": null,
+      "sun": null
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "claimed": true,
+    "added": "2026-10-27",
+    "serviceArea": "Serves New Jersey, New York and Pennsylvania",
+    "summary": "Independent car lease broker that negotiates the lease, handles the paperwork and delivers the vehicle in New Jersey, New York and Pennsylvania.",
+    "description": "Worldwide Auto Leasing is an independent auto leasing company that arranges vehicle leases for drivers in New Jersey, New York and Pennsylvania. It negotiates the lease with franchise dealers, handles the paperwork and delivers the car to the customer’s home or office. It is not a lender and not a dealership; leases are written by the manufacturer’s captive bank or a partner bank and are subject to that bank’s credit approval. Quotes do not require a credit check.",
+    "services": [
+      "Custom lease quotes",
+      "Lease negotiation with dealers",
+      "Paperwork and registration handled",
+      "Free delivery in NJ, NY and PA",
+      "Lease return and next-car planning",
+      "Credit application"
+    ]
   }
 ]
