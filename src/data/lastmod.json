@@ -1,23 +1,23 @@
 {
  "/": {
-  "h": "d7747198fd20b8e8",
-  "d": "2026-10-26"
+  "h": "8706668e9709d04a",
+  "d": "2026-10-27"
  },
  "/browse/": {
-  "h": "d7e1782eb75c2251",
-  "d": "2026-10-26"
+  "h": "aa20829d876f7666",
+  "d": "2026-10-27"
  },
  "/categories/": {
-  "h": "e92985435231fb2f",
-  "d": "2026-10-26"
+  "h": "5d9a16d5295816da",
+  "d": "2026-10-27"
  },
  "/towns/": {
-  "h": "268be91f4c8c3f01",
-  "d": "2026-10-26"
+  "h": "9ebe597d01af7844",
+  "d": "2026-10-27"
  },
  "/category/restaurants/": {
-  "h": "e1e7c137cfc5ffa0",
-  "d": "2026-10-26"
+  "h": "9388d5add3d348b2",
+  "d": "2026-10-27"
  },
  "/category/health-dental/": {
   "h": "1871249bf93242d3",
@@ -28,8 +28,8 @@
   "d": "2026-10-26"
  },
  "/town/toms-river/": {
-  "h": "82969c577ae9b702",
-  "d": "2026-10-26"
+  "h": "fc2330f76bda1b91",
+  "d": "2026-10-27"
  },
  "/town/brick/": {
   "h": "bdc6be6b2931afd5",
@@ -156,8 +156,8 @@
   "d": "2026-10-26"
  },
  "/category/restaurants/toms-river/": {
-  "h": "c08179fdcac5c75a",
-  "d": "2026-10-26"
+  "h": "c8e300f6356f1892",
+  "d": "2026-10-27"
  },
  "/business/boba-8tea8/": {
   "h": "59690bc3496d1175",
@@ -534,5 +534,9 @@
  "/blog/new-on-searchlocal-bayfront-dinner-lbi-seafood-folk-art-kebabs/": {
   "h": "694cb2aad4170a25",
   "d": "2026-10-26"
+ },
+ "/business/royal-grill/": {
+  "h": "ace3c2be9ace4d74",
+  "d": "2026-10-27"
  }
 }

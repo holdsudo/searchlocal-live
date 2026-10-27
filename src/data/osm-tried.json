@@ -755,5 +755,28 @@
     "name": "GAL Mediterranean Cuisine",
     "result": "listed",
     "date": "2026-10-26"
+  },
+  "node/8980695211": {
+    "name": "Bubbles 07",
+    "result": "rejected",
+    "reason": "Website shows no street address; also three locations",
+    "date": "2026-10-27"
+  },
+  "node/7886875109": {
+    "name": "Mahana Fresh",
+    "result": "rejected",
+    "reason": "Multi-location national chain",
+    "date": "2026-10-27"
+  },
+  "node/7886875110": {
+    "name": "KPOT",
+    "result": "rejected",
+    "reason": "Multi-location national chain",
+    "date": "2026-10-27"
+  },
+  "node/12741969558": {
+    "name": "Royal Grill",
+    "result": "listed",
+    "date": "2026-10-27"
   }
 }

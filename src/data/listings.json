@@ -1608,5 +1608,38 @@
       "Catering",
       "Loyalty program"
     ]
+  },
+  {
+    "slug": "royal-grill",
+    "name": "Royal Grill",
+    "category": "restaurants",
+    "town": "toms-river",
+    "address": "10 Route 37 East",
+    "zip": "08753",
+    "phone": "(732) 505-9696",
+    "website": "https://royalgrill37.com/",
+    "hours": {
+      "mon": "10:00-22:00",
+      "tue": "10:00-22:00",
+      "wed": "10:00-22:00",
+      "thu": "10:00-22:00",
+      "fri": "10:00-22:00",
+      "sat": "10:00-22:00",
+      "sun": null
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-27",
+    "summary": "Toms River restaurant on Route 37 serving gyros, kebabs and platters, with online ordering and catering.",
+    "description": "Royal Grill is a restaurant on Route 37 in Toms River. Its menu centers on gyros, kebabs and platters, along with French fry bowls. The restaurant takes online orders, offers catering, and says it can accommodate dietary requests.",
+    "services": [
+      "Gyros",
+      "Kebabs",
+      "Platters",
+      "Online ordering",
+      "Catering"
+    ]
   }
 ]
