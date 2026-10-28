@@ -1676,5 +1676,38 @@
       "Lease return and next-car planning",
       "Credit application"
     ]
+  },
+  {
+    "slug": "flaming-grill",
+    "name": "Flaming Grill",
+    "category": "restaurants",
+    "town": "brick",
+    "address": "2770 Hooper Avenue",
+    "zip": "08723",
+    "phone": "(732) 920-4888",
+    "website": "https://www.flaminggrillbrick.com",
+    "hours": {
+      "mon": "11:00-21:30",
+      "tue": "11:00-21:30",
+      "wed": "11:00-21:30",
+      "thu": "11:00-21:30",
+      "fri": "11:00-22:00",
+      "sat": "11:00-22:00",
+      "sun": "11:00-21:30"
+    },
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-28",
+    "summary": "Brick restaurant on Hooper Avenue serving a seafood and sushi buffet along with build-your-own hibachi.",
+    "description": "Flaming Grill is a restaurant on Hooper Avenue in Brick. Its menu centers on a buffet that includes seafood such as crab, shrimp and oysters, sushi rolls and nigiri, and desserts. Guests can also build their own hibachi plate, and the restaurant takes orders online.",
+    "services": [
+      "Seafood buffet",
+      "Sushi",
+      "Build-your-own hibachi",
+      "Desserts",
+      "Online ordering"
+    ]
   }
 ]

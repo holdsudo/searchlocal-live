@@ -1,23 +1,23 @@
 {
  "/": {
-  "h": "6e9dc7ff82b13c46",
-  "d": "2026-10-27"
+  "h": "1e89a28ee281b860",
+  "d": "2026-10-28"
  },
  "/browse/": {
-  "h": "ed0e1b8e726719aa",
-  "d": "2026-10-27"
+  "h": "e8cd8b43a36c66ef",
+  "d": "2026-10-28"
  },
  "/categories/": {
-  "h": "f42e6f5ff17f1332",
-  "d": "2026-10-27"
+  "h": "61789c47bca6222a",
+  "d": "2026-10-28"
  },
  "/towns/": {
-  "h": "55241ceb27015da3",
-  "d": "2026-10-27"
+  "h": "1d995ddf380cb3c1",
+  "d": "2026-10-28"
  },
  "/category/restaurants/": {
-  "h": "9388d5add3d348b2",
-  "d": "2026-10-27"
+  "h": "7d8119a979eee05f",
+  "d": "2026-10-28"
  },
  "/category/health-dental/": {
   "h": "1871249bf93242d3",
@@ -32,8 +32,8 @@
   "d": "2026-10-27"
  },
  "/town/brick/": {
-  "h": "bdc6be6b2931afd5",
-  "d": "2026-10-26"
+  "h": "94d95dff4f675af5",
+  "d": "2026-10-28"
  },
  "/business/spa-virtue/": {
   "h": "45481a6c66ff9be1",
@@ -168,8 +168,8 @@
   "d": "2026-10-26"
  },
  "/category/restaurants/brick/": {
-  "h": "293fc6986a3b18ef",
-  "d": "2026-10-26"
+  "h": "e28756b9aaa2c844",
+  "d": "2026-10-28"
  },
  "/business/tardis-ristorante-italiano/": {
   "h": "6e7a1bc214ed8989",
@@ -546,5 +546,9 @@
  "/blog/car-lease-broker-vs-dealership-what-to-ask/": {
   "h": "b37030ea9d34f89e",
   "d": "2026-10-27"
+ },
+ "/business/flaming-grill/": {
+  "h": "e0c22691ec6562a7",
+  "d": "2026-10-28"
  }
 }
