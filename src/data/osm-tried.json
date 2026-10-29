@@ -795,5 +795,22 @@
     "name": "Flaming Grill",
     "result": "listed",
     "date": "2026-10-28"
+  },
+  "way/784012070": {
+    "name": "Wally's",
+    "result": "rejected",
+    "reason": "Phone number not shown on the business's own site",
+    "date": "2026-10-29"
+  },
+  "node/9801843293": {
+    "name": "MeeMom's",
+    "result": "rejected",
+    "reason": "Site lists no hours or specific menu items to support services; operating status not stated",
+    "date": "2026-10-29"
+  },
+  "node/9801843294": {
+    "name": "Jersey Juice Company",
+    "result": "listed",
+    "date": "2026-10-29"
   }
 }

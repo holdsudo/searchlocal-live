@@ -1709,5 +1709,30 @@
       "Desserts",
       "Online ordering"
     ]
+  },
+  {
+    "slug": "jersey-juice-company",
+    "name": "Jersey Juice Company",
+    "category": "cafes-bakeries",
+    "town": "brick",
+    "address": "56 Chambers Bridge Rd",
+    "zip": "08723",
+    "phone": "(732) 705-9090",
+    "website": "https://jerseyjuiceco.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-29",
+    "summary": "Juice bar in Brick Plaza serving cold-pressed juices, smoothies, smoothie bowls and light health-focused foods.",
+    "description": "Jersey Juice Company is a juice and smoothie shop located in Brick Plaza on Chambers Bridge Road in Brick. Its menu includes cold-pressed juices, smoothies and shakes, smoothie bowls, and items such as avocado toast. Customers can also order wellness shots and cleanse packs through the shop's website.",
+    "services": [
+      "Cold-pressed juices",
+      "Smoothies and shakes",
+      "Smoothie bowls",
+      "Avocado toast",
+      "Wellness shots"
+    ]
   }
 ]

@@ -1,19 +1,19 @@
 {
  "/": {
-  "h": "1e89a28ee281b860",
-  "d": "2026-10-28"
+  "h": "46c5f29b54feba23",
+  "d": "2026-10-29"
  },
  "/browse/": {
-  "h": "e8cd8b43a36c66ef",
-  "d": "2026-10-28"
+  "h": "5620b3d3cb9eb2f4",
+  "d": "2026-10-29"
  },
  "/categories/": {
-  "h": "61789c47bca6222a",
-  "d": "2026-10-28"
+  "h": "7d993a591f92d02b",
+  "d": "2026-10-29"
  },
  "/towns/": {
-  "h": "1d995ddf380cb3c1",
-  "d": "2026-10-28"
+  "h": "bc03365a813753c8",
+  "d": "2026-10-29"
  },
  "/category/restaurants/": {
   "h": "7d8119a979eee05f",
@@ -32,8 +32,8 @@
   "d": "2026-10-27"
  },
  "/town/brick/": {
-  "h": "94d95dff4f675af5",
-  "d": "2026-10-28"
+  "h": "a480f8491c6e2ba0",
+  "d": "2026-10-29"
  },
  "/business/spa-virtue/": {
   "h": "fd52f719b1758f0b",
@@ -192,8 +192,8 @@
   "d": "2026-10-26"
  },
  "/category/cafes-bakeries/": {
-  "h": "f54c3e7a4d762c30",
-  "d": "2026-10-26"
+  "h": "2078664743182795",
+  "d": "2026-10-29"
  },
  "/category/auto-repair/": {
   "h": "5d93c22fabb9ee72",
@@ -272,8 +272,8 @@
   "d": "2026-10-26"
  },
  "/category/cafes-bakeries/brick/": {
-  "h": "a28a86b349c7db0f",
-  "d": "2026-10-26"
+  "h": "b39ca1f50927b11d",
+  "d": "2026-10-29"
  },
  "/category/auto-repair/whiting/": {
   "h": "ab3ab8d38cd5d906",
@@ -554,5 +554,9 @@
  "/blog/toms-river-guide-donuts-law-dental-grill-spa-curry/": {
   "h": "259b14e0d7e14d8f",
   "d": "2026-10-28"
+ },
+ "/business/jersey-juice-company/": {
+  "h": "f47c47b7cda93c35",
+  "d": "2026-10-29"
  }
 }
