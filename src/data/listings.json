@@ -1734,5 +1734,30 @@
       "Avocado toast",
       "Wellness shots"
     ]
+  },
+  {
+    "slug": "daymark",
+    "name": "Daymark",
+    "category": "restaurants",
+    "town": "barnegat-light",
+    "address": "404 Broadway",
+    "zip": "08006",
+    "phone": "(609) 494-2100",
+    "website": "https://www.daymarklbi.com/",
+    "hours": null,
+    "since": null,
+    "featured": false,
+    "sample": false,
+    "source": "osm",
+    "added": "2026-10-30",
+    "summary": "Daymark is a restaurant and bar on Broadway in Barnegat Light on Long Beach Island.",
+    "description": "Daymark is a restaurant with a full bar at 404 Broadway in Barnegat Light. The menu is available online, and guests can reserve a table or order takeout through the website. The restaurant also hosts weddings, rehearsal dinners and other private parties.",
+    "services": [
+      "Dine-in",
+      "Full bar",
+      "Online takeout",
+      "Reservations",
+      "Weddings and private events"
+    ]
   }
 ]

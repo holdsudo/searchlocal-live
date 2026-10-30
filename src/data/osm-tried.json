@@ -812,5 +812,16 @@
     "name": "Jersey Juice Company",
     "result": "listed",
     "date": "2026-10-29"
+  },
+  "node/4307324292": {
+    "name": "The Music Man Singing Ice Cream Shoppe",
+    "result": "rejected",
+    "reason": "Seasonal (Memorial Day-Labor Day); closed now, no confirmed current operation",
+    "date": "2026-10-30"
+  },
+  "way/627828468": {
+    "name": "Daymark",
+    "result": "listed",
+    "date": "2026-10-30"
   }
 }
